@@ -17,51 +17,72 @@ import {
   Vote,
   TrendingUp,
   Clock,
-  User
+  User,
+  Lightbulb,
+  BookOpen
 } from "lucide-react";
 
 export default function CommunityPage() {
-  const [activeTab, setActiveTab] = useState("free");
+  const [activeTab, setActiveTab] = useState("dashboard");
   const [sortBy, setSortBy] = useState("latest");
   const [showWriteModal, setShowWriteModal] = useState(false);
 
-  const posts = [
+  const boardSections = [
     {
-      id: 1,
-      title: "AI 블로그 작성 팁 공유드려요",
-      content: "최근에 AI로 블로그 글을 작성하면서 느낀 점들을 공유합니다...",
-      author: "블로거123",
-      level: 3,
-      views: 245,
-      likes: 15,
-      comments: 8,
-      createdAt: "2025-01-20 14:30",
-      category: "팁공유"
+      id: "free",
+      title: "자유게시판",
+      description: "자유롭게 소통하는 공간",
+      icon: MessageCircle,
+      color: "bg-blue-500",
+      posts: [
+        { title: "AI 블로그 작성 팁 공유드려요", author: "블로거123", time: "14:30", comments: 8 },
+        { title: "유튜브 스크립트 자동화 질문", author: "크리에이터99", time: "13:15", comments: 23 },
+        { title: "SEO 최적화 방법 문의", author: "마케터A", time: "12:45", comments: 5 },
+        { title: "AI 콘텐츠 생성 후기", author: "사용자123", time: "11:20", comments: 12 },
+        { title: "블로그 수익화 팁", author: "블로거456", time: "10:15", comments: 7 }
+      ]
     },
     {
-      id: 2,
-      title: "유튜브 스크립트 자동화 관련 질문",
-      content: "유튜브 스크립트를 자동으로 생성할 때 어떤 점을 주의해야 할까요?",
-      author: "크리에이터99",
-      level: 2,
-      views: 189,
-      likes: 12,
-      comments: 23,
-      createdAt: "2025-01-20 13:15",
-      category: "질문"
+      id: "suggestions",
+      title: "건의사항",
+      description: "서비스 개선 아이디어",
+      icon: Lightbulb,
+      color: "bg-green-500",
+      posts: [
+        { title: "템플릿 추가 요청", author: "사용자A", time: "15:20", comments: 3 },
+        { title: "모바일 앱 출시 건의", author: "모바일러", time: "14:10", comments: 15 },
+        { title: "UI 개선 제안", author: "디자이너B", time: "13:30", comments: 8 },
+        { title: "결제 방식 다양화 요청", author: "고객C", time: "12:00", comments: 5 },
+        { title: "알림 기능 추가 건의", author: "사용자D", time: "11:45", comments: 2 }
+      ]
     },
     {
-      id: 3,
-      title: "[외주] 네이버 스마트스토어 상품 설명 자동화 개발",
-      content: "스마트스토어 상품 설명을 자동으로 생성하는 툴 개발을 의뢰합니다.",
-      author: "사업자A",
-      level: 5,
-      views: 156,
-      likes: 8,
-      comments: 15,
-      createdAt: "2025-01-20 12:00",
-      category: "개발외주",
-      budget: "500,000원"
+      id: "outsource",
+      title: "외주게시판",
+      description: "개발/마케팅 외주 요청",
+      icon: Briefcase,
+      color: "bg-purple-500",
+      posts: [
+        { title: "[외주] 스마트스토어 자동화", author: "사업자A", time: "16:00", comments: 12, budget: "500만원" },
+        { title: "[의뢰] 블로그 SEO 최적화", author: "마케터B", time: "15:30", comments: 8, budget: "200만원" },
+        { title: "[외주] 유튜브 썸네일 생성", author: "크리에이터C", time: "14:20", comments: 5, budget: "100만원" },
+        { title: "[개발] API 연동 작업", author: "개발자D", time: "13:10", comments: 3, budget: "300만원" },
+        { title: "[마케팅] SNS 자동화 툴", author: "마케터E", time: "12:30", comments: 7, budget: "150만원" }
+      ]
+    },
+    {
+      id: "info",
+      title: "정보게시판",
+      description: "유용한 정보 공유",
+      icon: BookOpen,
+      color: "bg-orange-500",
+      posts: [
+        { title: "2025년 SEO 트렌드 분석", author: "전문가A", time: "17:00", comments: 25 },
+        { title: "AI 도구 비교 분석", author: "리뷰어B", time: "16:30", comments: 18 },
+        { title: "블로그 수익화 가이드", author: "블로거전문", time: "15:45", comments: 32 },
+        { title: "콘텐츠 마케팅 전략", author: "마케터프로", time: "14:50", comments: 14 },
+        { title: "AI 글쓰기 최적화 팁", author: "라이터킹", time: "13:20", comments: 22 }
+      ]
     }
   ];
 
@@ -94,150 +115,145 @@ export default function CommunityPage() {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <div className="flex justify-between items-center">
-            <TabsList className="grid w-fit grid-cols-3">
+            <TabsList className="grid w-fit grid-cols-5">
+              <TabsTrigger value="dashboard">대시보드</TabsTrigger>
               <TabsTrigger value="free">자유게시판</TabsTrigger>
-              <TabsTrigger value="suggest">건의사항</TabsTrigger>
+              <TabsTrigger value="suggestions">건의사항</TabsTrigger>
               <TabsTrigger value="outsource">외주게시판</TabsTrigger>
+              <TabsTrigger value="info">정보게시판</TabsTrigger>
             </TabsList>
             
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="latest">최신순</SelectItem>
-                <SelectItem value="popular">인기순</SelectItem>
-                <SelectItem value="views">조회수순</SelectItem>
-                <SelectItem value="comments">댓글순</SelectItem>
-              </SelectContent>
-            </Select>
+            {activeTab !== "dashboard" && (
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="latest">최신순</SelectItem>
+                  <SelectItem value="popular">인기순</SelectItem>
+                  <SelectItem value="views">조회수순</SelectItem>
+                  <SelectItem value="comments">댓글순</SelectItem>
+                </SelectContent>
+              </Select>
+            )}
           </div>
 
-          <TabsContent value="free" className="space-y-4">
-            {posts.filter(post => post.category !== "개발외주").map((post) => (
-              <Card key={post.id} className="hover:shadow-md transition-shadow cursor-pointer">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Badge variant="outline">{post.category}</Badge>
-                        <div className="flex items-center space-x-1">
-                          <User className="h-3 w-3" />
-                          <span className="text-sm text-gray-600">{post.author}</span>
-                          <Badge 
-                            className={`text-xs bg-${getLevelColor(post.level)}-100 text-${getLevelColor(post.level)}-800`}
-                          >
-                            {getLevelBadge(post.level)}
-                          </Badge>
-                        </div>
+          <TabsContent value="dashboard" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {boardSections.map((section) => (
+                <Card 
+                  key={section.id} 
+                  className="hover:shadow-lg transition-shadow cursor-pointer"
+                  onClick={() => setActiveTab(section.id)}
+                >
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-10 h-10 ${section.color} rounded-lg flex items-center justify-center`}>
+                        <section.icon className="h-5 w-5 text-white" />
                       </div>
-                      <h3 className="font-semibold text-lg mb-2">{post.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
-                        {post.content}
-                      </p>
-                      <div className="flex items-center space-x-4 text-sm text-gray-500">
-                        <div className="flex items-center space-x-1">
-                          <Eye className="h-4 w-4" />
-                          <span>{post.views}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <ThumbsUp className="h-4 w-4" />
-                          <span>{post.likes}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <MessageCircle className="h-4 w-4" />
-                          <span>{post.comments}</span>
-                        </div>
-                        <span>{post.createdAt}</span>
+                      <div>
+                        <CardTitle className="text-lg">{section.title}</CardTitle>
+                        <p className="text-sm text-gray-600 dark:text-gray-400">{section.description}</p>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      {section.posts.slice(0, 5).map((post, index) => (
+                        <div key={index} className="flex items-center justify-between py-2 border-b border-gray-100 dark:border-gray-700 last:border-0">
+                          <div className="flex-1">
+                            <p className="text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
+                              {post.title}
+                            </p>
+                            <div className="flex items-center space-x-2 text-xs text-gray-500 mt-1">
+                              <span>{post.author}</span>
+                              <span>•</span>
+                              <span>{post.time}</span>
+                              {post.budget && (
+                                <>
+                                  <span>•</span>
+                                  <span className="text-green-600 font-medium">{post.budget}</span>
+                                </>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-1 text-xs text-gray-500">
+                            <MessageCircle className="h-3 w-3" />
+                            <span>{post.comments}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="w-full mt-3 text-hermes-orange hover:text-hermes-orange hover:bg-orange-50"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveTab(section.id);
+                      }}
+                    >
+                      더보기 →
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </TabsContent>
 
-          <TabsContent value="suggest" className="space-y-4">
-            <Card>
-              <CardContent className="p-6 text-center">
-                <Vote className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">건의사항을 남겨주세요</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                  서비스 개선을 위한 소중한 의견을 기다리고 있습니다
-                </p>
+          {boardSections.map((section) => (
+            <TabsContent key={section.id} value={section.id} className="space-y-4">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <div className={`w-8 h-8 ${section.color} rounded-lg flex items-center justify-center`}>
+                    <section.icon className="h-4 w-4 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold">{section.title}</h2>
+                    <p className="text-sm text-gray-600">{section.description}</p>
+                  </div>
+                </div>
                 <Button 
                   onClick={() => setShowWriteModal(true)}
                   className="bg-hermes-orange hover:bg-hermes-orange/90"
                 >
-                  건의하기 (무료)
+                  <Plus className="h-4 w-4 mr-2" />
+                  글쓰기
                 </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
+              </div>
 
-          <TabsContent value="outsource" className="space-y-4">
-            {posts.filter(post => post.category === "개발외주").map((post) => (
-              <Card key={post.id} className="hover:shadow-md transition-shadow cursor-pointer border-l-4 border-l-hermes-orange">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Badge className="bg-hermes-orange text-white">
-                          <Briefcase className="h-3 w-3 mr-1" />
-                          외주
-                        </Badge>
+              <div className="bg-white dark:bg-gray-800 rounded-lg border">
+                <div className="grid grid-cols-12 gap-4 p-4 bg-gray-50 dark:bg-gray-700 text-sm font-medium text-gray-600 dark:text-gray-400">
+                  <div className="col-span-1">번호</div>
+                  <div className="col-span-6">제목</div>
+                  <div className="col-span-2">글쓴이</div>
+                  <div className="col-span-1">시간</div>
+                  <div className="col-span-1">댓글</div>
+                  <div className="col-span-1">조회</div>
+                </div>
+                
+                {section.posts.map((post, index) => (
+                  <div key={index} className="grid grid-cols-12 gap-4 p-4 border-b hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer">
+                    <div className="col-span-1 text-sm text-gray-500">{index + 1}</div>
+                    <div className="col-span-6">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-medium">{post.title}</span>
                         {post.budget && (
-                          <Badge variant="outline" className="text-green-600 border-green-600">
+                          <Badge variant="outline" className="text-green-600 border-green-600 text-xs">
                             {post.budget}
                           </Badge>
                         )}
-                        <div className="flex items-center space-x-1">
-                          <User className="h-3 w-3" />
-                          <span className="text-sm text-gray-600">{post.author}</span>
-                          <Badge 
-                            className={`text-xs bg-${getLevelColor(post.level)}-100 text-${getLevelColor(post.level)}-800`}
-                          >
-                            {getLevelBadge(post.level)}
-                          </Badge>
-                        </div>
-                      </div>
-                      <h3 className="font-semibold text-lg mb-2">{post.title}</h3>
-                      <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">
-                        {post.content}
-                      </p>
-                      <div className="flex items-center space-x-4 text-sm text-gray-500">
-                        <div className="flex items-center space-x-1">
-                          <Eye className="h-4 w-4" />
-                          <span>{post.views}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <MessageCircle className="h-4 w-4" />
-                          <span>{post.comments}</span>
-                        </div>
-                        <span>{post.createdAt}</span>
                       </div>
                     </div>
+                    <div className="col-span-2 text-sm text-gray-600">{post.author}</div>
+                    <div className="col-span-1 text-sm text-gray-500">{post.time}</div>
+                    <div className="col-span-1 text-sm text-gray-500">{post.comments}</div>
+                    <div className="col-span-1 text-sm text-gray-500">{Math.floor(Math.random() * 500) + 50}</div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-            
-            <Card className="border-2 border-dashed border-hermes-orange">
-              <CardContent className="p-6 text-center">
-                <Briefcase className="h-12 w-12 text-hermes-orange mx-auto mb-4" />
-                <h3 className="font-semibold mb-2">외주 요청하기</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                  자동 개발, 마케팅 외주 요청 (1 AI캐쉬 차감)
-                </p>
-                <Button 
-                  onClick={() => setShowWriteModal(true)}
-                  className="bg-hermes-orange hover:bg-hermes-orange/90"
-                >
-                  외주 요청하기
-                </Button>
-              </CardContent>
-            </Card>
-          </TabsContent>
+                ))}
+              </div>
+            </TabsContent>
+          ))}
         </Tabs>
 
         {/* Write Modal */}

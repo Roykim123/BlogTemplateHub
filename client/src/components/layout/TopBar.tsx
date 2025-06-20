@@ -12,12 +12,19 @@ export function TopBar() {
       <div className="flex items-center space-x-4">
         <button 
           onClick={() => setLocation("/")}
-          className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+          className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
         >
-          <div className="w-6 h-6 bg-hermes-orange rounded-md flex items-center justify-center">
-            <span className="text-white text-xs font-bold">걱</span>
+          <div className="w-8 h-8 bg-hermes-orange rounded-md flex items-center justify-center">
+            <span className="text-white text-sm font-bold">걱</span>
           </div>
-          <span className="text-sm font-medium text-gray-800 dark:text-gray-200 hidden sm:block">걱정마AI</span>
+          <div className="flex flex-col">
+            <h1 className="text-2xl font-black text-gray-800 dark:text-gray-200">
+              걱정마<span className="text-hermes-orange">AI</span>
+            </h1>
+            <p className="text-xs text-gray-500 dark:text-gray-400 -mt-1">
+              클릭 한번이면 AI가 해결해줍니다!
+            </p>
+          </div>
         </button>
       </div>
       

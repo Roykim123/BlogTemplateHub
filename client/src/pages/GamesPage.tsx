@@ -196,31 +196,37 @@ export default function GamesPage() {
             {games.map((game) => (
               <Card 
                 key={game.id} 
-                className="cursor-pointer hover:shadow-lg transition-shadow"
-                onClick={() => setSelectedGame(game.id)}
+                className="relative opacity-60"
               >
+                <div className="absolute inset-0 bg-gray-500/20 rounded-lg flex items-center justify-center z-10">
+                  <div className="text-center">
+                    <Clock className="h-12 w-12 text-gray-400 mx-auto mb-2" />
+                    <p className="text-lg font-bold text-gray-600">추후 업데이트 예정</p>
+                    <p className="text-sm text-gray-500">곧 만나보실 수 있습니다</p>
+                  </div>
+                </div>
                 <CardHeader className="text-center">
-                  <game.icon className="h-16 w-16 text-hermes-orange mx-auto mb-4" />
-                  <CardTitle>{game.name}</CardTitle>
+                  <game.icon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+                  <CardTitle className="text-gray-500">{game.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="text-center">
-                  <p className="text-gray-600 dark:text-gray-400 mb-4">{game.description}</p>
+                  <p className="text-gray-400 mb-4">{game.description}</p>
                   <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-sm text-gray-400">
                       <span>최소 베팅:</span>
                       <span>{game.minBet} AI캐쉬</span>
                     </div>
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-sm text-gray-400">
                       <span>최대 베팅:</span>
                       <span>{game.maxBet} AI캐쉬</span>
                     </div>
-                    <div className="flex justify-between text-sm">
+                    <div className="flex justify-between text-sm text-gray-400">
                       <span>배당률:</span>
-                      <span className="text-green-600 font-bold">{game.multiplier}배</span>
+                      <span className="font-bold">{game.multiplier}배</span>
                     </div>
                   </div>
-                  <Button className="w-full mt-4 bg-hermes-orange hover:bg-hermes-orange/90">
-                    게임 시작
+                  <Button disabled className="w-full mt-4 bg-gray-400">
+                    준비중
                   </Button>
                 </CardContent>
               </Card>
