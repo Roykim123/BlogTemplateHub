@@ -16,7 +16,9 @@ import {
   Check,
   Users,
   Target,
-  Award
+  Award,
+  Zap,
+  Briefcase
 } from "lucide-react";
 
 export const NAVIGATION_ITEMS = [
@@ -25,36 +27,52 @@ export const NAVIGATION_ITEMS = [
     label: "대시보드",
     icon: ChartGantt,
     path: "/",
-    description: "메인 대시보드"
+    description: "메인 대시보드",
+    category: "main"
+  },
+  {
+    id: "blog-auto",
+    label: "딸깍AI",
+    icon: Zap,
+    path: "/blog-auto",
+    description: "블로그 자동화",
+    category: "automation"
   },
   {
     id: "tools",
-    label: "도구",
+    label: "추가기능",
     icon: Wrench,
     path: "/tools",
-    description: "AI 도구 모음"
+    description: "유튜브, 스레드 등",
+    category: "additional"
   },
   {
     id: "community",
     label: "커뮤니티",
     icon: MessageCircle,
     path: "/community",
-    description: "자유게시판 및 외주게시판"
+    description: "자유게시판",
+    category: "board"
+  },
+  {
+    id: "outsource",
+    label: "외주게시판",
+    icon: Briefcase,
+    path: "/community?tab=outsource",
+    description: "개발/마케팅 외주",
+    category: "board"
   },
   {
     id: "games",
     label: "미니게임",
     icon: Target,
     path: "/games",
-    description: "AI캐쉬 미니게임"
-  },
-  {
-    id: "rewards",
-    label: "리워드",
-    icon: Gift,
-    path: "/rewards",
-    description: "출석체크 및 혜택"
-  },
+    description: "AI캐쉬 미니게임",
+    category: "board"
+  }
+];
+
+export const USER_NAVIGATION_ITEMS = [
   {
     id: "mypage",
     label: "마이페이지",
@@ -64,10 +82,17 @@ export const NAVIGATION_ITEMS = [
   },
   {
     id: "payment",
-    label: "결제",
+    label: "결제정보",
     icon: CreditCard,
     path: "/payment",
     description: "요금제 및 AI캐쉬 충전"
+  },
+  {
+    id: "settings",
+    label: "환경설정",
+    icon: Settings,
+    path: "/settings",
+    description: "계정 및 시스템 설정"
   }
 ];
 

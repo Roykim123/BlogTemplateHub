@@ -23,6 +23,7 @@ import PaymentPage from "@/pages/PaymentPage";
 import MyPage from "@/pages/MyPage";
 import CommunityPage from "@/pages/CommunityPage";
 import GamesPage from "@/pages/GamesPage";
+import BlogAutoPage from "@/pages/BlogAutoPage";
 import NotFound from "@/pages/not-found";
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -65,6 +66,7 @@ function Router() {
         <Route path="/mypage" component={() => <Layout><MyPage /></Layout>} />
         <Route path="/community" component={() => <Layout><CommunityPage /></Layout>} />
         <Route path="/games" component={() => <Layout><GamesPage /></Layout>} />
+        <Route path="/blog-auto" component={() => <Layout><BlogAutoPage /></Layout>} />
         <Route path="/templates" component={() => <Layout><TemplatesPage /></Layout>} />
         <Route path="/naver/reviews" component={() => <Layout><TemplatesPage /></Layout>} />
         <Route path="/youtube/a1" component={() => <Layout><TemplatesPage /></Layout>} />
