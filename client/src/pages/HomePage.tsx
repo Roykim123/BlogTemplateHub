@@ -18,10 +18,10 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="h-full bg-white dark:bg-gray-900 p-6 overflow-y-auto">
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 h-full">
+    <div className="h-full bg-white dark:bg-gray-900 p-4 overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-full max-h-[calc(100vh-100px)]">
         {/* Left 60% - 2 vertical sections */}
-        <div className="lg:col-span-3 grid grid-rows-2 gap-6">
+        <div className="lg:col-span-3 grid grid-rows-2 gap-4">
           {/* Top Left - Message Board */}
           <Card className="h-full">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
@@ -31,7 +31,7 @@ export default function HomePage() {
               </CardTitle>
               <Button variant="outline" size="sm">더보기</Button>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-2 max-h-48 overflow-y-auto">
               {recentPosts.map((post) => (
                 <div key={post.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer">
                   <div className="flex-1 min-w-0">
@@ -60,7 +60,7 @@ export default function HomePage() {
               </CardTitle>
               <Button variant="outline" size="sm">전체보기</Button>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-2 max-h-48 overflow-y-auto">
               {notices.map((notice) => (
                 <div key={notice.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer">
                   <div className="flex-1 min-w-0">
@@ -85,7 +85,7 @@ export default function HomePage() {
         </div>
 
         {/* Right 40% - 2 vertical sections */}
-        <div className="lg:col-span-2 grid grid-rows-2 gap-6">
+        <div className="lg:col-span-2 grid grid-rows-2 gap-4">
           {/* Top Right - YouTube Video */}
           <Card className="h-full">
             <CardHeader className="pb-4">
@@ -95,7 +95,7 @@ export default function HomePage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="h-full">
-              <div className="relative w-full h-48 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+              <div className="relative w-full h-32 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
                 <iframe
                   className="w-full h-full"
                   src="https://www.youtube.com/embed/dQw4w9WgXcQ"
@@ -105,8 +105,8 @@ export default function HomePage() {
                   allowFullScreen
                 ></iframe>
               </div>
-              <div className="mt-4">
-                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
+              <div className="mt-2">
+                <h4 className="text-xs font-medium text-gray-900 dark:text-gray-100 mb-1">
                   걱정마AI 시작하기 - 기본 사용법
                 </h4>
                 <p className="text-xs text-gray-600 dark:text-gray-400">
@@ -124,40 +124,40 @@ export default function HomePage() {
                 <span>프리미엄 콘텐츠</span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">🎥 고급 AI 활용법</h4>
-                <p className="text-sm opacity-90 mb-3">
+            <CardContent className="space-y-3 max-h-64 overflow-y-auto">
+              <div className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-3 rounded-lg">
+                <h4 className="font-semibold mb-1 text-sm">🎥 고급 AI 활용법</h4>
+                <p className="text-xs opacity-90 mb-2">
                   전문가만 아는 AI 글쓰기 노하우를 공개합니다.
                 </p>
                 <Button 
                   size="sm" 
-                  className="bg-white text-hermes-orange hover:bg-gray-50"
+                  className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-6"
                 >
                   지금 시청하기
                 </Button>
               </div>
               
-              <div className="border border-gray-200 dark:border-gray-700 p-4 rounded-lg">
-                <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
+              <div className="border border-gray-200 dark:border-gray-700 p-3 rounded-lg">
+                <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">
                   📚 마스터 클래스
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
                   블로그 수익화부터 SEO 최적화까지
                 </p>
-                <Button variant="outline" size="sm" className="w-full">
+                <Button variant="outline" size="sm" className="w-full text-xs h-6">
                   자세히 보기
                 </Button>
               </div>
 
-              <div className="border border-gray-200 dark:border-gray-700 p-4 rounded-lg">
-                <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
+              <div className="border border-gray-200 dark:border-gray-700 p-3 rounded-lg">
+                <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">
                   🎯 1:1 컨설팅
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
                   개인 맞춤형 AI 활용 전략 상담
                 </p>
-                <Button variant="outline" size="sm" className="w-full">
+                <Button variant="outline" size="sm" className="w-full text-xs h-6">
                   예약하기
                 </Button>
               </div>

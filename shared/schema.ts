@@ -5,8 +5,12 @@ import { z } from "zod";
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
-  email: text("email").notNull().unique(),
-  password: text("password").notNull(),
+  email: text("email").unique(),
+  password: text("password"),
+  kakaoId: text("kakao_id").unique(),
+  aiCash: integer("ai_cash").default(0),
+  referralCode: text("referral_code").unique(),
+  referredBy: integer("referred_by").references(() => users.id),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

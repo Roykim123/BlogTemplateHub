@@ -10,8 +10,8 @@ export default function RewardsPage() {
         <div className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-4 rounded-xl mb-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold mb-1">오늘의 크레딧 미션</h2>
-              <p className="text-sm opacity-90">5,000</p>
+              <h2 className="text-lg font-semibold mb-1">오늘의 AI캐쉬 미션</h2>
+              <p className="text-sm opacity-90">5,000 AI캐쉬</p>
             </div>
             <Button className="bg-white text-hermes-orange hover:bg-gray-50">
               적립하기
@@ -36,7 +36,7 @@ export default function RewardsPage() {
       </div>
 
       <div className="mb-8">
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">서비스가 준비한 혜택 모으기</h3>
+        <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">서비스가 준비한 AI캐쉬 혜택 모으기</h3>
         
         <div className="space-y-3">
           {REWARD_MISSIONS.map((mission) => {
@@ -67,13 +67,25 @@ export default function RewardsPage() {
                     <p className="text-xs text-gray-600 dark:text-gray-400">{mission.description}</p>
                   </div>
                 </div>
-                <div className={cn(
-                  "px-3 py-1 rounded-full text-xs",
-                  mission.status === "active" 
-                    ? "bg-hermes-orange text-white"
-                    : "text-hermes-orange font-medium"
-                )}>
-                  {mission.reward}
+                <div className="text-right">
+                  {mission.id === "refer-friend" ? (
+                    <Button 
+                      size="sm" 
+                      className="bg-hermes-orange hover:bg-hermes-orange/90 text-xs h-8"
+                      onClick={() => window.location.href = "/referral"}
+                    >
+                      초대하기
+                    </Button>
+                  ) : (
+                    <div className={cn(
+                      "px-3 py-1 rounded-full text-xs",
+                      mission.status === "active" 
+                        ? "bg-hermes-orange text-white"
+                        : "text-hermes-orange font-medium"
+                    )}>
+                      {mission.reward}
+                    </div>
+                  )}
                 </div>
               </div>
             );

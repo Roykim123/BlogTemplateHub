@@ -8,7 +8,7 @@ export function Sidebar() {
   const [location, setLocation] = useLocation();
   const isMobile = useMobile();
   
-  const currentPage = location.replace("/", "") || "chatbot";
+  const currentPage = location.replace("/", "") || "dashboard";
 
   if (isMobile) {
     return (

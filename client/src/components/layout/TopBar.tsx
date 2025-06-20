@@ -46,9 +46,9 @@ export function TopBar() {
         
         <Button
           size="sm"
-          className="text-xs bg-hermes-orange text-white px-3 py-1 h-6 rounded-full hover:bg-hermes-orange/90"
+          className="text-xs bg-yellow-400 text-black px-3 py-1 h-6 rounded-full hover:bg-yellow-500 font-medium"
         >
-          로그인
+          카카오 로그인
         </Button>
       </div>
     </header>

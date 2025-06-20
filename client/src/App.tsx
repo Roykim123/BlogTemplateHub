@@ -15,9 +15,10 @@ import HomePage from "@/pages/HomePage";
 import ChatPage from "@/pages/ChatPage";
 import ToolsPage from "@/pages/ToolsPage";
 import RewardsPage from "@/pages/RewardsPage";
+import ReferralPage from "@/pages/ReferralPage";
 import TemplatesPage from "@/pages/TemplatesPage";
 import TutorialPage from "@/pages/TutorialPage";
-import AdminPage from "@/pages/AdminPage";
+import AdminDashboard from "@/pages/AdminDashboard";
 import PaymentPage from "@/pages/PaymentPage";
 import NotFound from "@/pages/not-found";
 
@@ -57,11 +58,12 @@ function Router() {
         <Route path="/chatbot" component={() => <Layout><ChatPage /></Layout>} />
         <Route path="/tools" component={() => <Layout><ToolsPage /></Layout>} />
         <Route path="/rewards" component={() => <Layout><RewardsPage /></Layout>} />
+        <Route path="/referral" component={() => <Layout><ReferralPage /></Layout>} />
         <Route path="/templates" component={() => <Layout><TemplatesPage /></Layout>} />
         <Route path="/naver/reviews" component={() => <Layout><TemplatesPage /></Layout>} />
         <Route path="/youtube/a1" component={() => <Layout><TemplatesPage /></Layout>} />
         <Route path="/tutorial" component={() => <Layout><TutorialPage /></Layout>} />
-        <Route path="/admin" component={() => <Layout><AdminPage /></Layout>} />
+        <Route path="/admin" component={() => <Layout><AdminDashboard /></Layout>} />
         <Route path="/payment" component={() => <Layout><PaymentPage /></Layout>} />
         <Route component={NotFound} />
       </Switch>
