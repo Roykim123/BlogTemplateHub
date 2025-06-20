@@ -20,6 +20,7 @@ import TemplatesPage from "@/pages/TemplatesPage";
 import TutorialPage from "@/pages/TutorialPage";
 import AdminDashboard from "@/pages/AdminDashboard";
 import PaymentPage from "@/pages/PaymentPage";
+import MyPage from "@/pages/MyPage";
 import NotFound from "@/pages/not-found";
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -59,6 +60,7 @@ function Router() {
         <Route path="/tools" component={() => <Layout><ToolsPage /></Layout>} />
         <Route path="/rewards" component={() => <Layout><RewardsPage /></Layout>} />
         <Route path="/referral" component={() => <Layout><ReferralPage /></Layout>} />
+        <Route path="/mypage" component={() => <Layout><MyPage /></Layout>} />
         <Route path="/templates" component={() => <Layout><TemplatesPage /></Layout>} />
         <Route path="/naver/reviews" component={() => <Layout><TemplatesPage /></Layout>} />
         <Route path="/youtube/a1" component={() => <Layout><TemplatesPage /></Layout>} />

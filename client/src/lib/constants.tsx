@@ -43,6 +43,18 @@ export const NAVIGATION_ITEMS = [
     label: "리워드",
     icon: Gift,
     path: "/rewards"
+  },
+  {
+    id: "mypage",
+    label: "마이페이지",
+    icon: Users,
+    path: "/mypage"
+  },
+  {
+    id: "payment",
+    label: "결제",
+    icon: CreditCard,
+    path: "/payment"
   }
 ];
 

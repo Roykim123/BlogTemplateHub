@@ -10,7 +10,7 @@ export const users = pgTable("users", {
   kakaoId: text("kakao_id").unique(),
   aiCash: integer("ai_cash").default(0),
   referralCode: text("referral_code").unique(),
-  referredBy: integer("referred_by").references(() => users.id),
+  referredBy: integer("referred_by"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 

@@ -128,10 +128,14 @@ export class MemStorage implements IStorage {
     const id = this.currentUserId++;
     const referralCode = `WORRY${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
     const user: User = { 
-      ...insertUser, 
       id,
+      username: insertUser.username,
+      email: insertUser.email || null,
+      password: insertUser.password || null,
+      kakaoId: insertUser.kakaoId || null,
       aiCash: insertUser.aiCash || 1000,
       referralCode,
+      referredBy: insertUser.referredBy || null,
       createdAt: new Date() 
     };
     this.users.set(id, user);

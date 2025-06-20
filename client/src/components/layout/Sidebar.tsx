@@ -3,12 +3,16 @@ import { NAVIGATION_ITEMS, TUTORIAL_NAV } from "@/lib/constants";
 import { useLocation } from "wouter";
 import { useMobile } from "@/hooks/use-mobile";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Settings } from "lucide-react";
 
 export function Sidebar() {
   const [location, setLocation] = useLocation();
   const isMobile = useMobile();
   
   const currentPage = location.replace("/", "") || "dashboard";
+  
+  // Mock admin check - in real app, this would come from auth context
+  const isAdmin = true; // Set to true to show admin panel
 
   if (isMobile) {
     return (
@@ -54,6 +58,28 @@ export function Sidebar() {
           </TooltipContent>
         </Tooltip>
       ))}
+      
+      {/* Admin Panel - Only visible to admins */}
+      {isAdmin && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={() => setLocation("/admin")}
+              className={cn(
+                "w-8 h-8 flex items-center justify-center rounded-lg transition-all group",
+                currentPage === "admin"
+                  ? "bg-hermes-orange text-white"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white"
+              )}
+            >
+              <Settings className="h-4 w-4" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="right" className="ml-2">
+            관리자
+          </TooltipContent>
+        </Tooltip>
+      )}
       
       <div className="flex-1" />
       

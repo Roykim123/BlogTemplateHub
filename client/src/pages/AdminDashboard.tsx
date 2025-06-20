@@ -45,6 +45,13 @@ export default function AdminDashboard() {
     { id: 3, type: "success", message: "새로운 AI 모델 업데이트가 완료되었습니다", time: "1시간 전" }
   ]);
 
+  const [dashboardStats] = useState([
+    { label: "오늘 총 방문자", value: "2,847명", growth: "+12.4%" },
+    { label: "AI 도구 사용량", value: "15,234회", growth: "+8.7%" },
+    { label: "신규 가입자", value: "183명", growth: "+15.2%" },
+    { label: "활성 구독자", value: "8,934명", growth: "+5.3%" }
+  ]);
+
   return (
     <div className="h-full bg-white dark:bg-gray-900 p-6 overflow-y-auto">
       <div className="max-w-7xl mx-auto">
@@ -100,13 +107,93 @@ export default function AdminDashboard() {
           </Card>
         </div>
 
-        <Tabs defaultValue="users" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+        <Tabs defaultValue="dashboard" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="dashboard">대시보드</TabsTrigger>
             <TabsTrigger value="users">사용자 관리</TabsTrigger>
             <TabsTrigger value="payments">결제 관리</TabsTrigger>
             <TabsTrigger value="system">시스템 현황</TabsTrigger>
             <TabsTrigger value="analytics">분석</TabsTrigger>
           </TabsList>
+          
+          <TabsContent value="dashboard" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {dashboardStats.map((stat, index) => (
+                <Card key={index}>
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">{stat.label}</p>
+                        <p className="text-2xl font-bold">{stat.value}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-sm text-green-600">{stat.growth}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>실시간 활동</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { user: "김**", action: "AI 블로그 글쓰기 사용", time: "방금 전" },
+                      { user: "이**", action: "프로 플랜 구독", time: "2분 전" },
+                      { user: "박**", action: "친구 초대 완료", time: "5분 전" },
+                      { user: "최**", action: "AI 유튜브 스크립트 사용", time: "7분 전" }
+                    ].map((activity, index) => (
+                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                        <div>
+                          <p className="text-sm font-medium">{activity.user}</p>
+                          <p className="text-xs text-gray-500">{activity.action}</p>
+                        </div>
+                        <p className="text-xs text-gray-500">{activity.time}</p>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle>서버 성능</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">CPU 사용률</span>
+                      <span className="text-sm font-medium">34%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-green-600 h-2 rounded-full" style={{width: '34%'}}></div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">메모리 사용률</span>
+                      <span className="text-sm font-medium">67%</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-yellow-600 h-2 rounded-full" style={{width: '67%'}}></div>
+                    </div>
+                    
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm">응답 시간</span>
+                      <span className="text-sm font-medium">124ms</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="bg-green-600 h-2 rounded-full" style={{width: '25%'}}></div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
           
           <TabsContent value="users" className="space-y-6">
             <div className="flex justify-between items-center">
