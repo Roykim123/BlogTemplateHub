@@ -54,7 +54,10 @@ export function Sidebar() {
             </button>
           </TooltipTrigger>
           <TooltipContent side="right" className="ml-2">
-            {item.label}
+            <div>
+              <p className="font-medium">{item.label}</p>
+              <p className="text-xs text-gray-500">{item.description}</p>
+            </div>
           </TooltipContent>
         </Tooltip>
       ))}

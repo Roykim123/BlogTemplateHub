@@ -24,37 +24,50 @@ export const NAVIGATION_ITEMS = [
     id: "dashboard",
     label: "대시보드",
     icon: ChartGantt,
-    path: "/"
-  },
-  {
-    id: "chatbot",
-    label: "채팅",
-    icon: MessageCircle,
-    path: "/chatbot"
+    path: "/",
+    description: "메인 대시보드"
   },
   {
     id: "tools",
     label: "도구",
     icon: Wrench,
-    path: "/tools"
+    path: "/tools",
+    description: "AI 도구 모음"
+  },
+  {
+    id: "community",
+    label: "커뮤니티",
+    icon: MessageCircle,
+    path: "/community",
+    description: "자유게시판 및 외주게시판"
+  },
+  {
+    id: "games",
+    label: "미니게임",
+    icon: Target,
+    path: "/games",
+    description: "AI캐쉬 미니게임"
   },
   {
     id: "rewards",
     label: "리워드",
     icon: Gift,
-    path: "/rewards"
+    path: "/rewards",
+    description: "출석체크 및 혜택"
   },
   {
     id: "mypage",
     label: "마이페이지",
     icon: Users,
-    path: "/mypage"
+    path: "/mypage",
+    description: "내 정보 및 활동 내역"
   },
   {
     id: "payment",
     label: "결제",
     icon: CreditCard,
-    path: "/payment"
+    path: "/payment",
+    description: "요금제 및 AI캐쉬 충전"
   }
 ];
 

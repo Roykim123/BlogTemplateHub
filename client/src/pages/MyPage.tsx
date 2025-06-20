@@ -31,8 +31,24 @@ export default function MyPage() {
     aiCash: 2450,
     totalUsage: 1247,
     nextBilling: "2025-02-15",
+    level: 3,
+    levelPoints: 1250,
+    nextLevelPoints: 2000,
     favoriteTools: ["AI 블로그 글쓰기", "AI 유튜브 스크립트", "AI 인스타그램 포스트"]
   });
+
+  const getLevelInfo = (level: number) => {
+    const levels = [
+      { name: "Red", color: "red", benefits: ["기본 기능 이용"] },
+      { name: "Orange", color: "orange", benefits: ["월 50 무료 캐시"] },
+      { name: "Yellow", color: "yellow", benefits: ["월 100 무료 캐시", "자동 요약 2회"] },
+      { name: "Green", color: "green", benefits: ["월 200 무료 캐시", "자동 요약 5회"] },
+      { name: "Blue", color: "blue", benefits: ["월 300 무료 캐시", "게시글 상단 노출"] },
+      { name: "Indigo", color: "indigo", benefits: ["월 500 무료 캐시", "외주 자동 승인"] },
+      { name: "Violet", color: "violet", benefits: ["월 1000 무료 캐시", "모든 프리미엄 기능"] }
+    ];
+    return levels[level - 1] || levels[0];
+  };
 
   const [apiKeys, setApiKeys] = useState({
     openai: "",
@@ -72,8 +88,9 @@ export default function MyPage() {
         </div>
 
         <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="profile">프로필</TabsTrigger>
+            <TabsTrigger value="level">등급</TabsTrigger>
             <TabsTrigger value="subscription">구독 정보</TabsTrigger>
             <TabsTrigger value="api">API 설정</TabsTrigger>
             <TabsTrigger value="activity">활동 내역</TabsTrigger>
@@ -236,6 +253,106 @@ export default function MyPage() {
                     </div>
                   ))}
                 </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="level" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Award className="h-5 w-5" />
+                  <span>내 등급 현황</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="text-center">
+                  <div className={`w-24 h-24 rounded-full bg-${getLevelInfo(userInfo.level).color}-500 text-white flex items-center justify-center mx-auto mb-4`}>
+                    <span className="text-2xl font-bold">{getLevelInfo(userInfo.level).name}</span>
+                  </div>
+                  <h3 className="text-xl font-bold mb-2">{getLevelInfo(userInfo.level).name} 등급</h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    레벨 포인트: {userInfo.levelPoints.toLocaleString()} / {userInfo.nextLevelPoints.toLocaleString()}
+                  </p>
+                </div>
+
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div 
+                    className={`bg-${getLevelInfo(userInfo.level).color}-500 h-3 rounded-full transition-all`}
+                    style={{width: `${(userInfo.levelPoints / userInfo.nextLevelPoints) * 100}%`}}
+                  ></div>
+                </div>
+
+                <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
+                  <CardHeader>
+                    <CardTitle className="text-lg">현재 등급 혜택</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {getLevelInfo(userInfo.level).benefits.map((benefit, index) => (
+                        <li key={index} className="flex items-center space-x-2">
+                          <div className="w-2 h-2 bg-hermes-orange rounded-full"></div>
+                          <span className="text-sm">{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+
+                <div className="grid grid-cols-1 md:grid-cols-7 gap-2">
+                  {[1,2,3,4,5,6,7].map((level) => {
+                    const levelInfo = getLevelInfo(level);
+                    const isCurrentLevel = level === userInfo.level;
+                    const isUnlocked = level <= userInfo.level;
+                    
+                    return (
+                      <div 
+                        key={level} 
+                        className={`text-center p-3 rounded-lg border-2 transition-all ${
+                          isCurrentLevel 
+                            ? `border-${levelInfo.color}-500 bg-${levelInfo.color}-50 dark:bg-${levelInfo.color}-900/20` 
+                            : isUnlocked 
+                              ? `border-${levelInfo.color}-300` 
+                              : 'border-gray-300 opacity-50'
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-full bg-${levelInfo.color}-500 text-white flex items-center justify-center mx-auto mb-2 text-xs font-bold`}>
+                          {level}
+                        </div>
+                        <p className="text-xs font-medium">{levelInfo.name}</p>
+                        {isCurrentLevel && (
+                          <Badge className="mt-1 text-xs">현재</Badge>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-lg">레벨업 조건</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">AI캐쉬 사용량</span>
+                        <span className="text-sm font-medium">70%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">콘텐츠 생성 수</span>
+                        <span className="text-sm font-medium">45%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">커뮤니티 참여</span>
+                        <span className="text-sm font-medium">60%</span>
+                      </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm">미니게임 참여</span>
+                        <span className="text-sm font-medium">30%</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </CardContent>
             </Card>
           </TabsContent>

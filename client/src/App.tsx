@@ -21,6 +21,8 @@ import TutorialPage from "@/pages/TutorialPage";
 import AdminDashboard from "@/pages/AdminDashboard";
 import PaymentPage from "@/pages/PaymentPage";
 import MyPage from "@/pages/MyPage";
+import CommunityPage from "@/pages/CommunityPage";
+import GamesPage from "@/pages/GamesPage";
 import NotFound from "@/pages/not-found";
 
 function Layout({ children }: { children: React.ReactNode }) {
@@ -61,6 +63,8 @@ function Router() {
         <Route path="/rewards" component={() => <Layout><RewardsPage /></Layout>} />
         <Route path="/referral" component={() => <Layout><ReferralPage /></Layout>} />
         <Route path="/mypage" component={() => <Layout><MyPage /></Layout>} />
+        <Route path="/community" component={() => <Layout><CommunityPage /></Layout>} />
+        <Route path="/games" component={() => <Layout><GamesPage /></Layout>} />
         <Route path="/templates" component={() => <Layout><TemplatesPage /></Layout>} />
         <Route path="/naver/reviews" component={() => <Layout><TemplatesPage /></Layout>} />
         <Route path="/youtube/a1" component={() => <Layout><TemplatesPage /></Layout>} />

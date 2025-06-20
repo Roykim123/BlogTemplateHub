@@ -105,8 +105,8 @@ export default function HomePage() {
                   allowFullScreen
                 ></iframe>
               </div>
-              <div className="mt-2">
-                <h4 className="text-xs font-medium text-gray-900 dark:text-gray-100 mb-1">
+              <div className="mt-3">
+                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                   걱정마AI 시작하기 - 기본 사용법
                 </h4>
                 <p className="text-xs text-gray-600 dark:text-gray-400">
