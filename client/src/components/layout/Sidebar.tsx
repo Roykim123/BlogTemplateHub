@@ -44,10 +44,10 @@ export function Sidebar() {
             <button
               onClick={() => setLocation(item.path)}
               className={cn(
-                "w-8 h-8 flex items-center justify-center rounded-lg transition-all group",
+                "w-8 h-8 flex items-center justify-center rounded-lg transition-all group relative",
                 currentPage === item.id
-                  ? "bg-hermes-orange text-white"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white"
+                  ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
               )}
             >
               <item.icon className="h-4 w-4" />
@@ -66,10 +66,10 @@ export function Sidebar() {
             <button
               onClick={() => setLocation("/admin")}
               className={cn(
-                "w-8 h-8 flex items-center justify-center rounded-lg transition-all group",
+                "w-8 h-8 flex items-center justify-center rounded-lg transition-all group relative",
                 currentPage === "admin"
-                  ? "bg-hermes-orange text-white"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white"
+                  ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
               )}
             >
               <Settings className="h-4 w-4" />
@@ -88,10 +88,10 @@ export function Sidebar() {
           <button
             onClick={() => setLocation(TUTORIAL_NAV.path)}
             className={cn(
-              "w-8 h-8 flex items-center justify-center rounded-lg transition-all group",
+              "w-8 h-8 flex items-center justify-center rounded-lg transition-all group relative",
               currentPage === TUTORIAL_NAV.id
-                ? "bg-hermes-orange text-white"
-                : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white"
+                ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
+                : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
             )}
           >
             <TUTORIAL_NAV.icon className="h-4 w-4" />
