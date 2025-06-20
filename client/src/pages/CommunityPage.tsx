@@ -29,6 +29,20 @@ export default function CommunityPage() {
 
   const boardSections = [
     {
+      id: "outsource",
+      title: "외주게시판",
+      description: "개발/마케팅 외주 요청",
+      icon: Briefcase,
+      color: "bg-hermes-orange",
+      posts: [
+        { title: "[외주] 스마트스토어 자동화", author: "사업자A", time: "16:00", comments: 12, budget: "$5,000" },
+        { title: "[의뢰] 블로그 SEO 최적화", author: "마케터B", time: "15:30", comments: 8, budget: "$2,000" },
+        { title: "[외주] 유튜브 썸네일 생성", author: "크리에이터C", time: "14:20", comments: 5, budget: "$1,000" },
+        { title: "[개발] API 연동 작업", author: "개발자D", time: "13:10", comments: 3, budget: "$3,000" },
+        { title: "[마케팅] SNS 자동화 툴", author: "마케터E", time: "12:30", comments: 7, budget: "$1,500" }
+      ]
+    },
+    {
       id: "free",
       title: "자유게시판",
       description: "자유롭게 소통하는 공간",
@@ -43,45 +57,31 @@ export default function CommunityPage() {
       ]
     },
     {
-      id: "suggestions",
-      title: "건의사항",
-      description: "서비스 개선 아이디어",
-      icon: Lightbulb,
-      color: "bg-green-500",
-      posts: [
-        { title: "템플릿 추가 요청", author: "사용자A", time: "15:20", comments: 3 },
-        { title: "모바일 앱 출시 건의", author: "모바일러", time: "14:10", comments: 15 },
-        { title: "UI 개선 제안", author: "디자이너B", time: "13:30", comments: 8 },
-        { title: "결제 방식 다양화 요청", author: "고객C", time: "12:00", comments: 5 },
-        { title: "알림 기능 추가 건의", author: "사용자D", time: "11:45", comments: 2 }
-      ]
-    },
-    {
-      id: "outsource",
-      title: "외주게시판",
-      description: "개발/마케팅 외주 요청",
-      icon: Briefcase,
-      color: "bg-purple-500",
-      posts: [
-        { title: "[외주] 스마트스토어 자동화", author: "사업자A", time: "16:00", comments: 12, budget: "500만원" },
-        { title: "[의뢰] 블로그 SEO 최적화", author: "마케터B", time: "15:30", comments: 8, budget: "200만원" },
-        { title: "[외주] 유튜브 썸네일 생성", author: "크리에이터C", time: "14:20", comments: 5, budget: "100만원" },
-        { title: "[개발] API 연동 작업", author: "개발자D", time: "13:10", comments: 3, budget: "300만원" },
-        { title: "[마케팅] SNS 자동화 툴", author: "마케터E", time: "12:30", comments: 7, budget: "150만원" }
-      ]
-    },
-    {
       id: "info",
       title: "정보게시판",
       description: "유용한 정보 공유",
       icon: BookOpen,
-      color: "bg-orange-500",
+      color: "bg-green-500",
       posts: [
         { title: "2025년 SEO 트렌드 분석", author: "전문가A", time: "17:00", comments: 25 },
         { title: "AI 도구 비교 분석", author: "리뷰어B", time: "16:30", comments: 18 },
         { title: "블로그 수익화 가이드", author: "블로거전문", time: "15:45", comments: 32 },
         { title: "콘텐츠 마케팅 전략", author: "마케터프로", time: "14:50", comments: 14 },
         { title: "AI 글쓰기 최적화 팁", author: "라이터킹", time: "13:20", comments: 22 }
+      ]
+    },
+    {
+      id: "notice",
+      title: "공지사항",
+      description: "서비스 공지 및 업데이트",
+      icon: Flag,
+      color: "bg-red-500",
+      posts: [
+        { title: "[공지] 2025년 새해 인사", author: "관리자", time: "09:00", comments: 45 },
+        { title: "[업데이트] 새로운 AI 기능 출시", author: "개발팀", time: "08:30", comments: 28 },
+        { title: "[안내] 서비스 점검 공지", author: "운영팀", time: "08:00", comments: 12 },
+        { title: "[이벤트] 신규 가입 혜택 안내", author: "마케팅팀", time: "07:45", comments: 67 },
+        { title: "[공지] 이용약관 변경 안내", author: "법무팀", time: "07:30", comments: 15 }
       ]
     }
   ];
@@ -117,10 +117,10 @@ export default function CommunityPage() {
           <div className="flex justify-between items-center">
             <TabsList className="grid w-fit grid-cols-5">
               <TabsTrigger value="dashboard">대시보드</TabsTrigger>
-              <TabsTrigger value="free">자유게시판</TabsTrigger>
-              <TabsTrigger value="suggestions">건의사항</TabsTrigger>
               <TabsTrigger value="outsource">외주게시판</TabsTrigger>
+              <TabsTrigger value="free">자유게시판</TabsTrigger>
               <TabsTrigger value="info">정보게시판</TabsTrigger>
+              <TabsTrigger value="notice">공지사항</TabsTrigger>
             </TabsList>
             
             {activeTab !== "dashboard" && (

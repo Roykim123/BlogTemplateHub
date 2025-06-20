@@ -17,14 +17,9 @@ export function TopBar() {
           <div className="w-8 h-8 bg-hermes-orange rounded-md flex items-center justify-center">
             <span className="text-white text-sm font-bold">걱</span>
           </div>
-          <div className="flex flex-col">
-            <h1 className="text-2xl font-black text-gray-800 dark:text-gray-200">
-              걱정마<span className="text-hermes-orange">AI</span>
-            </h1>
-            <p className="text-xs text-gray-500 dark:text-gray-400 -mt-1">
-              클릭 한번이면 AI가 해결해줍니다!
-            </p>
-          </div>
+          <h1 className="text-2xl font-black text-gray-800 dark:text-gray-200">
+            걱정마<span className="text-hermes-orange">AI</span> : 오늘도, 우리는 쉬지 않습니다.
+          </h1>
         </button>
       </div>
       

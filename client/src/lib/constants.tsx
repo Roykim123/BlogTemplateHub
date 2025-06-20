@@ -58,20 +58,6 @@ export const CUSTOMER_ITEMS = [
     icon: MessageCircle,
     path: "/community",
     description: "자유게시판"
-  },
-  {
-    id: "outsource",
-    label: "외주게시판",
-    icon: Briefcase,
-    path: "/community?tab=outsource",
-    description: "개발/마케팅 외주"
-  },
-  {
-    id: "games",
-    label: "미니게임",
-    icon: Target,
-    path: "/games",
-    description: "AI캐쉬 미니게임"
   }
 ];
 
