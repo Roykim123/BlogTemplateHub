@@ -15,9 +15,9 @@ export function TopBar() {
           className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
         >
           <div className="w-6 h-6 bg-hermes-orange rounded-md flex items-center justify-center">
-            <span className="text-white text-xs font-bold">뤼</span>
+            <span className="text-white text-xs font-bold">걱</span>
           </div>
-          <span className="text-sm font-medium text-gray-800 dark:text-gray-200 hidden sm:block">뤼튼</span>
+          <span className="text-sm font-medium text-gray-800 dark:text-gray-200 hidden sm:block">걱정마AI</span>
         </button>
       </div>
       

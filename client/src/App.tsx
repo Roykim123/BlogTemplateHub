@@ -11,6 +11,7 @@ import { useMobile } from "@/hooks/use-mobile";
 import { useState, useEffect } from "react";
 
 // Pages
+import HomePage from "@/pages/HomePage";
 import ChatPage from "@/pages/ChatPage";
 import ToolsPage from "@/pages/ToolsPage";
 import RewardsPage from "@/pages/RewardsPage";
@@ -52,7 +53,7 @@ function Router() {
   return (
     <>
       <Switch>
-        <Route path="/" component={() => <Layout><ChatPage /></Layout>} />
+        <Route path="/" component={() => <Layout><HomePage /></Layout>} />
         <Route path="/chatbot" component={() => <Layout><ChatPage /></Layout>} />
         <Route path="/tools" component={() => <Layout><ToolsPage /></Layout>} />
         <Route path="/rewards" component={() => <Layout><RewardsPage /></Layout>} />

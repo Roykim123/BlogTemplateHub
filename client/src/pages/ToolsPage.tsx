@@ -60,7 +60,7 @@ export default function ToolsPage() {
                 "w-10 h-10 bg-gradient-to-br rounded-lg flex items-center justify-center text-white",
                 tool.gradient
               )}>
-                <span className="text-sm">{tool.icon}</span>
+                <span className="text-xs font-bold">{tool.icon}</span>
               </div>
               <Button
                 variant="ghost"

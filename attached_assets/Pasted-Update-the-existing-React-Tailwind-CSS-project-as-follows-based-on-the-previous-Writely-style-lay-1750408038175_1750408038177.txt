@@ -1,0 +1,66 @@
+Update the existing React + Tailwind CSS project as follows, based on the previous Writely-style layout:
+
+---
+
+🔄 Brand Update:
+- Replace all text that says “뤼튼” (Writely) with **“걱정마AI”**
+- This applies to logo, placeholder text, page title, sidebar icon labels, etc.
+
+---
+
+📌 Redesign the First Page (`/`, the default landing screen):
+- Split the main content area into 5 sections (grid layout)
+
+  ⬅️ **Left 60% (2 vertical sections)**:
+    - **Top Left**: A simple user message board (게시판), with recent threads
+    - **Bottom Left**: A notice section (공지사항), showing site announcements or updates
+
+  ➡️ **Right 40% (2 vertical sections)**:
+    - **Top Right**: Embed a YouTube video (e.g., via iframe, use a placeholder link)
+    - **Bottom Right**: Embed a premium video link section (use dummy link or placeholder)
+
+---
+
+🛠️ Tools Page Improvements:
+- Currently the tool cards look like generic drivers/utilities
+- Replace all icons or labels that feel generic with **text labels clearly indicating AI functionality**
+- Example: 
+  - “AI 요약기” instead of “완벽요약”
+  - “GPT 글쓰기” instead of ambiguous symbols
+- Use intuitive text so users know it’s AI-based
+
+---
+
+🔤 Typography:
+- The current font looks outdated and too “gothic”
+- Replace with a **trendy modern Korean web font**, such as:
+  - `Pretendard`
+  - `SUIT`
+  - `Spoqa Han Sans Neo`
+- Apply this font globally across all components
+- Ensure spacing and weight are readable and modern
+
+---
+
+🎨 Style Consistency:
+- Maintain white-based layout with only **Hermès orange** as the accent color
+- Rounded corners, smooth hover animations
+- Avoid techy or bulky UI, aim for soft, elegant Korean SaaS product feel
+
+---
+
+📱 Functionality & Routing:
+- Sidebar menu still routes to: Chatbot, Tools, Rewards, Saved, etc.
+- Make sure all sections are still full screen height
+- Components are modular and responsive
+- Optional: make chatbot on `/chatbot` page actually respond to input (use dummy data)
+
+---
+
+Tech Stack:
+- React
+- Tailwind CSS
+- React Router v6+
+- Component-based layout
+- Responsive grid for homepage
+- Font loaded via Google Fonts or @import

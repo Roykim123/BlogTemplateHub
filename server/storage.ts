@@ -67,14 +67,14 @@ export class MemStorage implements IStorage {
   private seedData() {
     // Seed some initial tools data
     const initialTools = [
-      { name: "AI 블로그작성", description: "블로그 글을 빠르고 쉽게 작성할 수 있는 AI 도구입니다.", category: "글쓰기", icon: "✨" },
-      { name: "AI 보고서 작성", description: "데이터를 분석하여 전문적인 보고서를 작성해 드립니다.", category: "업무", icon: "📊" },
-      { name: "PPT 초안", description: "프레젠테이션 초안을 빠르게 생성할 수 있습니다.", category: "업무", icon: "📽️" },
-      { name: "SNS 게시물", description: "소셜미디어용 게시물을 쉽게 작성할 수 있습니다.", category: "글쓰기", icon: "📱" },
-      { name: "번역 도구", description: "다양한 언어로 빠르고 정확하게 번역합니다.", category: "업무", icon: "🌐" },
-      { name: "코드 리뷰", description: "코드를 검토하고 개선 방안을 제안합니다.", category: "개발", icon: "💻" },
-      { name: "이메일 초안", description: "전문적인 이메일을 빠르게 작성할 수 있습니다.", category: "업무", icon: "✉️" },
-      { name: "아이디어 생성", description: "창의적인 아이디어와 콘텐츠를 생성합니다.", category: "글쓰기", icon: "💡" }
+      { name: "GPT 블로그 글쓰기", description: "AI가 도와주는 전문적인 블로그 글 작성 서비스입니다.", category: "글쓰기", icon: "AI" },
+      { name: "AI 요약기", description: "긴 문서를 핵심 내용으로 빠르게 요약해드립니다.", category: "업무", icon: "요약" },
+      { name: "GPT 발표자료 생성", description: "AI가 만들어주는 전문적인 프레젠테이션 자료입니다.", category: "업무", icon: "PPT" },
+      { name: "AI SNS 콘텐츠 제작", description: "소셜미디어에 최적화된 AI 콘텐츠를 생성합니다.", category: "글쓰기", icon: "SNS" },
+      { name: "GPT 번역기", description: "자연스럽고 정확한 AI 번역 서비스를 제공합니다.", category: "업무", icon: "번역" },
+      { name: "AI 코딩 도우미", description: "코드 작성과 리뷰를 도와주는 AI 어시스턴트입니다.", category: "개발", icon: "코드" },
+      { name: "GPT 이메일 작성", description: "비즈니스 이메일을 자동으로 작성해주는 AI 서비스입니다.", category: "업무", icon: "메일" },
+      { name: "AI 아이디어 생성기", description: "창의적인 아이디어와 기획안을 AI가 제안해드립니다.", category: "글쓰기", icon: "아이디어" }
     ];
 
     initialTools.forEach(tool => {
@@ -148,7 +148,8 @@ export class MemStorage implements IStorage {
     const tool: Tool = { 
       ...insertTool, 
       id, 
-      usageCount: 0 
+      usageCount: 0,
+      isActive: insertTool.isActive ?? true
     };
     this.tools.set(id, tool);
     return tool;
@@ -205,7 +206,9 @@ export class MemStorage implements IStorage {
     const template: Template = { 
       ...insertTemplate, 
       id, 
-      usageCount: 0 
+      usageCount: 0,
+      isActive: insertTemplate.isActive ?? true,
+      imageUrl: insertTemplate.imageUrl ?? null
     };
     this.templates.set(id, template);
     return template;
@@ -230,7 +233,8 @@ export class MemStorage implements IStorage {
     const message: ChatMessage = { 
       ...insertMessage, 
       id, 
-      createdAt: new Date() 
+      createdAt: new Date(),
+      response: insertMessage.response ?? null
     };
     this.chatMessages.set(id, message);
     return message;

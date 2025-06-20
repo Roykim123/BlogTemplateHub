@@ -10,12 +10,12 @@ export default function TutorialPage() {
   return (
     <div className="h-full bg-white dark:bg-gray-900 p-6 overflow-y-auto">
       <div className="max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">📘 뤼튼 사용 가이드</h1>
+        <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6">📘 걱정마AI 사용 가이드</h1>
         
         <div className="space-y-6">
           <div className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-6 rounded-xl">
             <h2 className="text-lg font-semibold mb-2">환영합니다!</h2>
-            <p className="text-sm opacity-90">뤼튼과 함께 AI를 활용한 글쓰기의 새로운 경험을 시작해보세요.</p>
+            <p className="text-sm opacity-90">걱정마AI와 함께 AI를 활용한 글쓰기의 새로운 경험을 시작해보세요.</p>
           </div>
 
           <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-xl">
