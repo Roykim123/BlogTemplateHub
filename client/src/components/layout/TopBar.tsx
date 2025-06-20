@@ -18,7 +18,7 @@ export function TopBar() {
             <span className="text-white text-sm font-bold">걱</span>
           </div>
           <h1 className="text-2xl font-black text-gray-800 dark:text-gray-200">
-            걱정마<span className="text-hermes-orange">AI</span> : 오늘도, 우리는 쉬지 않습니다.
+            걱정마<span className="text-hermes-orange font-black">AI</span> : 오늘도, 우리는 쉬지 않습니다.
           </h1>
         </button>
       </div>
