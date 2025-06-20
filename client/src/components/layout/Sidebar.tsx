@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { NAVIGATION_ITEMS, USER_NAVIGATION_ITEMS, TUTORIAL_NAV } from "@/lib/constants";
+import { DASHBOARD_ITEMS, AUTOMATION_ITEMS, CUSTOMER_ITEMS, USER_INFO_ITEMS, TUTORIAL_NAV } from "@/lib/constants";
 import { useLocation } from "wouter";
 import { useMobile } from "@/hooks/use-mobile";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -36,82 +36,81 @@ export function Sidebar() {
     );
   }
 
+  const renderNavSection = (items: any[], sectionTitle?: string) => (
+    <>
+      {items.map((item) => (
+        <Tooltip key={item.id}>
+          <TooltipTrigger asChild>
+            <button
+              onClick={() => setLocation(item.path)}
+              className={cn(
+                "w-12 h-12 flex items-center justify-center rounded-lg transition-all group relative mb-2",
+                currentPage === item.id
+                  ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
+              )}
+            >
+              <item.icon className="h-6 w-6" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="right" className="ml-2">
+            <div>
+              <p className="font-medium">{item.label}</p>
+              <p className="text-xs text-gray-500">{item.description}</p>
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      ))}
+    </>
+  );
+
   return (
-    <nav className="fixed left-0 top-8 bottom-0 w-12 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col items-center py-4 space-y-3 z-40">
-      {/* Main Navigation Icons */}
-      {NAVIGATION_ITEMS.map((item) => (
-        <Tooltip key={item.id}>
-          <TooltipTrigger asChild>
-            <button
-              onClick={() => setLocation(item.path)}
-              className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-all group relative mb-2",
-                currentPage === item.id
-                  ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
-              )}
-            >
-              <item.icon className="h-5 w-5" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="ml-2">
-            <div>
-              <p className="font-medium">{item.label}</p>
-              <p className="text-xs text-gray-500">{item.description}</p>
-            </div>
-          </TooltipContent>
-        </Tooltip>
-      ))}
-
+    <nav className="fixed left-0 top-8 bottom-0 w-16 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col items-center py-4 z-40">
+      {/* 1) 대시보드 */}
+      {renderNavSection(DASHBOARD_ITEMS)}
+      
       {/* Divider */}
-      <div className="w-8 h-px bg-gray-300 dark:bg-gray-600 my-4"></div>
-
-      {/* User Navigation Icons */}
-      {USER_NAVIGATION_ITEMS.map((item) => (
-        <Tooltip key={item.id}>
-          <TooltipTrigger asChild>
-            <button
-              onClick={() => setLocation(item.path)}
-              className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-all group relative mb-2",
-                currentPage === item.id
-                  ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
-              )}
-            >
-              <item.icon className="h-5 w-5" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="ml-2">
-            <div>
-              <p className="font-medium">{item.label}</p>
-              <p className="text-xs text-gray-500">{item.description}</p>
-            </div>
-          </TooltipContent>
-        </Tooltip>
-      ))}
+      <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
+      
+      {/* 2) 자동화기능 (블로그/기타) */}
+      {renderNavSection(AUTOMATION_ITEMS)}
+      
+      {/* Divider */}
+      <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
+      
+      {/* 3) 고객유치 (게시판/미니게임) */}
+      {renderNavSection(CUSTOMER_ITEMS)}
+      
+      {/* Divider */}
+      <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
+      
+      {/* 4) 고객정보 (마이페이지, 결제) */}
+      {renderNavSection(USER_INFO_ITEMS)}
       
       {/* Admin Panel - Only visible to admins */}
       <div className="mt-auto mb-4">
         {isAdmin && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={() => setLocation("/admin")}
-                className={cn(
-                  "w-10 h-10 flex items-center justify-center rounded-lg transition-all group relative",
-                  currentPage === "admin"
-                    ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
-                    : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
-                )}
-              >
-                <Settings className="h-5 w-5" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="ml-2">
-              관리자
-            </TooltipContent>
-          </Tooltip>
+          <>
+            <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={() => setLocation("/admin")}
+                  className={cn(
+                    "w-12 h-12 flex items-center justify-center rounded-lg transition-all group relative",
+                    currentPage === "admin"
+                      ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
+                      : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
+                  )}
+                >
+                  <Settings className="h-6 w-6" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="right" className="ml-2">
+                관리자 페이지
+              </TooltipContent>
+            </Tooltip>
+          </>
         )}
       </div>
       
