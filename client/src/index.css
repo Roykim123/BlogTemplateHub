@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(240, 10%, 3.9%);
+  --muted: hsl(210, 40%, 98%);
+  --muted-foreground: hsl(215.4, 16.3%, 46.9%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(240, 10%, 3.9%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(240, 10%, 3.9%);
+  --border: hsl(214.3, 31.8%, 91.4%);
+  --input: hsl(214.3, 31.8%, 91.4%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(210, 40%, 98%);
+  --secondary-foreground: hsl(222.2, 84%, 4.9%);
+  --accent: hsl(210, 40%, 98%);
+  --accent-foreground: hsl(222.2, 84%, 4.9%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --ring: hsl(215, 20.2%, 65.1%);
+  --radius: 0.75rem;
+  
+  /* Custom colors */
+  --hermes-orange: hsl(14, 100%, 60%);
+  --soft-mint: hsl(175, 70%, 60%);
+  --soft-blue: hsl(213, 70%, 66%);
+  --soft-purple: hsl(259, 70%, 68%);
+  --soft-pink: hsl(332, 70%, 72%);
+  --light-orange: hsl(14, 100%, 90%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+  }
+}
+
+@layer utilities {
+  .hermes-orange {
+    color: hsl(var(--hermes-orange));
+  }
+  
+  .bg-hermes-orange {
+    background-color: hsl(var(--hermes-orange));
+  }
+  
+  .border-hermes-orange {
+    border-color: hsl(var(--hermes-orange));
+  }
+  
+  .hover\:bg-hermes-orange:hover {
+    background-color: hsl(var(--hermes-orange));
+  }
+  
+  .text-hermes-orange {
+    color: hsl(var(--hermes-orange));
+  }
+  
+  .soft-mint {
+    color: hsl(var(--soft-mint));
+  }
+  
+  .bg-soft-mint {
+    background-color: hsl(var(--soft-mint));
+  }
+  
+  .soft-blue {
+    color: hsl(var(--soft-blue));
+  }
+  
+  .bg-soft-blue {
+    background-color: hsl(var(--soft-blue));
+  }
+  
+  .soft-purple {
+    color: hsl(var(--soft-purple));
+  }
+  
+  .bg-soft-purple {
+    background-color: hsl(var(--soft-purple));
+  }
+  
+  .soft-pink {
+    color: hsl(var(--soft-pink));
+  }
+  
+  .bg-soft-pink {
+    background-color: hsl(var(--soft-pink));
+  }
+  
+  .bg-light-orange {
+    background-color: hsl(var(--light-orange));
+  }
+}
+
+.tooltip {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.2s ease;
+}
+
+.group:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulseGentle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-pulse-gentle {
+  animation: pulseGentle 2s infinite;
+}
+
+.hover\:scale-102:hover {
+  transform: scale(1.02);
+}
+
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
