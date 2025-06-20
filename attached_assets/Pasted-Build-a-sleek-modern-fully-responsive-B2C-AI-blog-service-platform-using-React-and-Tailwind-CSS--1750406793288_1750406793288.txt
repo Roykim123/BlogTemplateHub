@@ -1,0 +1,101 @@
+Build a sleek, modern, fully responsive B2C AI blog service platform using React and Tailwind CSS.
+
+The layout and UI should mimic the style and functionality of the reference screenshots (Writely-style interface) with a minimal startup feel — compact, smooth, and intuitive.
+
+---
+
+✨ General Design:
+- Clean, white-based layout with minimal visual clutter
+- Use **Hermès orange** as the only accent color (active items, CTA buttons, hover states)
+- All other elements in neutral or grayscale tones
+- Compact sizing — no oversized components
+- Font: Pretendard or similar soft Korean sans-serif
+- Rounded corners, light shadows, smooth hover effects
+- Avoid outlines, borders, and excessive gradients
+
+---
+
+📐 Layout Structure:
+
+1. **Top Bar (Global Navigation Bar)**:
+- Fixed at top, full width
+- Height: ~32px
+- Left: simple logo (click to `/`, no underline or border)
+- Right: dark mode toggle, notifications icon, login button
+- Background: white (light gray in dark mode), no visual separator
+
+2. **Left Sidebar**:
+- Fixed height, scrollable vertically
+- Icons only for navigation (Chat, Tools, Rewards, Saved)
+- Tooltips on hover
+- Active icon gets Hermès orange background
+- Compact spacing, no section borders
+- On small screens, collapses into a top icon bar (responsive)
+
+3. **Main Content Area**:
+- The right side of the screen changes fully based on the selected sidebar menu
+- Each page is a **fullscreen component**, no vertical scroll preferred
+- Uses light gray or white background
+
+---
+
+🧩 Pages & Their Design:
+
+1. `/chatbot` – AI Chat Page:
+- Large empty space with centered orange round icon
+- Bottom-aligned message input box
+- Minimal footer (TOS, privacy)
+
+2. `/tools` – Tool Grid Page:
+- Grid of 20+ tools
+- Each card shows: icon, tool name, short description
+- Top filter bar (All, Writing, School, Work, Favorites)
+- Star icon for favoriting tools
+
+3. `/rewards` – Reward Mission Page:
+- Today’s missions at top (with icon boxes like: spin, open box, etc.)
+- Earn cash section (check-in, read newsletter, refer friend)
+- Reservation cards at bottom (e.g., product comparison, AI advisor)
+
+4. `/naver/reviews`, `/youtube/a1`, etc. – Content/Template Pages:
+- Grid of blog/AI card templates
+- Image thumbnail, title, and 1-line description
+- Smooth card hover (scale up + shadow)
+
+5. `/tutorial` – Onboarding/Tutorial:
+- Simple markdown-style guide page with steps
+
+6. `/admin` – Admin Dashboard:
+- Connected to API/DB, basic layout to manage users, posts, stats
+
+7. `/payment` – Subscription & Checkout:
+- Plan comparison, payment input form
+- Use orange for selected plan
+
+8. `/` – Default landing:
+- Notice board or marketing-style hero
+
+---
+
+📱 Responsiveness:
+- Mobile-first layout (80% of users expected to be mobile)
+- Sidebar collapses into horizontal icon bar
+- Top bar remains fixed and shrinks slightly on scroll
+- Grid auto-adjusts columns (1, 2, or 3 depending on screen width)
+
+---
+
+⚙️ Functionality:
+- React Router v6+ for routing
+- Top bar dark mode toggle (light/dark class switch)
+- Modular React components (TopBar, Sidebar, MainContent, etc.)
+- Use Tailwind CSS utility-first classes
+- Optional: sample images from Unsplash for visuals
+
+---
+
+💡 UX Enhancements:
+- Hover tooltips for icons
+- Toast notifications for save/favorite actions
+- Page transitions between menu items (fade/slide optional)
+- State memory (remember selected menu or mode on reload)

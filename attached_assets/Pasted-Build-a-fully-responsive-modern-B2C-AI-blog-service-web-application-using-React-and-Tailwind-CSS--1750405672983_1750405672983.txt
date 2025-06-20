@@ -1,0 +1,61 @@
+Build a fully responsive, modern B2C AI blog service web application using React and Tailwind CSS.
+
+Design Requirements:
+- Desktop-first layout, but responsive for mobile (80% mobile users expected)
+- Bright, clean style with soft rounded corners, light shadows
+- Use Hermès-inspired orange-pink gradient as the main accent
+- Font: Pretendard or similar Korean-style font
+- Scaled-down UI (not oversized), cards and text slightly compact
+- Smooth hover and transition effects
+
+Layout:
+1. Top Bar (fixed full width, 56~64px height)
+   - Left: logo (clickable → route to "/")
+   - Right: login status (Login or profile dropdown), notification bell, dark mode toggle
+   - Background: gradient (orange → pink), or dark gray in dark mode
+
+2. Sidebar (left, fixed width, vertically scrollable)
+   - Does NOT get overlapped by top bar
+   - Two-level menu structure:
+     > Naver
+       - Reviews
+       - Info Posts
+     > YouTube
+       - A1, A2, A3
+     > Rankings
+       - Top Visitors
+   - Bottom menu: 📘 Tutorial
+   - Active submenu highlights in Hermès orange
+
+3. Content Area (right)
+   - No vertical scroll; fixed height based on viewport
+   - Default page: Notice board
+   - When sidebar menu clicked → load corresponding content (e.g., Naver → template cards with images)
+   - Cards displayed in 2–3 column grid
+   - Each card contains:
+     - Image thumbnail (Unsplash-style)
+     - Title and short description
+     - Subtle hover effect (scale + shadow)
+
+4. Pages to support:
+   - `/` → Notice page
+   - `/naver/reviews` → Template cards
+   - `/youtube/a1`, etc.
+   - `/admin` → Admin dashboard (API + DB integration)
+   - `/payment` → Subscription & checkout UI
+   - `/chatbot` → AI chatbot interface
+   - `/tutorial` → User guide page
+
+5. Functionality:
+   - Dark Mode toggle in top bar
+   - React Router for page switching
+   - Responsive layout (mobile-first grid behavior)
+   - Sidebar scrollable independently
+   - Top bar always fixed
+   - Modular code preferred (split into components)
+
+Tech Stack:
+- React (functional components with hooks)
+- Tailwind CSS (use responsive classes)
+- React Router v6+
+- Optional: mock API calls, dummy image data via Unsplash

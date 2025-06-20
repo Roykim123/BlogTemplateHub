@@ -1,0 +1,77 @@
+Build a clean, modern B2C AI blog platform interface using React and Tailwind CSS.
+
+This should feel like a minimal, fast, well-designed startup product — not bloated or corporate.
+
+---
+
+✨ General Design:
+- Bright, white-based layout
+- Very few colors; use **Hermès-style orange** only as an accent (for hover, active items, buttons)
+- Use a small, soft Korean-style font like Pretendard
+- Subtle shadows, smooth transitions, no hard borders
+- Everything should feel compact and neat
+
+---
+
+📐 Layout Structure:
+
+1. Top Navigation Bar (very slim):
+- Height: **about 32px**
+- Fixed at top, full width
+- Left: simple logo (click to `/`)
+- Right: notification icon, login button, **dark mode toggle**
+- Background: white or light gray (use dark gray in dark mode)
+- No underline or border below the logo
+
+2. Left Sidebar (fixed width, vertical scrollable):
+- Two-level hierarchy:
+  - Use **visual indentation** and **font size difference** to show main vs. sub-menu
+  - Do NOT use lines or borders to separate levels
+  - Example:
+    - Naver
+      - Reviews
+      - Info Posts
+    - YouTube
+      - A1
+      - A2
+    - Rankings
+      - Top Visitors
+  - Add 📘 Tutorial as the last item
+- Active sub-menu should use orange as highlight
+- Background: white, minimal padding, compact layout
+
+3. Right Content Area:
+- Shows a grid of cards
+- Each card includes:
+  - Image thumbnail
+  - Title + short description
+  - Hover effect: slight lift + shadow
+- No vertical scroll: content should fill the screen height
+- Default route `/` shows a **notice board**
+- Each menu item routes to a different content screen
+
+---
+
+📱 Responsiveness:
+- Fully responsive layout (mobile-first approach)
+- Sidebar collapses into hamburger menu on small screens
+- Top bar stays visible and compact even on mobile
+
+---
+
+⚙️ Functionality:
+- React Router v6+ for routing
+- Dark Mode toggle in the top bar
+- Component-based structure
+- (Optional) Use Unsplash for sample images
+
+---
+
+Pages to include:
+- `/` → Notice board (default screen)
+- `/naver/reviews` → Template cards
+- `/youtube/a1` → Cards for YouTube A1
+- `/admin` → Admin dashboard (connects to DB/API)
+- `/payment` → Subscription page
+- `/chatbot` → AI chatbot UI
+- `/tutorial` → Simple user guide
