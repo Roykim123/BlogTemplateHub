@@ -283,6 +283,28 @@ export default function PaymentPage() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Friend Referral Benefits */}
+            <Card className="bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800">
+              <CardContent className="p-6">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center">
+                    <Users className="h-6 w-6 text-orange-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-orange-800 dark:text-orange-200 mb-2">
+                      친구 추천 혜택
+                    </h3>
+                    <p className="text-sm text-orange-700 dark:text-orange-300 mb-3">
+                      친구를 추천하면 양쪽 모두 5,000 AI캐쉬를 받습니다. 추천 코드를 공유해보세요!
+                    </p>
+                    <Button variant="outline" size="sm" className="text-orange-600 border-orange-300 hover:bg-orange-100">
+                      추천 코드 공유하기
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="payment" className="space-y-6">

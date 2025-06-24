@@ -117,6 +117,27 @@ export default function ChallengerPage() {
   return (
     <div className="h-full bg-white dark:bg-gray-900 p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto">
+        {/* Rewards Section - Moved to Top */}
+        <div className="mb-8">
+          <div className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-6 rounded-xl mb-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">🎁 오늘의 챌린지 리워드</h2>
+                <p className="text-lg opacity-90 mb-3">일일 미션 완료시 5,000 AI캐쉬 적립!</p>
+                <div className="flex items-center space-x-4 text-sm">
+                  <span>• SNS 자동포스팅 1회</span>
+                  <span>• 친구추천 1명</span>
+                  <span>• 블로그 템플릿 사용 1회</span>
+                  <span>• 튜토리얼 시청</span>
+                </div>
+              </div>
+              <Button className="bg-white text-hermes-orange hover:bg-gray-50 font-bold text-lg px-8 py-3">
+                리워드 받기
+              </Button>
+            </div>
+          </div>
+        </div>
+
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
             🏆 7일 챌린저
