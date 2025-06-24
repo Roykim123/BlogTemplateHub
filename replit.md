@@ -135,6 +135,9 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Updated TopBar with dynamic login/logout buttons and user display
   - Removed email/signup options per user requirement - Kakao login only
   - Enhanced user experience with authentication flow and toast notifications
+  - Updated profile information to display Kakao login data (name, email, profile image)
+  - Made profile fields read-only since they come from Kakao account
+  - Added profile image display in TopBar for authenticated users
 
 - June 24, 2025: Final customer-focused refinements and error fixes
   - Fixed TypeError in formatNumber utility with null/undefined safety checks

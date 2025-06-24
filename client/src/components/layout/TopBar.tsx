@@ -61,6 +61,13 @@ export function TopBar() {
         
         {isAuthenticated ? (
           <div className="flex items-center space-x-2">
+            {user?.profileImage && (
+              <img 
+                src={user.profileImage} 
+                alt="프로필" 
+                className="w-5 h-5 rounded-full object-cover"
+              />
+            )}
             <span className="text-xs text-gray-600 dark:text-gray-400">
               {user?.name || "사용자"}님
             </span>

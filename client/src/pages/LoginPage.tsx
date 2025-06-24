@@ -11,18 +11,18 @@ export default function LoginPage() {
   const { toast } = useToast();
 
   const handleKakaoLogin = () => {
-    // Simulate Kakao login success
+    // Simulate Kakao login success with realistic Korean user data
     const mockUser = {
-      id: "kakao_123456",
-      name: "카카오사용자",
-      email: "user@kakao.com",
-      profileImage: "https://via.placeholder.com/40"
+      id: "kakao_987654321",
+      name: "김민수",
+      email: "minsu.kim@kakao.com",
+      profileImage: "https://picsum.photos/80/80?random=1"
     };
     
     login(mockUser);
     toast({
       title: "로그인 성공",
-      description: "카카오톡으로 로그인되었습니다.",
+      description: `${mockUser.name}님, 환영합니다!`,
     });
     setLocation("/");
   };

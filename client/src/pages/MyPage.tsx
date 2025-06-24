@@ -11,9 +11,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { User, Settings, Award, Coins, TrendingUp, Calendar, Crown, Plus, Edit, Trash2, Store } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { formatUtils } from "@/utils/optimizations";
 
 export default function MyPage() {
+  const { user } = useAuth();
   const userLevel = "Gold";
   const progress = 65;
   const aiCash = 12450;
