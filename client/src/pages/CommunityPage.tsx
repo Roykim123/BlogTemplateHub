@@ -208,11 +208,9 @@ export default function CommunityPage() {
     );
   }
 
-  // Show specific board content
-  const currentBoard = boardCategories.find(board => board.id === selectedBoard);
-  
-  // Memoize filtered posts for performance
+  // Memoize filtered posts for performance - moved outside conditional rendering
   const filteredPosts = useMemo(() => {
+    if (!selectedBoard) return [];
     const categoryMap: Record<string, string> = {
       general: "일반",
       question: "질문", 
@@ -225,6 +223,9 @@ export default function CommunityPage() {
       50 // Limit to 50 posts for performance
     );
   }, [posts, selectedBoard]);
+
+  // Show specific board content
+  const currentBoard = boardCategories.find(board => board.id === selectedBoard);
 
   return (
     <div className="h-full bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-6 overflow-y-auto">
