@@ -126,8 +126,14 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
 
 ## Changelog
 
-Changelog:
-- June 24, 2025. Initial setup
+- June 24, 2025: Implemented expandable sidebar navigation with hover functionality
+  - Desktop: Icon-only sidebar that expands to show labels on hover
+  - Mobile: Bottom navigation bar with 4 essential items
+  - Reorganized menu structure into 3 main categories: 커뮤니티, 자동화 기능, 고객영역
+  - Added new pages: ChallengerPage for 7-day mission tracking
+  - Enhanced UI with smooth transitions and responsive design
+
+- June 24, 2025: Initial setup
 
 ## User Preferences
 

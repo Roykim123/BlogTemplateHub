@@ -27,6 +27,7 @@ import BlogAutoPage from "@/pages/BlogAutoPage";
 import SnsAutoPage from "@/pages/SnsAutoPage";
 import InstaThreadsPage from "@/pages/InstaThreadsPage";
 import BlogTemplatesPage from "@/pages/BlogTemplatesPage";
+import ChallengerPage from "@/pages/ChallengerPage";
 import SettingsPage from "@/pages/SettingsPage";
 import NotFound from "@/pages/not-found";
 
@@ -37,7 +38,7 @@ function Layout({ children }: { children: React.ReactNode }) {
     <div className="flex h-screen overflow-hidden">
       <TopBar />
       <Sidebar />
-      <main className={`flex-1 mt-8 overflow-hidden ${isMobile ? "mb-16" : "ml-12"}`}>
+      <main className={`flex-1 mt-8 overflow-hidden transition-all duration-300 ${isMobile ? "mb-16" : "ml-16"}`}>
         {children}
       </main>
     </div>
@@ -73,8 +74,12 @@ function Router() {
         <Route path="/sns-auto" component={() => <Layout><SnsAutoPage /></Layout>} />
         <Route path="/blog-templates" component={() => <Layout><BlogTemplatesPage /></Layout>} />
         <Route path="/insta-threads" component={() => <Layout><InstaThreadsPage /></Layout>} />
-        <Route path="/additional-ai" component={() => <Layout><ToolsPage /></Layout>} />
-        <Route path="/custom-requests" component={() => <Layout><TemplatesPage /></Layout>} />
+        <Route path="/challenger" component={() => <Layout><ChallengerPage /></Layout>} />
+        <Route path="/premium-courses" component={() => <Layout><TutorialPage /></Layout>} />
+        <Route path="/progress" component={() => <Layout><AdminDashboard /></Layout>} />
+        <Route path="/youtube-auto" component={() => <Layout><ToolsPage /></Layout>} />
+        <Route path="/outsource" component={() => <Layout><CommunityPage /></Layout>} />
+        <Route path="/admin" component={() => <Layout><AdminPage /></Layout>} />
         <Route path="/blog-auto" component={() => <Layout><BlogAutoPage /></Layout>} />
         <Route path="/settings" component={() => <Layout><SettingsPage /></Layout>} />
         <Route path="/templates" component={() => <Layout><TemplatesPage /></Layout>} />

@@ -1,34 +1,86 @@
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ITEMS, AUTOMATION_ITEMS, CUSTOMER_ITEMS, USER_INFO_ITEMS, ADMIN_GAME_ITEMS, TUTORIAL_NAV } from "@/lib/constants";
 import { useLocation } from "wouter";
 import { useMobile } from "@/hooks/use-mobile";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { Settings, Target } from "lucide-react";
+import { useState } from "react";
+import { 
+  Home, 
+  MessageCircle, 
+  Trophy, 
+  GraduationCap,
+  Zap,
+  BarChart3,
+  FileText,
+  Instagram,
+  Youtube,
+  Briefcase,
+  User,
+  CreditCard,
+  Shield
+} from "lucide-react";
 
 export function Sidebar() {
   const [location, setLocation] = useLocation();
   const isMobile = useMobile();
+  const [isExpanded, setIsExpanded] = useState(false);
   
   const currentPage = location.replace("/", "") || "dashboard";
-  
-  // Mock admin check - in real app, this would come from auth context
-  const isAdmin = true; // Set to true to show admin panel
+  const isAdmin = true;
+
+  // New menu structure based on requirements
+  const menuSections = [
+    {
+      title: "커뮤니티",
+      items: [
+        { id: "dashboard", label: "기본 대시보드", icon: Home, path: "/" },
+        { id: "community", label: "커뮤니티 게시판", icon: MessageCircle, path: "/community" },
+        { id: "challenger", label: "챌린저 프로젝트", icon: Trophy, path: "/challenger" },
+        { id: "premium-courses", label: "유료 강의존", icon: GraduationCap, path: "/premium-courses" }
+      ]
+    },
+    {
+      title: "자동화 기능", 
+      items: [
+        { id: "sns-auto", label: "딸깍AI 자동포스팅", icon: Zap, path: "/sns-auto" },
+        { id: "progress", label: "진행 현황 보기", icon: BarChart3, path: "/progress" },
+        { id: "blog-templates", label: "블로그 템플릿", icon: FileText, path: "/blog-templates" },
+        { id: "insta-threads", label: "인스타/스레드 템플릿", icon: Instagram, path: "/insta-threads" },
+        { id: "youtube-auto", label: "유튜브 자동화", icon: Youtube, path: "/youtube-auto", badge: "예정" },
+        { id: "outsource", label: "외주게시판", icon: Briefcase, path: "/outsource" }
+      ]
+    },
+    {
+      title: "고객영역",
+      items: [
+        { id: "mypage", label: "마이페이지", icon: User, path: "/mypage" },
+        { id: "payment", label: "결제 관리", icon: CreditCard, path: "/payment" },
+        ...(isAdmin ? [{ id: "admin", label: "관리자 대시보드", icon: Shield, path: "/admin" }] : [])
+      ]
+    }
+  ];
+
+  // Mobile navigation with essential items
+  const mobileNavItems = [
+    { id: "dashboard", label: "홈", icon: Home, path: "/" },
+    { id: "sns-auto", label: "딸깍AI", icon: Zap, path: "/sns-auto" },
+    { id: "community", label: "커뮤니티", icon: MessageCircle, path: "/community" },
+    { id: "mypage", label: "마이페이지", icon: User, path: "/mypage" }
+  ];
 
   if (isMobile) {
     return (
       <nav className="fixed bottom-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 flex items-center justify-around px-4 z-40">
-        {NAVIGATION_ITEMS.map((item) => (
+        {mobileNavItems.map((item) => (
           <button
             key={item.id}
             onClick={() => setLocation(item.path)}
             className={cn(
-              "flex flex-col items-center justify-center p-2 rounded-lg transition-all",
+              "flex flex-col items-center justify-center space-y-1 p-2 rounded-lg transition-all",
               currentPage === item.id
-                ? "bg-hermes-orange text-white"
-                : "text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                ? "text-hermes-orange"
+                : "text-gray-600 dark:text-gray-400 hover:text-hermes-orange"
             )}
           >
-            <item.icon className="h-4 w-4 mb-1" />
+            <item.icon className="h-5 w-5" />
             <span className="text-xs">{item.label}</span>
           </button>
         ))}
@@ -36,138 +88,69 @@ export function Sidebar() {
     );
   }
 
-  const renderNavSection = (items: any[], sectionTitle?: string) => (
-    <>
-      {items.map((item) => (
-        <Tooltip key={item.id}>
-          <TooltipTrigger asChild>
-            <button
-              onClick={() => setLocation(item.path)}
-              className={cn(
-                "w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-lg transition-all group relative mb-2",
-                currentPage === item.id
-                  ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
-                  : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
-              )}
-            >
-              <item.icon className="h-5 w-5 sm:h-6 sm:w-6" />
-            </button>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="ml-2">
-            <div>
-              <p className="font-medium">{item.label}</p>
-              <p className="text-xs text-gray-500">{item.description}</p>
-            </div>
-          </TooltipContent>
-        </Tooltip>
-      ))}
-    </>
-  );
-
+  // Desktop expandable sidebar
   return (
-    <nav className="fixed left-0 top-8 bottom-0 w-12 sm:w-16 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col items-center py-4 z-40">
-      {/* 1) 대시보드 */}
-      {renderNavSection(DASHBOARD_ITEMS)}
-      
-      {/* Divider */}
-      <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
-      
-      {/* 2) 자동화기능 (블로그/기타) */}
-      {renderNavSection(AUTOMATION_ITEMS)}
-      
-      {/* Divider */}
-      <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
-      
-      {/* 3) 고객유치 (게시판) */}
-      {renderNavSection(CUSTOMER_ITEMS)}
-      
-      {/* 관리자 전용 미니게임 */}
-      {isAdmin && renderNavSection(ADMIN_GAME_ITEMS)}
-      
-      {/* Divider */}
-      <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
-      
-      {/* 4) 고객정보 (마이페이지, 결제) */}
-      {renderNavSection(USER_INFO_ITEMS)}
-      
-      {/* Admin-only sections */}
-      {isAdmin && (
-        <>
-          {/* Divider */}
-          <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
-          
-          {/* Mini Games - Admin only */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                onClick={() => setLocation("/games")}
-                className={cn(
-                  "w-12 h-12 flex items-center justify-center rounded-lg transition-all group relative mb-2",
-                  currentPage === "games"
-                    ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
-                    : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
-                )}
-              >
-                <Target className="h-6 w-6" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="right" className="ml-2">
-              <div>
-                <p className="font-medium">미니게임</p>
-                <p className="text-xs text-gray-500">관리자 전용</p>
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        </>
+    <nav 
+      className={cn(
+        "fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col py-4 z-30 transition-all duration-300 group",
+        isExpanded ? "w-56" : "w-16"
       )}
-
-      {/* Admin Panel - Only visible to admins */}
-      <div className="mt-auto mb-4">
-        {isAdmin && (
-          <>
-            <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
-            <Tooltip>
-              <TooltipTrigger asChild>
+      onMouseEnter={() => setIsExpanded(true)}
+      onMouseLeave={() => setIsExpanded(false)}
+    >
+      <div className="flex flex-col space-y-6 flex-1 px-2">
+        {menuSections.map((section) => (
+          <div key={section.title} className="space-y-2">
+            {/* Section Title - only show when expanded */}
+            {isExpanded && (
+              <div className="px-3 py-2">
+                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  {section.title}
+                </h3>
+              </div>
+            )}
+            
+            {/* Section Items */}
+            <div className="space-y-1">
+              {section.items.map((item) => (
                 <button
-                  onClick={() => setLocation("/admin")}
+                  key={item.id}
+                  onClick={() => setLocation(item.path)}
                   className={cn(
-                    "w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-lg transition-all group relative",
-                    currentPage === "admin"
-                      ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
-                      : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
+                    "w-full flex items-center rounded-lg transition-all duration-200",
+                    isExpanded ? "px-3 py-2" : "px-3 py-3 justify-center",
+                    currentPage === item.id
+                      ? "bg-hermes-orange text-white shadow-md"
+                      : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-sm"
                   )}
                 >
-                  <Settings className="h-5 w-5 sm:h-6 sm:w-6" />
+                  <item.icon className={cn("flex-shrink-0", isExpanded ? "h-5 w-5" : "h-6 w-6")} />
+                  
+                  {isExpanded && (
+                    <>
+                      <span className="ml-3 text-sm font-medium truncate">
+                        {item.label}
+                      </span>
+                      {item.badge && (
+                        <span className="ml-auto text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full">
+                          {item.badge}
+                        </span>
+                      )}
+                    </>
+                  )}
                 </button>
-              </TooltipTrigger>
-              <TooltipContent side="right" className="ml-2">
-                관리자 페이지
-              </TooltipContent>
-            </Tooltip>
-          </>
-        )}
-      </div>
-      
-      <div className="flex-1" />
-      
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button
-            onClick={() => setLocation(TUTORIAL_NAV.path)}
-            className={cn(
-              "w-8 h-8 flex items-center justify-center rounded-lg transition-all group relative",
-              currentPage === TUTORIAL_NAV.id
-                ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
-                : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
+              ))}
+            </div>
+            
+            {/* Divider between sections */}
+            {section !== menuSections[menuSections.length - 1] && (
+              <div className="my-4">
+                <div className="h-px bg-gray-200 dark:bg-gray-700 mx-3"></div>
+              </div>
             )}
-          >
-            <TUTORIAL_NAV.icon className="h-4 w-4" />
-          </button>
-        </TooltipTrigger>
-        <TooltipContent side="right" className="ml-2">
-          {TUTORIAL_NAV.label}
-        </TooltipContent>
-      </Tooltip>
+          </div>
+        ))}
+      </div>
     </nav>
   );
 }
