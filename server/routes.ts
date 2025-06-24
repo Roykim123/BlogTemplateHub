@@ -5,7 +5,6 @@ import { ensureAuthenticated, ensureAdmin } from "./auth";
 import { insertUserSchema, insertToolSchema, insertTemplateSchema, insertChatMessageSchema } from "@shared/schema";
 import { storage } from "./storage";
 import { z } from "zod";
-import { insertUserSchema, insertToolSchema, insertFavoriteSchema, insertTemplateSchema, insertChatMessageSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // User routes
@@ -204,6 +203,349 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(stats);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch stats" });
+    }
+  });
+
+  // Store Information routes
+  app.get("/api/users/:userId/store-info", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      // TODO: Implement when database is ready
+      // const storeInfos = await storage.getUserStoreInfos(userId);
+      const mockStoreInfos = [
+        {
+          id: 1,
+          userId,
+          storeName: "카페 걱정마",
+          productName: "아메리카노",
+          address: "서울시 강남구 테헤란로 123",
+          website: "https://ggokcafe.com",
+          description: "신선한 원두로 만든 프리미엄 커피",
+          mainKeyword: "강남 카페",
+          hashtags: "#강남카페 #아메리카노 #프리미엄커피",
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      ];
+      res.json(mockStoreInfos);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid user ID" });
+    }
+  });
+
+  app.post("/api/store-info", async (req, res) => {
+    try {
+      // TODO: Validate with proper schema when database is ready
+      const storeData = req.body;
+      const requiredFields = ['userId', 'storeName', 'productName', 'address', 'description', 'mainKeyword'];
+      
+      for (const field of requiredFields) {
+        if (!storeData[field]) {
+          return res.status(400).json({ error: `Missing required field: ${field}` });
+        }
+      }
+      
+      // TODO: Implement when database is ready
+      // const storeInfo = await storage.createStoreInfo(storeData);
+      const mockStoreInfo = {
+        id: Date.now(),
+        ...storeData,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      };
+      
+      res.json(mockStoreInfo);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid store information data" });
+    }
+  });
+
+  app.put("/api/store-info/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      
+      // TODO: Implement when database is ready
+      // const updatedStore = await storage.updateStoreInfo(id, updateData);
+      const mockUpdatedStore = {
+        id,
+        ...updateData,
+        updatedAt: new Date()
+      };
+      
+      res.json(mockUpdatedStore);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to update store information" });
+    }
+  });
+
+  app.delete("/api/store-info/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      // TODO: Implement when database is ready
+      // await storage.deleteStoreInfo(id);
+      
+      res.json({ success: true, message: "Store information deleted successfully" });
+    } catch (error) {
+      res.status(400).json({ error: "Failed to delete store information" });
+    }
+  });
+
+  // Board/Community routes
+  app.get("/api/posts", async (req, res) => {
+    try {
+      const category = req.query.category as string;
+      const limit = parseInt(req.query.limit as string) || 20;
+      const offset = parseInt(req.query.offset as string) || 0;
+      
+      // TODO: Implement when database is ready
+      // const posts = await storage.getPosts({ category, limit, offset });
+      const mockPosts = [
+        {
+          id: 1,
+          title: "AI 블로그 자동화 후기",
+          content: "딸깍AI로 블로그 포스팅이 정말 쉬워졌어요!",
+          author: "김걱정마",
+          avatar: "김",
+          category: "후기",
+          createdAt: "2시간 전",
+          likes: 45,
+          comments: 12,
+          views: 234,
+          isHot: true
+        }
+      ];
+      
+      res.json(mockPosts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch posts" });
+    }
+  });
+
+  app.post("/api/posts", async (req, res) => {
+    try {
+      // TODO: Validate with proper schema when database is ready
+      const postData = req.body;
+      const requiredFields = ['title', 'content', 'category', 'userId'];
+      
+      for (const field of requiredFields) {
+        if (!postData[field]) {
+          return res.status(400).json({ error: `Missing required field: ${field}` });
+        }
+      }
+      
+      // TODO: Implement when database is ready
+      // const post = await storage.createPost(postData);
+      const mockPost = {
+        id: Date.now(),
+        ...postData,
+        author: "나",
+        avatar: "나",
+        createdAt: "방금 전",
+        likes: 0,
+        comments: 0,
+        views: 1,
+        isHot: false
+      };
+      
+      res.json(mockPost);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid post data" });
+    }
+  });
+
+  app.put("/api/posts/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      
+      // TODO: Implement when database is ready
+      // const updatedPost = await storage.updatePost(id, updateData);
+      const mockUpdatedPost = {
+        id,
+        ...updateData,
+        updatedAt: new Date()
+      };
+      
+      res.json(mockUpdatedPost);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to update post" });
+    }
+  });
+
+  app.delete("/api/posts/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      
+      // TODO: Implement when database is ready
+      // await storage.deletePost(id);
+      
+      res.json({ success: true, message: "Post deleted successfully" });
+    } catch (error) {
+      res.status(400).json({ error: "Failed to delete post" });
+    }
+  });
+
+  // AI Cash and Payment routes
+  app.get("/api/users/:userId/ai-cash", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      // TODO: Implement when database is ready
+      // const user = await storage.getUser(userId);
+      const mockUser = {
+        id: userId,
+        aiCash: 12450,
+        cashHistory: [
+          { id: 1, amount: 1000, type: "purchase", description: "AI캐쉬 충전", date: new Date() },
+          { id: 2, amount: -500, type: "usage", description: "상품정보 추가", date: new Date() }
+        ]
+      };
+      
+      res.json(mockUser);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid user ID" });
+    }
+  });
+
+  app.post("/api/users/:userId/ai-cash/charge", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const { amount, paymentMethod } = req.body;
+      
+      if (!amount || amount <= 0) {
+        return res.status(400).json({ error: "Invalid amount" });
+      }
+      
+      // TODO: Implement when database is ready
+      // const updatedUser = await storage.updateUserAiCash(userId, amount);
+      
+      res.json({ 
+        success: true, 
+        message: `${amount}캐쉬가 충전되었습니다.`,
+        newBalance: 12450 + amount
+      });
+    } catch (error) {
+      res.status(400).json({ error: "Failed to charge AI Cash" });
+    }
+  });
+
+  app.post("/api/users/:userId/ai-cash/spend", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const { amount, description } = req.body;
+      
+      if (!amount || amount <= 0) {
+        return res.status(400).json({ error: "Invalid amount" });
+      }
+      
+      // TODO: Implement when database is ready
+      // const user = await storage.getUser(userId);
+      // if (user.aiCash < amount) {
+      //   return res.status(400).json({ error: "Insufficient AI Cash" });
+      // }
+      // const updatedUser = await storage.updateUserAiCash(userId, -amount);
+      
+      res.json({ 
+        success: true, 
+        message: `${amount}캐쉬가 차감되었습니다.`,
+        newBalance: 12450 - amount
+      });
+    } catch (error) {
+      res.status(400).json({ error: "Failed to spend AI Cash" });
+    }
+  });
+
+  // Automation Progress routes
+  app.get("/api/automation/:toolId/progress/:userId", async (req, res) => {
+    try {
+      const toolId = parseInt(req.params.toolId);
+      const userId = parseInt(req.params.userId);
+      
+      // TODO: Implement when database is ready
+      // const progress = await storage.getAutomationProgress(toolId, userId);
+      const mockProgress = {
+        userId,
+        toolId,
+        currentStage: 1,
+        totalStages: 6,
+        isCompleted: false,
+        stages: [
+          { id: 1, name: "정보 수집", completed: true },
+          { id: 2, name: "컨텐츠 생성", completed: false },
+          { id: 3, name: "이미지 선택", completed: false },
+          { id: 4, name: "최종 검토", completed: false },
+          { id: 5, name: "플랫폼 업로드", completed: false },
+          { id: 6, name: "완료", completed: false }
+        ]
+      };
+      
+      res.json(mockProgress);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to fetch automation progress" });
+    }
+  });
+
+  app.post("/api/automation/:toolId/progress/:userId", async (req, res) => {
+    try {
+      const toolId = parseInt(req.params.toolId);
+      const userId = parseInt(req.params.userId);
+      const { stage, completed } = req.body;
+      
+      // TODO: Implement when database is ready
+      // const updatedProgress = await storage.updateAutomationProgress(toolId, userId, stage, completed);
+      
+      res.json({ 
+        success: true, 
+        message: "Progress updated successfully",
+        stage,
+        completed
+      });
+    } catch (error) {
+      res.status(400).json({ error: "Failed to update automation progress" });
+    }
+  });
+
+  // Challenger Mission routes
+  app.get("/api/missions/:userId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      // TODO: Implement when database is ready
+      // const missions = await storage.getUserMissions(userId);
+      const mockMissions = {
+        userId,
+        currentDay: 1,
+        missions: [
+          { id: 1, name: "AI 글쓰기", completed: false, reward: 100 },
+          { id: 2, name: "동영상 시청", completed: false, reward: 50 },
+          { id: 3, name: "친구에게 공유", completed: false, reward: 150 },
+          { id: 4, name: "게시판 구경", completed: false, reward: 75 }
+        ]
+      };
+      
+      res.json(mockMissions);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to fetch missions" });
+    }
+  });
+
+  app.post("/api/missions/:userId/complete", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const { missionId, day } = req.body;
+      
+      // TODO: Implement when database is ready
+      // const result = await storage.completeMission(userId, missionId, day);
+      
+      res.json({ 
+        success: true, 
+        message: "Mission completed!",
+        rewardEarned: 100
+      });
+    } catch (error) {
+      res.status(400).json({ error: "Failed to complete mission" });
     }
   });
 

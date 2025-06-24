@@ -78,16 +78,21 @@ export default function CommunityPage() {
   };
 
   return (
-    <div className="h-full bg-white dark:bg-gray-900 p-6 overflow-y-auto">
-      <div className="max-w-4xl mx-auto">
+    <div className="h-full bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-6 overflow-y-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
-              🔥 커뮤니티
-            </h1>
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                🔥 커뮤니티
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400">
+                다른 사용자들과 AI 활용 노하우를 공유하고 소통해보세요
+              </p>
+            </div>
             <Dialog open={isWriteModalOpen} onOpenChange={setIsWriteModalOpen}>
               <DialogTrigger asChild>
-                <Button className="bg-hermes-orange hover:bg-hermes-orange/90">
+                <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg">
                   <Plus className="h-4 w-4 mr-2" />
                   글쓰기
                 </Button>
@@ -140,17 +145,14 @@ export default function CommunityPage() {
               </DialogContent>
             </Dialog>
           </div>
-          <p className="text-gray-600 dark:text-gray-400">
-            다른 사용자들과 AI 활용 노하우를 공유하고 소통해보세요
-          </p>
         </div>
 
         {/* 인기 게시글 */}
-        <Card className="mb-6">
-          <CardHeader>
+        <Card className="mb-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-xl">
+          <CardHeader className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-t-lg">
             <CardTitle className="flex items-center space-x-2">
               <TrendingUp className="h-5 w-5" />
-              <span>인기 게시글</span>
+              <span>🔥 인기 게시글</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -174,9 +176,9 @@ export default function CommunityPage() {
           </CardContent>
         </Card>
 
-        <div className="space-y-4">
+        <div className="grid gap-6">
           {posts.map((post) => (
-            <Card key={post.id} className="cursor-pointer hover:shadow-md transition-shadow">
+            <Card key={post.id} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">

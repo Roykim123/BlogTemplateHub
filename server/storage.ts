@@ -47,6 +47,34 @@ export interface IStorage {
   // Chat Messages
   getChatHistory(userId: number): Promise<ChatMessage[]>;
   createChatMessage(message: InsertChatMessage): Promise<ChatMessage>;
+  
+  // Store Information
+  getUserStoreInfos(userId: number): Promise<StoreInfo[]>;
+  createStoreInfo(storeInfo: InsertStoreInfo): Promise<StoreInfo>;
+  updateStoreInfo(id: number, storeInfo: Partial<InsertStoreInfo>): Promise<StoreInfo | undefined>;
+  deleteStoreInfo(id: number): Promise<void>;
+  
+  // Posts/Community
+  getPosts(options?: { category?: string; limit?: number; offset?: number }): Promise<Post[]>;
+  getPost(id: number): Promise<Post | undefined>;
+  createPost(post: InsertPost): Promise<Post>;
+  updatePost(id: number, post: Partial<InsertPost>): Promise<Post | undefined>;
+  deletePost(id: number): Promise<void>;
+  incrementPostViews(id: number): Promise<void>;
+  
+  // AI Cash Transactions
+  getUserCashTransactions(userId: number): Promise<CashTransaction[]>;
+  createCashTransaction(transaction: InsertCashTransaction): Promise<CashTransaction>;
+  
+  // Automation Progress
+  getAutomationProgress(toolId: number, userId: number): Promise<AutomationProgress | undefined>;
+  createAutomationProgress(progress: InsertAutomationProgress): Promise<AutomationProgress>;
+  updateAutomationProgress(toolId: number, userId: number, stage: number, completed: boolean): Promise<AutomationProgress | undefined>;
+  
+  // Challenger Missions
+  getUserMissions(userId: number, day?: number): Promise<ChallengerMission[]>;
+  createMission(mission: InsertChallengerMission): Promise<ChallengerMission>;
+  completeMission(userId: number, missionId: number, day: number): Promise<ChallengerMission | undefined>;
 }
 
 export class MemStorage implements IStorage {

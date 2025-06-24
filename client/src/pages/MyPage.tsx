@@ -120,21 +120,21 @@ export default function MyPage() {
   };
 
   return (
-    <div className="h-full bg-white dark:bg-gray-900 p-6 overflow-y-auto">
-      <div className="max-w-4xl mx-auto">
+    <div className="h-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6 overflow-y-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
             👤 마이페이지
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600 dark:text-gray-400 text-lg">
             프로필 정보와 계정 설정을 관리하세요
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="grid gap-8">
           {/* 프로필 정보 */}
-          <Card>
-            <CardHeader>
+          <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-t-lg">
               <CardTitle className="flex items-center space-x-2">
                 <User className="h-5 w-5" />
                 <span>프로필 정보</span>
@@ -170,12 +170,12 @@ export default function MyPage() {
           </Card>
 
           {/* 상품정보 */}
-          <Card>
-            <CardHeader>
+          <Card className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-green-500 to-teal-600 text-white rounded-t-lg">
               <CardTitle className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
                   <Store className="h-5 w-5" />
-                  <span>상품정보</span>
+                  <span>상품정보 관리</span>
                 </div>
                 <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
                   <DialogTrigger asChild>
