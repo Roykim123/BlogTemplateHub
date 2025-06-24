@@ -126,6 +126,15 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
 
 ## Changelog
 
+- June 24, 2025: Major UX improvements and backend API foundation
+  - Enhanced HomePage with HOT badges and hover effects for better visual feedback
+  - Added FloatingActionButton for mobile users with quick access to key features
+  - Implemented comprehensive backend API with authentication, user management, and data endpoints
+  - Added session management and passport.js authentication framework
+  - Created proper route structure for tools, templates, favorites, and chat history
+  - Enhanced user schema with additional fields (role, profileImage, bio, isActive)
+  - Prepared foundation for Kakao OAuth integration and AI Cash management
+
 - June 24, 2025: Implemented expandable sidebar navigation with hover functionality
   - Desktop: Icon-only sidebar that expands to show labels on hover
   - Mobile: Bottom navigation bar with 4 essential items

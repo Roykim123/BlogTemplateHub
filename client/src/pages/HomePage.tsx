@@ -4,17 +4,17 @@ import { MessageSquare, Megaphone, Play, Star } from "lucide-react";
 
 export default function HomePage() {
   const recentPosts = [
-    { id: 1, title: "AI 글쓰기 팁과 노하우", author: "관리자", date: "2025-01-20", replies: 5 },
-    { id: 2, title: "새로운 템플릿 업데이트 안내", author: "운영팀", date: "2025-01-19", replies: 12 },
-    { id: 3, title: "GPT 활용법 질문드려요", author: "사용자123", date: "2025-01-18", replies: 8 },
-    { id: 4, title: "블로그 자동화 성공 후기", author: "블로거A", date: "2025-01-17", replies: 15 }
+    { id: 1, title: "블로그 수익화 3개월 만에 100만원 돌파!", author: "수익왕", date: "2025-01-20", replies: 24, hot: true },
+    { id: 2, title: "딸깍AI로 인스타 팔로워 1만 달성 후기", author: "인플루언서지망생", date: "2025-01-20", replies: 18 },
+    { id: 3, title: "ChatGPT 프롬프트 엔지니어링 완전정복", author: "AI전문가김씨", date: "2025-01-19", replies: 31, hot: true },
+    { id: 4, title: "네이버 블로그 SEO 최적화 꿀팁 10가지", author: "마케터박", date: "2025-01-19", replies: 15 }
   ];
 
   const notices = [
-    { id: 1, title: "정기 점검 안내 (1월 25일)", date: "2025-01-20", important: true },
-    { id: 2, title: "새로운 AI 기능 업데이트", date: "2025-01-19", important: false },
-    { id: 3, title: "프리미엄 요금제 할인 이벤트", date: "2025-01-18", important: true },
-    { id: 4, title: "사용자 가이드 개선 안내", date: "2025-01-17", important: false }
+    { id: 1, title: "걱정마AI 서비스 업데이트 안내", date: "2025-01-20", important: true },
+    { id: 2, title: "신규 기능 추가 - 기능 사용법", date: "2025-01-19", important: false },
+    { id: 3, title: "🎉 2025년 신규 회원 특별 혜택", date: "2025-01-18", important: true },
+    { id: 4, title: "AI캐쉬 충전 이벤트 진행중", date: "2025-01-17", important: false }
   ];
 
   return (
@@ -33,9 +33,16 @@ export default function HomePage() {
             </CardHeader>
             <CardContent className="space-y-2 max-h-48 overflow-y-auto">
               {recentPosts.map((post) => (
-                <div key={post.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer">
+                <div key={post.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer group">
                   <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                    <div className="flex items-center space-x-2 mb-1">
+                      {post.hot && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
+                          🔥 HOT
+                        </span>
+                      )}
+                    </div>
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate group-hover:text-hermes-orange transition-colors">
                       {post.title}
                     </h4>
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">

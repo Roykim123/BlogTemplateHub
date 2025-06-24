@@ -1,5 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import passport from "passport";
+import { ensureAuthenticated, ensureAdmin } from "./auth";
+import { insertUserSchema, insertToolSchema, insertTemplateSchema, insertChatMessageSchema } from "@shared/schema";
 import { storage } from "./storage";
 import { z } from "zod";
 import { insertUserSchema, insertToolSchema, insertFavoriteSchema, insertTemplateSchema, insertChatMessageSchema } from "@shared/schema";
