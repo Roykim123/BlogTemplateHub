@@ -21,20 +21,12 @@ export default function HomePage() {
     { id: 4, title: "AI캐쉬 충전 이벤트 진행중", date: "2025-01-17", important: false }
   ];
 
-  const handleVideoClick = (videoId: string) => {
-    const iframe = document.createElement('iframe');
-    iframe.className = 'w-full h-40 rounded-lg mt-3';
-    iframe.src = 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&controls=1&modestbranding=1&rel=0';
-    iframe.frameBorder = '0';
-    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-    iframe.allowFullscreen = true;
-    
-    const container = document.querySelector(`[data-video="${videoId}"]`);
-    if (container) {
-      container.innerHTML = '';
-      container.appendChild(iframe);
-      container.classList.remove('hidden');
-    }
+  const handleMenuNavigation = (path: string) => {
+    window.location.href = path;
+  };
+
+  const handleKakaoConsultation = () => {
+    window.open('https://open.kakao.com/o/your-consultation-link', '_blank');
   };
 
   return (
@@ -156,77 +148,62 @@ export default function HomePage() {
                   <span>프리미엄 콘텐츠</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3 max-h-64 overflow-y-auto">
+              <CardContent className="space-y-3">
                 <div 
-                  className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-3 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
-                  onClick={() => handleVideoClick('1')}
+                  className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-4 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
+                  onClick={() => handleMenuNavigation('/tutorial')}
                 >
-                  <h4 className="font-semibold mb-1 text-sm flex items-center">
-                    <Play className="h-4 w-4 mr-2" />
-                    🎥 고급 AI 활용법
+                  <h4 className="font-semibold mb-2 text-sm">
+                    🎥 AI 활용법
                   </h4>
-                  <p className="text-xs opacity-90 mb-2">
-                    전문가만 아는 AI 글쓰기 노하우를 공개합니다.
+                  <p className="text-xs opacity-90 mb-3">
+                    전문가만 아는 AI 글쓰기 노하우를 배워보세요
                   </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs opacity-75">15분 강의</span>
-                    <Button 
-                      size="sm" 
-                      className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-6"
-                    >
-                      클릭하여 재생
-                    </Button>
-                  </div>
+                  <Button 
+                    size="sm" 
+                    className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-7 w-full"
+                  >
+                    튜토리얼 페이지로 이동
+                  </Button>
                 </div>
-                <div data-video="1" className="hidden"></div>
                 
                 <div 
-                  className="border border-gray-200 dark:border-gray-700 p-3 rounded-lg cursor-pointer hover:shadow-sm transition-shadow"
-                  onClick={() => handleVideoClick('2')}
+                  className="border-2 border-hermes-orange bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={() => handleMenuNavigation('/challenger')}
                 >
-                  <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm flex items-center">
-                    <Play className="h-4 w-4 mr-2 text-hermes-orange" />
-                    📚 마스터 클래스
+                  <h4 className="font-semibold text-hermes-orange mb-2 text-sm">
+                    🏆 7일 챌린지
                   </h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                    AI를 활용한 마케팅 전략과 실전 기법을 배워보세요.
+                  <p className="text-xs text-gray-700 dark:text-gray-300 mb-3">
+                    AI 마스터가 되는 7일간의 특별한 여정
                   </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">25분 강의</span>
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      className="text-xs h-6"
-                    >
-                      클릭하여 재생
-                    </Button>
-                  </div>
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    className="border-hermes-orange text-hermes-orange hover:bg-hermes-orange hover:text-white text-xs h-7 w-full"
+                  >
+                    챌린지 참여하기
+                  </Button>
                 </div>
-                <div data-video="2" className="hidden"></div>
 
                 <div 
-                  className="border border-gray-200 dark:border-gray-700 p-3 rounded-lg cursor-pointer hover:shadow-sm transition-shadow"
-                  onClick={() => handleVideoClick('3')}
+                  className="border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
+                  onClick={handleKakaoConsultation}
                 >
-                  <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm flex items-center">
-                    <Play className="h-4 w-4 mr-2 text-hermes-orange" />
-                    🚀 실전 프로젝트
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 text-sm">
+                    💬 1:1 컨설팅
                   </h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                    실제 프로젝트를 통해 AI 도구 활용법을 익혀보세요.
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">
+                    개인 맞춤형 AI 활용 전략을 상담받아보세요
                   </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-gray-500">35분 강의</span>
-                    <Button 
-                      size="sm" 
-                      variant="outline"
-                      className="text-xs h-6"
-                    >
-                      클릭하여 재생
-                    </Button>
-                  </div>
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    className="text-xs h-7 w-full"
+                  >
+                    카카오톡 상담하기
+                  </Button>
                 </div>
-                <div data-video="3" className="hidden"></div>
               </CardContent>
             </Card>
           </div>

@@ -34,7 +34,7 @@ export function Sidebar() {
         { id: "dashboard", label: "기본 대시보드", icon: Home, path: "/" },
         { id: "community", label: "커뮤니티 게시판", icon: MessageCircle, path: "/community" },
         { id: "challenger", label: "챌린저 프로젝트", icon: Trophy, path: "/challenger" },
-        { id: "premium-courses", label: "유료 강의존", icon: GraduationCap, path: "/premium-courses" }
+        { id: "premium-courses", label: "프리미엄 콘텐츠", icon: GraduationCap, path: "/tutorial" }
       ]
     },
     {
