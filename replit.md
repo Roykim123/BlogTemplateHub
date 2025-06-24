@@ -166,6 +166,7 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Enhanced challenger page with prominent rewards section at top
   - Added friend referral mission (1 person per day) to challenger tasks
   - Integrated friend referral benefits into payment page
+  - Added 2025 Seoul AI Hub company selection banner with gradient design and mobile optimization
 
 - June 24, 2025: Final customer-focused refinements and error fixes
   - Fixed TypeError in formatNumber utility with null/undefined safety checks

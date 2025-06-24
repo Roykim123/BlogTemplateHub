@@ -31,6 +31,25 @@ export default function HomePage() {
 
   return (
     <div className="min-h-full bg-white dark:bg-gray-900 overflow-auto pb-16 md:pb-4">
+      {/* Achievement Banner */}
+      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/10"></div>
+        <div className="relative max-w-6xl mx-auto px-4 py-3 sm:py-6">
+          <div className="flex items-center justify-center space-x-2 sm:space-x-4">
+            <div className="flex items-center space-x-1 sm:space-x-2">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-yellow-400 rounded-full flex items-center justify-center">
+                <span className="text-blue-900 text-xs sm:text-sm font-bold">🏆</span>
+              </div>
+              <span className="text-xs sm:text-base font-bold">2025년 서울AI허브 기업 선정</span>
+            </div>
+            <div className="hidden sm:block w-px h-6 bg-white/30"></div>
+            <span className="text-xs sm:text-sm opacity-90">🎉 경축! AI 혁신 기업으로 인정받았습니다</span>
+          </div>
+        </div>
+        <div className="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div className="absolute bottom-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+      </div>
+
       <div className="max-w-6xl mx-auto p-2 sm:p-4">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-2 sm:gap-4 min-h-[calc(100vh-100px)] md:min-h-[calc(100vh-100px)]">
           {/* Left 60% - 2 vertical sections */}
