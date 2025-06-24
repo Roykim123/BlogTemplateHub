@@ -27,7 +27,10 @@ export default function ToolsPage() {
   return (
     <div className="h-full bg-white dark:bg-gray-900 p-6">
       <div className="mb-6">
-        <h1 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">도구 목록</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">AI 도구 모음</h1>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
+          다양한 AI 도구를 활용해 작업 효율을 높여보세요
+        </p>
         
         <div className="flex items-center space-x-2 mb-6 overflow-x-auto">
           {TOOL_CATEGORIES.map((category) => (
