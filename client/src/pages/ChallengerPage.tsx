@@ -139,7 +139,7 @@ export default function ChallengerPage() {
         </div>
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             🏆 7일 챌린저
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
@@ -154,7 +154,7 @@ export default function ChallengerPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">현재 진행</p>
-                  <p className="text-2xl font-bold">{currentDay}일차</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{currentDay}일차</p>
                 </div>
                 <div className="w-12 h-12 bg-hermes-orange rounded-full flex items-center justify-center">
                   <Target className="h-6 w-6 text-white" />
@@ -168,7 +168,7 @@ export default function ChallengerPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">전체 진행도</p>
-                  <p className="text-2xl font-bold">{Math.round(progress)}%</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{Math.round(progress)}%</p>
                 </div>
                 <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center">
                   <Zap className="h-6 w-6 text-white" />
@@ -182,7 +182,7 @@ export default function ChallengerPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">예상 리워드</p>
-                  <p className="text-2xl font-bold">5,000 캐쉬</p>
+                  <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">5,000 캐쉬</p>
                 </div>
                 <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
                   <Trophy className="h-6 w-6 text-white" />
@@ -196,7 +196,7 @@ export default function ChallengerPage() {
         <Card className="mb-8">
           <CardContent className="p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">7일 챌린지 진행도</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">7일 챌린지 진행도</h3>
               <Badge className="bg-hermes-orange text-white">
                 {currentDay}/{totalDays} 완료
               </Badge>
@@ -211,7 +211,7 @@ export default function ChallengerPage() {
         {/* 7일 미션 현황 */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
+            <CardTitle className="flex items-center space-x-2 text-gray-900 dark:text-gray-100">
               <Calendar className="h-5 w-5" />
               <span>7일 미션 현황</span>
             </CardTitle>
@@ -238,7 +238,7 @@ export default function ChallengerPage() {
                           {dayData.day}
                         </div>
                         <div>
-                          <div className="font-medium">Day {dayData.day}</div>
+                          <div className="font-medium text-gray-900 dark:text-gray-100">Day {dayData.day}</div>
                           <div className="text-xs text-gray-500">{dayData.date}</div>
                         </div>
                       </div>
@@ -281,7 +281,7 @@ export default function ChallengerPage() {
         {/* 리워드 정보 */}
         <Card className="mt-8">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
+            <CardTitle className="flex items-center space-x-2 text-gray-900 dark:text-gray-100">
               <Trophy className="h-5 w-5" />
               <span>챌린지 리워드</span>
             </CardTitle>
@@ -290,19 +290,19 @@ export default function ChallengerPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="text-center p-4 border rounded-lg">
                 <div className="text-2xl font-bold text-green-600 mb-2">3일 달성</div>
-                <div className="text-sm text-gray-600">1,000 AI캐쉬</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">1,000 AI캐쉬</div>
                 <Badge className="bg-green-100 text-green-800 mt-2">달성 완료</Badge>
               </div>
               
               <div className="text-center p-4 border rounded-lg">
                 <div className="text-2xl font-bold text-orange-600 mb-2">5일 달성</div>
-                <div className="text-sm text-gray-600">3,000 AI캐쉬</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">3,000 AI캐쉬</div>
                 <Badge variant="outline" className="mt-2">진행 중</Badge>
               </div>
               
               <div className="text-center p-4 border rounded-lg">
                 <div className="text-2xl font-bold text-purple-600 mb-2">7일 완주</div>
-                <div className="text-sm text-gray-600">5,000 AI캐쉬 + 특별 뱃지</div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">5,000 AI캐쉬 + 특별 뱃지</div>
                 <Badge variant="outline" className="mt-2">도전 중</Badge>
               </div>
             </div>
