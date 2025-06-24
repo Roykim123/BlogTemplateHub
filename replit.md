@@ -138,6 +138,10 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Updated profile information to display Kakao login data (name, email, profile image)
   - Made profile fields read-only since they come from Kakao account
   - Added profile image display in TopBar for authenticated users
+  - Updated community board categories to: 외주게시판 (개발/마케팅/디자인), 자유게시판, AI정보게시판, 공지사항
+  - Added rewards section at top of challenger page for motivation
+  - Implemented SNS automation purchase flow: buy button (50 cash/month with counting) → publish button with login → write → register sequence
+  - Added publish button functionality to blog template section
 
 - June 24, 2025: Final customer-focused refinements and error fixes
   - Fixed TypeError in formatNumber utility with null/undefined safety checks
