@@ -126,6 +126,15 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
 
 ## Changelog
 
+- June 24, 2025: Community board dashboard restoration and code optimization
+  - Restored community board to original 4-category dashboard layout with navigation between boards
+  - Added board categories: 일반, 질문, 팁, 후기 with individual icons and statistics
+  - Implemented proper Dialog descriptions to resolve accessibility warnings
+  - Created performance optimization utilities for array operations, formatting, and caching
+  - Added memoization for filtered posts and expensive calculations to reduce re-renders
+  - Enhanced number formatting for large values (K/M notation) and currency display
+  - Optimized component structure to minimize replit cost impact while maintaining functionality
+
 - June 24, 2025: Backend integration preparation and UI restoration
   - Restored original gradient-based UI styling for CommunityPage and MyPage while keeping new functionality
   - Added comprehensive backend API routes for all major features (store info, posts, AI cash, automation, missions)

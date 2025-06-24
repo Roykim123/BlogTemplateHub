@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Heart, MessageCircle, Share2, Clock, Eye, TrendingUp, Plus, Edit, Trash2 } from "lucide-react";
+import { Heart, MessageCircle, Share2, Clock, Eye, TrendingUp, Plus, Edit, Trash2, Users, HelpCircle, Lightbulb, Star, ArrowRight } from "lucide-react";
 import { boardSamples } from "@/data/boardSamples";
 import { useToast } from "@/hooks/use-toast";
+import { arrayUtils, formatUtils } from "@/utils/optimizations";
 
 export default function CommunityPage() {
+  const [selectedBoard, setSelectedBoard] = useState<string | null>(null);
   const [posts, setPosts] = useState(boardSamples);
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<any>(null);
@@ -21,6 +23,45 @@ export default function CommunityPage() {
     category: "일반"
   });
   const { toast } = useToast();
+
+  const boardCategories = [
+    {
+      id: "general",
+      name: "일반 게시판",
+      description: "자유로운 소통과 정보 공유",
+      icon: Users,
+      color: "from-blue-500 to-cyan-500",
+      posts: posts.filter(post => post.category === "일반").length,
+      latestPost: "2시간 전"
+    },
+    {
+      id: "question", 
+      name: "질문 게시판",
+      description: "AI 활용 관련 질문과 답변",
+      icon: HelpCircle,
+      color: "from-green-500 to-emerald-500", 
+      posts: posts.filter(post => post.category === "질문").length,
+      latestPost: "1시간 전"
+    },
+    {
+      id: "tips",
+      name: "팁 게시판", 
+      description: "유용한 팁과 노하우 공유",
+      icon: Lightbulb,
+      color: "from-yellow-500 to-orange-500",
+      posts: posts.filter(post => post.category === "팁").length,
+      latestPost: "30분 전"
+    },
+    {
+      id: "review",
+      name: "후기 게시판",
+      description: "서비스 이용 후기와 경험담",
+      icon: Star, 
+      color: "from-purple-500 to-pink-500",
+      posts: posts.filter(post => post.category === "후기").length,
+      latestPost: "15분 전"
+    }
+  ];
 
   const handleCreatePost = () => {
     const post = {
@@ -77,17 +118,132 @@ export default function CommunityPage() {
     });
   };
 
+  // Show dashboard if no board is selected
+  if (!selectedBoard) {
+    return (
+      <div className="h-full bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-6 overflow-y-auto">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+              🔥 커뮤니티
+            </h1>
+            <p className="text-gray-600 dark:text-gray-400">
+              다른 사용자들과 AI 활용 노하우를 공유하고 소통해보세요
+            </p>
+          </div>
+
+          {/* Board Categories Dashboard */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {boardCategories.map((board) => {
+              const IconComponent = board.icon;
+              return (
+                <Card 
+                  key={board.id}
+                  className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] cursor-pointer group"
+                  onClick={() => setSelectedBoard(board.id)}
+                >
+                  <CardHeader className={`bg-gradient-to-r ${board.color} text-white rounded-t-lg`}>
+                    <CardTitle className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <IconComponent className="h-6 w-6" />
+                        <span>{board.name}</span>
+                      </div>
+                      <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <p className="text-gray-600 dark:text-gray-400 mb-4">
+                      {board.description}
+                    </p>
+                    <div className="flex items-center justify-between text-sm">
+                      <div className="flex items-center space-x-4">
+                        <span className="flex items-center space-x-1">
+                          <MessageCircle className="h-4 w-4" />
+                          <span>{board.posts}개 게시글</span>
+                        </span>
+                      </div>
+                      <span className="text-gray-500">
+                        최근 게시글: {board.latestPost}
+                      </span>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+
+          {/* Recent Hot Posts */}
+          <Card className="mt-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-t-lg">
+              <CardTitle className="flex items-center space-x-2">
+                <TrendingUp className="h-5 w-5" />
+                <span>🔥 실시간 인기 게시글</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-3">
+                {posts.filter(post => post.isHot).slice(0, 5).map((post) => (
+                  <div key={post.id} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+                    <Badge className="bg-red-500 text-white text-xs">HOT</Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {post.category}
+                    </Badge>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-sm">{post.title}</h4>
+                      <p className="text-xs text-gray-500">{post.author} • {post.createdAt}</p>
+                    </div>
+                    <div className="flex items-center space-x-2 text-xs text-gray-500">
+                      <Heart className="h-3 w-3" />
+                      <span>{formatUtils.formatNumber(post.likes)}</span>
+                      <MessageCircle className="h-3 w-3" />
+                      <span>{formatUtils.formatNumber(post.comments)}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  // Show specific board content
+  const currentBoard = boardCategories.find(board => board.id === selectedBoard);
+  
+  // Memoize filtered posts for performance
+  const filteredPosts = useMemo(() => {
+    const categoryMap: Record<string, string> = {
+      general: "일반",
+      question: "질문", 
+      tips: "팁",
+      review: "후기"
+    };
+    return arrayUtils.filterWithEarlyReturn(
+      posts, 
+      post => post.category === categoryMap[selectedBoard],
+      50 // Limit to 50 posts for performance
+    );
+  }, [posts, selectedBoard]);
+
   return (
     <div className="h-full bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <div>
+              <Button 
+                variant="ghost" 
+                onClick={() => setSelectedBoard(null)}
+                className="mb-2 text-purple-600 hover:text-purple-700"
+              >
+                ← 커뮤니티 홈으로
+              </Button>
               <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
-                🔥 커뮤니티
+                {currentBoard?.name}
               </h1>
               <p className="text-gray-600 dark:text-gray-400">
-                다른 사용자들과 AI 활용 노하우를 공유하고 소통해보세요
+                {currentBoard?.description}
               </p>
             </div>
             <Dialog open={isWriteModalOpen} onOpenChange={setIsWriteModalOpen}>
@@ -100,6 +256,9 @@ export default function CommunityPage() {
               <DialogContent className="max-w-2xl">
                 <DialogHeader>
                   <DialogTitle>새 게시글 작성</DialogTitle>
+                  <DialogDescription>
+                    {currentBoard?.name}에 새로운 게시글을 작성합니다.
+                  </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
@@ -177,7 +336,7 @@ export default function CommunityPage() {
         </Card>
 
         <div className="grid gap-6">
-          {posts.map((post) => (
+          {filteredPosts.map((post) => (
             <Card key={post.id} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
@@ -217,6 +376,9 @@ export default function CommunityPage() {
                           <DialogContent className="max-w-2xl">
                             <DialogHeader>
                               <DialogTitle>게시글 수정</DialogTitle>
+                              <DialogDescription>
+                                게시글 내용을 수정합니다.
+                              </DialogDescription>
                             </DialogHeader>
                             <div className="space-y-4">
                               <div>
@@ -285,15 +447,15 @@ export default function CommunityPage() {
                   <div className="flex items-center space-x-4 text-sm text-gray-500">
                     <button className="flex items-center space-x-1 hover:text-red-500 transition-colors">
                       <Heart className="h-4 w-4" />
-                      <span>{post.likes}</span>
+                      <span>{formatUtils.formatNumber(post.likes)}</span>
                     </button>
                     <button className="flex items-center space-x-1 hover:text-blue-500 transition-colors">
                       <MessageCircle className="h-4 w-4" />
-                      <span>{post.comments}</span>
+                      <span>{formatUtils.formatNumber(post.comments)}</span>
                     </button>
                     <div className="flex items-center space-x-1">
                       <Eye className="h-4 w-4" />
-                      <span>{post.views}</span>
+                      <span>{formatUtils.formatNumber(post.views)}</span>
                     </div>
                   </div>
                   

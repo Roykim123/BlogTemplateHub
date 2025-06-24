@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { User, Settings, Award, Coins, TrendingUp, Calendar, Crown, Plus, Edit, Trash2, Store } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { formatUtils } from "@/utils/optimizations";
 
 export default function MyPage() {
   const userLevel = "Gold";
@@ -157,7 +158,7 @@ export default function MyPage() {
                     </Badge>
                     <div className="flex items-center space-x-2">
                       <Coins className="h-4 w-4 text-yellow-600" />
-                      <span className="font-medium">{aiCash.toLocaleString()} 캐쉬</span>
+                      <span className="font-medium">{formatUtils.formatCurrency(aiCash)}</span>
                     </div>
                   </div>
                 </div>
@@ -179,7 +180,7 @@ export default function MyPage() {
                 </div>
                 <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
                   <DialogTrigger asChild>
-                    <Button size="sm" className="bg-hermes-orange hover:bg-hermes-orange/90">
+                    <Button size="sm" className="bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white">
                       <Plus className="h-4 w-4 mr-2" />
                       추가
                     </Button>
@@ -189,6 +190,9 @@ export default function MyPage() {
                       <DialogTitle>
                         {editingStore ? "상품정보 수정" : "새 상품정보 추가"}
                       </DialogTitle>
+                      <DialogDescription>
+                        {editingStore ? "기존 상품정보를 수정합니다." : "새로운 상품정보를 추가합니다. 첫 번째는 무료, 추가 상품정보는 500캐쉬가 필요합니다."}
+                      </DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4">
                       {!editingStore && storeInfos.length >= 1 && (
@@ -262,7 +266,7 @@ export default function MyPage() {
                       <div className="flex space-x-2">
                         <Button 
                           onClick={handleSaveStoreInfo} 
-                          className="flex-1 bg-hermes-orange hover:bg-hermes-orange/90"
+                          className="flex-1 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white"
                         >
                           저장하기
                         </Button>
@@ -321,6 +325,9 @@ export default function MyPage() {
                             <DialogContent className="max-w-2xl">
                               <DialogHeader>
                                 <DialogTitle>상품정보 수정</DialogTitle>
+                                <DialogDescription>
+                                  기존 상품정보를 수정합니다.
+                                </DialogDescription>
                               </DialogHeader>
                               <div className="space-y-4">
                                 <div className="grid grid-cols-2 gap-4">
