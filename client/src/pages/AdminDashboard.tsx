@@ -12,7 +12,10 @@ import {
   TrendingUp,
   UserCheck,
   AlertCircle,
-  BarChart3
+  BarChart3,
+  Image,
+  FileText,
+  Upload
 } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -23,6 +26,13 @@ export default function AdminDashboard() {
     monthlyGrowth: 23.5,
     aiCashIssued: 2450000,
     referrals: 1234
+  });
+
+  const [bannerSettings, setBannerSettings] = useState({
+    title: "AI와 함께하는 스마트한 일상",
+    subtitle: "걱정마AI로 당신의 생산성을 높이세요",
+    buttonText: "지금 시작하기",
+    backgroundImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
   });
 
   const [recentUsers] = useState([
