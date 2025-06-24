@@ -148,6 +148,9 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Redesigned SNS automation as single-page workflow: payment → progress dashboard → content creation with product loading → login status with Chrome integration → upload → completion with dashboard color changes
   - Added "작성하기" buttons to all blog templates for direct content creation
   - Integrated product information loading from MyPage into SNS content creation
+  - Fixed YouTube video display with proper aspect ratio and responsive design
+  - Replaced premium content with clickable YouTube links for better user experience
+  - Enhanced navigation sidebar hover visibility with bold text and improved contrast
 
 - June 24, 2025: Final customer-focused refinements and error fixes
   - Fixed TypeError in formatNumber utility with null/undefined safety checks
