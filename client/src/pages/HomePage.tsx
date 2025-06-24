@@ -1,177 +1,159 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Megaphone, Play, Star } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Star, TrendingUp, Zap, Users, Calendar, Play, CheckCircle, Target, Trophy, Lightbulb } from "lucide-react";
+import { useLocation } from "wouter";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function HomePage() {
-  const recentPosts = [
-    { id: 1, title: "블로그 수익화 3개월 만에 100만원 돌파!", author: "수익왕", date: "2025-01-20", replies: 24, hot: true },
-    { id: 2, title: "딸깍AI로 인스타 팔로워 1만 달성 후기", author: "인플루언서지망생", date: "2025-01-20", replies: 18 },
-    { id: 3, title: "ChatGPT 프롬프트 엔지니어링 완전정복", author: "AI전문가김씨", date: "2025-01-19", replies: 31, hot: true },
-    { id: 4, title: "네이버 블로그 SEO 최적화 꿀팁 10가지", author: "마케터박", date: "2025-01-19", replies: 15 }
+  const [, setLocation] = useLocation();
+  const { isAuthenticated } = useAuth();
+
+  const quickStats = [
+    { label: "총 사용자", value: "15,247명", change: "+12.3%", icon: Users, color: "text-blue-600" },
+    { label: "AI 글 생성", value: "128K+", change: "+24.7%", icon: Zap, color: "text-purple-600" },
+    { label: "블로그 자동화", value: "3,421개", change: "+18.2%", icon: Trophy, color: "text-green-600" },
+    { label: "평균 만족도", value: "4.8/5", change: "+0.3", icon: Star, color: "text-orange-600" }
   ];
 
-  const notices = [
-    { id: 1, title: "걱정마AI 서비스 업데이트 안내", date: "2025-01-20", important: true },
-    { id: 2, title: "신규 기능 추가 - 기능 사용법", date: "2025-01-19", important: false },
-    { id: 3, title: "🎉 2025년 신규 회원 특별 혜택", date: "2025-01-18", important: true },
-    { id: 4, title: "AI캐쉬 충전 이벤트 진행중", date: "2025-01-17", important: false }
+  const aiTools = [
+    { id: "sns-auto", name: "딸깍AI 자동포스팅", description: "SNS 콘텐츠 자동 생성 및 발행", users: "2.1K", rating: 4.9, hot: true },
+    { id: "blog-templates", name: "블로그 템플릿", description: "SEO 최적화 블로그 글 템플릿", users: "1.8K", rating: 4.8 },
+    { id: "insta-threads", name: "인스타/쓰레드 템플릿", description: "소셜미디어 전용 콘텐츠", users: "1.5K", rating: 4.7 },
+    { id: "youtube-auto", name: "유튜브 자동화", description: "유튜브 콘텐츠 기획 및 제작", users: "900", rating: 4.6, badge: "예정" }
   ];
 
   return (
-    <div className="h-full bg-white dark:bg-gray-900 p-4 overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-full max-h-[calc(100vh-100px)]">
-        {/* Left 60% - 2 vertical sections */}
-        <div className="lg:col-span-3 grid grid-rows-2 gap-4">
-          {/* Top Left - Message Board */}
-          <Card className="h-full">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <CardTitle className="text-lg font-semibold flex items-center space-x-2">
-                <MessageSquare className="h-5 w-5 text-hermes-orange" />
-                <span>사용자 게시판</span>
-              </CardTitle>
-              <Button variant="outline" size="sm">더보기</Button>
-            </CardHeader>
-            <CardContent className="space-y-2 max-h-48 overflow-y-auto">
-              {recentPosts.map((post) => (
-                <div key={post.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer group">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-2 mb-1">
-                      {post.hot && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                          🔥 HOT
-                        </span>
-                      )}
-                    </div>
-                    <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate group-hover:text-hermes-orange transition-colors">
-                      {post.title}
-                    </h4>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {post.author} · {post.date}
-                    </p>
-                  </div>
-                  <div className="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400">
-                    <MessageSquare className="h-3 w-3" />
-                    <span>{post.replies}</span>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-
-          {/* Bottom Left - Notice Section */}
-          <Card className="h-full">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
-              <CardTitle className="text-lg font-semibold flex items-center space-x-2">
-                <Megaphone className="h-5 w-5 text-hermes-orange" />
-                <span>공지사항</span>
-              </CardTitle>
-              <Button variant="outline" size="sm">전체보기</Button>
-            </CardHeader>
-            <CardContent className="space-y-2 max-h-48 overflow-y-auto">
-              {notices.map((notice) => (
-                <div key={notice.id} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-2">
-                      {notice.important && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">
-                          중요
-                        </span>
-                      )}
-                      <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-                        {notice.title}
-                      </h4>
-                    </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                      {notice.date}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </CardContent>
-          </Card>
+    <div className="h-full bg-gray-50 dark:bg-gray-900 overflow-y-auto">
+      <div className="max-w-7xl mx-auto p-6 space-y-8">
+        
+        {/* Welcome Section */}
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">
+            AI와 함께하는 
+            <span className="bg-gradient-to-r from-hermes-orange to-soft-pink bg-clip-text text-transparent"> 스마트한 일상</span>
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+            걱정마AI로 당신의 생산성을 높이고, AI 기술을 활용한 콘텐츠 제작의 새로운 경험을 시작해보세요
+          </p>
         </div>
 
-        {/* Right 40% - 2 vertical sections */}
-        <div className="lg:col-span-2 grid grid-rows-2 gap-4">
-          {/* Top Right - YouTube Video */}
-          <Card className="h-full">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg font-semibold flex items-center space-x-2">
-                <Play className="h-5 w-5 text-hermes-orange" />
-                <span>튜토리얼 영상</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="h-full">
-              <div className="relative w-full h-32 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                  title="걱정마AI 사용법"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
-              <div className="mt-3">
-                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
-                  걱정마AI 시작하기 - 기본 사용법
-                </h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
-                  초보자를 위한 완벽한 AI 글쓰기 가이드를 확인해보세요.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {quickStats.map((stat, index) => (
+            <Card key={index} className="relative overflow-hidden">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</p>
+                    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{stat.value}</p>
+                    <p className="text-sm text-green-600 font-medium">{stat.change}</p>
+                  </div>
+                  <stat.icon className={`h-8 w-8 ${stat.color}`} />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-          {/* Bottom Right - Premium Video Section */}
-          <Card className="h-full">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg font-semibold flex items-center space-x-2">
-                <Star className="h-5 w-5 text-hermes-orange" />
-                <span>프리미엄 콘텐츠</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 max-h-64 overflow-y-auto">
-              <div className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-3 rounded-lg">
-                <h4 className="font-semibold mb-1 text-sm">🎥 고급 AI 활용법</h4>
-                <p className="text-xs opacity-90 mb-2">
-                  전문가만 아는 AI 글쓰기 노하우를 공개합니다.
-                </p>
-                <Button 
-                  size="sm" 
-                  className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-6"
-                >
-                  지금 시청하기
-                </Button>
-              </div>
-              
-              <div className="border border-gray-200 dark:border-gray-700 p-3 rounded-lg">
-                <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">
-                  📚 마스터 클래스
-                </h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                  블로그 수익화부터 SEO 최적화까지
-                </p>
-                <Button variant="outline" size="sm" className="w-full text-xs h-6">
-                  자세히 보기
-                </Button>
-              </div>
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+          
+          {/* Left 60% - AI Tools */}
+          <div className="lg:col-span-3 space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Lightbulb className="h-6 w-6 text-hermes-orange" />
+                  <span>인기 AI 도구</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {aiTools.map((tool) => (
+                  <div 
+                    key={tool.id}
+                    onClick={() => setLocation(`/${tool.id}`)}
+                    className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-all cursor-pointer bg-white dark:bg-gray-800 hover:border-hermes-orange"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-2">
+                          <h3 className="font-semibold text-gray-900 dark:text-gray-100">{tool.name}</h3>
+                          {tool.hot && <Badge className="bg-red-100 text-red-800 text-xs">HOT</Badge>}
+                          {tool.badge && <Badge variant="outline" className="text-xs">{tool.badge}</Badge>}
+                        </div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">{tool.description}</p>
+                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                          <span>사용자 {tool.users}</span>
+                          <span className="flex items-center">
+                            <Star className="h-3 w-3 text-yellow-400 mr-1" />
+                            {tool.rating}
+                          </span>
+                        </div>
+                      </div>
+                      <Button size="sm" className="bg-hermes-orange hover:bg-hermes-orange/90 ml-4">
+                        시작하기
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </CardContent>
+            </Card>
+          </div>
 
-              <div className="border border-gray-200 dark:border-gray-700 p-3 rounded-lg">
-                <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm">
-                  🎯 1:1 컨설팅
-                </h4>
-                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
-                  개인 맞춤형 AI 활용 전략 상담
-                </p>
-                <Button variant="outline" size="sm" className="w-full text-xs h-6">
-                  예약하기
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          {/* Right 40% - Tutorial Video Section */}
+          <div className="lg:col-span-2">
+            {/* Tutorial Video - Expanded Height */}
+            <Card className="h-full">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-lg font-semibold flex items-center space-x-2">
+                  <Play className="h-5 w-5 text-hermes-orange" />
+                  <span>튜토리얼 영상</span>
+                  {isAuthenticated && (
+                    <Badge className="bg-green-100 text-green-800 text-xs">자동재생</Badge>
+                  )}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="h-[calc(100%-80px)]">
+                <div className="relative w-full h-full bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                  <div className="aspect-video w-full h-full">
+                    <iframe
+                      className="w-full h-full"
+                      src={`https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&modestbranding=1&rel=0${isAuthenticated ? '&autoplay=1' : ''}`}
+                      title="걱정마AI 사용법"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+                    걱정마AI 시작하기 - 기본 사용법
+                  </h4>
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    초보자를 위한 완벽한 AI 글쓰기 가이드를 확인해보세요. 
+                    {isAuthenticated ? ' 로그인하셨으니 자동으로 재생됩니다!' : ' 로그인하시면 자동 재생됩니다.'}
+                  </p>
+                  <div className="flex items-center space-x-4">
+                    <Badge variant="outline" className="text-xs">
+                      15분 강의
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      초급자용
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      2024년 최신
+                    </Badge>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
+
+
     </div>
   );
 }

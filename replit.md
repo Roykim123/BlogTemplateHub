@@ -151,6 +151,9 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Fixed YouTube video display with proper aspect ratio and responsive design
   - Replaced premium content with clickable YouTube links for better user experience
   - Enhanced navigation sidebar hover visibility with bold text and improved contrast
+  - Added autoplay functionality for tutorial video when user is logged in
+  - Expanded tutorial video section to full height for better viewing experience
+  - Simplified homepage layout with single tutorial video section
 
 - June 24, 2025: Final customer-focused refinements and error fixes
   - Fixed TypeError in formatNumber utility with null/undefined safety checks
