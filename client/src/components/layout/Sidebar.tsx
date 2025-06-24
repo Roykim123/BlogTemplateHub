@@ -115,7 +115,7 @@ export function Sidebar() {
                   key={item.id}
                   onClick={() => setLocation(item.path)}
                   className={cn(
-                    "w-full flex items-center rounded-lg transition-all duration-500 ease-in-out",
+                    "w-full flex items-center rounded-lg transition-all duration-500 ease-in-out text-gray-700 dark:text-gray-300",
                     isExpanded ? "px-3 py-2" : "px-3 py-3 justify-center",
                     currentPage === item.id
                       ? "bg-hermes-orange text-white shadow-md"

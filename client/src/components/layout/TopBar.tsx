@@ -26,7 +26,7 @@ export function TopBar() {
           className="flex items-center hover:opacity-80 transition-opacity"
         >
           <h1 className="text-lg sm:text-2xl font-black text-gray-800 dark:text-gray-200">
-            걱정마<span className="text-orange-500">AI</span><span className="hidden sm:inline text-sm sm:text-base font-normal ml-2">: 오늘도 우리는 쉬지 않습니다.</span>
+            걱정마<span className="text-orange-500">AI</span><span className="hidden sm:inline text-sm sm:text-base font-normal ml-2 text-gray-600 dark:text-gray-400">: 오늘도 우리는 쉬지 않습니다.</span>
           </h1>
         </button>
       </div>

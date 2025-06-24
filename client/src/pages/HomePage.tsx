@@ -191,8 +191,8 @@ export default function HomePage() {
                   className="border border-hermes-orange bg-orange-50 dark:bg-orange-900/20 p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
                   onClick={() => handleMenuNavigation('/challenger')}
                 >
-                  <h4 className="font-semibold mb-1 text-xs sm:text-sm" style={{color: '#f97316'}}>🏆 7일 챌린지</h4>
-                  <p className="text-xs mb-2 hidden sm:block" style={{color: '#374151'}}>AI 마스터가 되는 7일간의 특별한 여정</p>
+                  <h4 className="font-semibold mb-1 text-xs sm:text-sm text-hermes-orange">🏆 7일 챌린지</h4>
+                  <p className="text-xs mb-2 hidden sm:block text-gray-700 dark:text-gray-300">AI 마스터가 되는 7일간의 특별한 여정</p>
                   <Button 
                     size="sm" 
                     variant="outline"
@@ -206,8 +206,8 @@ export default function HomePage() {
                   className="border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
                   onClick={handleKakaoConsultation}
                 >
-                  <h4 className="font-semibold mb-1 text-xs sm:text-sm" style={{color: '#111827'}}>💬 1:1 컨설팅</h4>
-                  <p className="text-xs mb-2 hidden sm:block" style={{color: '#4b5563'}}>개인 맞춤형 AI 활용 전략을 상담받아보세요</p>
+                  <h4 className="font-semibold mb-1 text-xs sm:text-sm text-gray-900 dark:text-gray-100">💬 1:1 컨설팅</h4>
+                  <p className="text-xs mb-2 hidden sm:block text-gray-600 dark:text-gray-400">개인 맞춤형 AI 활용 전략을 상담받아보세요</p>
                   <Button 
                     size="sm" 
                     variant="outline"
