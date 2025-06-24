@@ -99,7 +99,8 @@ export const storage = {
 // Format utilities
 export const formatUtils = {
   // Efficient number formatting
-  formatNumber: (num: number): string => {
+  formatNumber: (num: number | undefined | null): string => {
+    if (!num || num === 0) return '0';
     if (num >= 1000000) {
       return (num / 1000000).toFixed(1) + 'M';
     }
@@ -128,7 +129,8 @@ export const formatUtils = {
   },
 
   // Currency formatting
-  formatCurrency: (amount: number): string => {
+  formatCurrency: (amount: number | undefined | null): string => {
+    if (!amount) return '0캐쉬';
     return amount.toLocaleString('ko-KR') + '캐쉬';
   }
 };

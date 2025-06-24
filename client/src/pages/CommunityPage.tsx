@@ -11,6 +11,8 @@ import { Heart, MessageCircle, Share2, Clock, Eye, TrendingUp, Plus, Edit, Trash
 import { boardSamples } from "@/data/boardSamples";
 import { useToast } from "@/hooks/use-toast";
 import { arrayUtils, formatUtils } from "@/utils/optimizations";
+import { EmptyState } from "@/components/ui/empty-state";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 
 export default function CommunityPage() {
   const [selectedBoard, setSelectedBoard] = useState<string | null>(null);
@@ -174,34 +176,34 @@ export default function CommunityPage() {
                     
                     {/* Show 5 recent posts preview */}
                     <div className="space-y-2 mb-4">
-                      {board.posts.slice(0, 5).map((post) => (
-                        <div key={post.id} className="flex items-center justify-between p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm">
+                      {board.posts && board.posts.length > 0 ? board.posts.slice(0, 5).map((post) => (
+                        <div key={post.id} className="flex items-center justify-between p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm cursor-pointer">
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-medium truncate">{post.title}</h4>
+                            <h4 className="font-medium truncate text-gray-800 dark:text-gray-200">{post.title}</h4>
                             <p className="text-xs text-gray-500">{post.author} • {post.createdAt}</p>
                           </div>
                           <div className="flex items-center space-x-2 text-xs text-gray-400">
                             <span className="flex items-center space-x-1">
                               <Heart className="h-3 w-3" />
-                              <span>{formatUtils.formatNumber(post.likes)}</span>
+                              <span>{formatUtils.formatNumber(post.likes || 0)}</span>
                             </span>
                             <span className="flex items-center space-x-1">
                               <MessageCircle className="h-3 w-3" />
-                              <span>{formatUtils.formatNumber(post.comments)}</span>
+                              <span>{formatUtils.formatNumber(post.comments || 0)}</span>
                             </span>
                           </div>
                         </div>
-                      ))}
-                      {board.posts.length === 0 && (
+                      )) : (
                         <p className="text-center text-gray-500 text-sm py-4">등록된 게시글이 없습니다</p>
                       )}
+
                     </div>
                     
                     <div className="flex items-center justify-between text-sm border-t pt-3">
                       <div className="flex items-center space-x-4">
                         <span className="flex items-center space-x-1">
                           <MessageCircle className="h-4 w-4" />
-                          <span>{board.posts.length}개 게시글</span>
+                          <span>{board.posts?.length || 0}개 게시글</span>
                         </span>
                       </div>
                       <span className="text-gray-500">
@@ -363,7 +365,7 @@ export default function CommunityPage() {
         </Card>
 
         <div className="grid gap-6">
-          {currentBoard?.posts.map((post) => (
+          {currentBoard?.posts && currentBoard.posts.length > 0 ? currentBoard.posts.map((post) => (
             <Card key={post.id} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
@@ -497,7 +499,75 @@ export default function CommunityPage() {
                 </div>
               </CardContent>
             </Card>
-          ))}
+          )) : (
+            <EmptyState
+              icon={MessageCircle}
+              title="게시글이 없습니다"
+              description={`${currentBoard?.name}에 등록된 게시글이 없습니다. 첫 번째 게시글을 작성해보세요!`}
+              action={
+                <Dialog open={isWriteModalOpen} onOpenChange={setIsWriteModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
+                      <Plus className="h-4 w-4 mr-2" />
+                      첫 게시글 작성하기
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl">
+                    <DialogHeader>
+                      <DialogTitle>새 게시글 작성</DialogTitle>
+                      <DialogDescription>
+                        {currentBoard?.name}에 새로운 게시글을 작성합니다.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">카테고리</label>
+                        <Select 
+                          value={newPost.category} 
+                          onValueChange={(value) => setNewPost({...newPost, category: value})}
+                        >
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="일반">일반</SelectItem>
+                            <SelectItem value="질문">질문</SelectItem>
+                            <SelectItem value="팁">팁</SelectItem>
+                            <SelectItem value="후기">후기</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">제목</label>
+                        <Input
+                          value={newPost.title}
+                          onChange={(e) => setNewPost({...newPost, title: e.target.value})}
+                          placeholder="제목을 입력하세요"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">내용</label>
+                        <Textarea
+                          value={newPost.content}
+                          onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+                          placeholder="내용을 입력하세요"
+                          rows={10}
+                        />
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button onClick={handleCreatePost} className="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white">
+                          작성하기
+                        </Button>
+                        <Button variant="outline" onClick={() => setIsWriteModalOpen(false)} className="flex-1">
+                          취소
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              }
+            />
+          )}
         </div>
       </div>
     </div>

@@ -14,7 +14,7 @@ export function TopBar() {
           onClick={() => setLocation("/")}
           className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
         >
-          <div className="w-8 h-8 bg-hermes-orange rounded-md flex items-center justify-center">
+          <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-md flex items-center justify-center shadow-md">
             <span className="text-white text-sm font-bold">걱</span>
           </div>
           <h1 className="text-2xl font-black text-gray-800 dark:text-gray-200">
