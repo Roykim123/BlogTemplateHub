@@ -50,7 +50,7 @@ export const AUTOMATION_ITEMS = [
   }
 ];
 
-// 3) 고객유치 (게시판/미니게임)
+// 3) 고객유치 (게시판)
 export const CUSTOMER_ITEMS = [
   {
     id: "community",
@@ -58,6 +58,17 @@ export const CUSTOMER_ITEMS = [
     icon: MessageCircle,
     path: "/community",
     description: "자유게시판"
+  }
+];
+
+// 관리자 전용 게임 메뉴
+export const ADMIN_GAME_ITEMS = [
+  {
+    id: "games",
+    label: "미니게임",
+    icon: Target,
+    path: "/games",
+    description: "AI캐쉬 미니게임"
   }
 ];
 

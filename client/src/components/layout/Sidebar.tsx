@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { DASHBOARD_ITEMS, AUTOMATION_ITEMS, CUSTOMER_ITEMS, USER_INFO_ITEMS, TUTORIAL_NAV } from "@/lib/constants";
+import { DASHBOARD_ITEMS, AUTOMATION_ITEMS, CUSTOMER_ITEMS, USER_INFO_ITEMS, ADMIN_GAME_ITEMS, TUTORIAL_NAV } from "@/lib/constants";
 import { useLocation } from "wouter";
 import { useMobile } from "@/hooks/use-mobile";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
@@ -44,13 +44,13 @@ export function Sidebar() {
             <button
               onClick={() => setLocation(item.path)}
               className={cn(
-                "w-12 h-12 flex items-center justify-center rounded-lg transition-all group relative mb-2",
+                "w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-lg transition-all group relative mb-2",
                 currentPage === item.id
                   ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
                   : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
               )}
             >
-              <item.icon className="h-6 w-6" />
+              <item.icon className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
           </TooltipTrigger>
           <TooltipContent side="right" className="ml-2">
@@ -65,7 +65,7 @@ export function Sidebar() {
   );
 
   return (
-    <nav className="fixed left-0 top-8 bottom-0 w-16 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col items-center py-4 z-40">
+    <nav className="fixed left-0 top-8 bottom-0 w-12 sm:w-16 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col items-center py-4 z-40">
       {/* 1) 대시보드 */}
       {renderNavSection(DASHBOARD_ITEMS)}
       
@@ -78,8 +78,11 @@ export function Sidebar() {
       {/* Divider */}
       <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
       
-      {/* 3) 고객유치 (게시판/미니게임) */}
+      {/* 3) 고객유치 (게시판) */}
       {renderNavSection(CUSTOMER_ITEMS)}
+      
+      {/* 관리자 전용 미니게임 */}
+      {isAdmin && renderNavSection(ADMIN_GAME_ITEMS)}
       
       {/* Divider */}
       <div className="w-10 h-px bg-gray-300 dark:bg-gray-600 my-3"></div>
@@ -128,13 +131,13 @@ export function Sidebar() {
                 <button
                   onClick={() => setLocation("/admin")}
                   className={cn(
-                    "w-12 h-12 flex items-center justify-center rounded-lg transition-all group relative",
+                    "w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-lg transition-all group relative",
                     currentPage === "admin"
                       ? "bg-hermes-orange text-white shadow-lg ring-2 ring-hermes-orange/30 ring-offset-2"
                       : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-md hover:ring-1 hover:ring-hermes-orange/20 hover:ring-offset-1"
                   )}
                 >
-                  <Settings className="h-6 w-6" />
+                  <Settings className="h-5 w-5 sm:h-6 sm:w-6" />
                 </button>
               </TooltipTrigger>
               <TooltipContent side="right" className="ml-2">
