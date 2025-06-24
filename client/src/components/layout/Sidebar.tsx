@@ -41,11 +41,9 @@ export function Sidebar() {
       title: "자동화 기능", 
       items: [
         { id: "sns-auto", label: "딸깍AI 자동포스팅", icon: Zap, path: "/sns-auto" },
-        { id: "progress", label: "진행 현황 관리", icon: BarChart3, path: "/progress" },
         { id: "blog-templates", label: "블로그 템플릿", icon: FileText, path: "/blog-templates" },
         { id: "insta-threads", label: "인스타/쓰레드 템플릿", icon: Instagram, path: "/insta-threads" },
-        { id: "youtube-auto", label: "유튜브 자동화", icon: Youtube, path: "/youtube-auto", badge: "예정" },
-        { id: "outsource", label: "외주 게시판", icon: Briefcase, path: "/outsource" }
+        { id: "youtube-auto", label: "유튜브 자동화", icon: Youtube, path: "/youtube-auto", badge: "예정" }
       ]
     },
     {

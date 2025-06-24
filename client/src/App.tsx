@@ -76,9 +76,7 @@ function Router() {
         <Route path="/insta-threads" component={() => <Layout><InstaThreadsPage /></Layout>} />
         <Route path="/challenger" component={() => <Layout><ChallengerPage /></Layout>} />
         <Route path="/premium-courses" component={() => <Layout><TutorialPage /></Layout>} />
-        <Route path="/progress" component={() => <Layout><AdminDashboard /></Layout>} />
         <Route path="/youtube-auto" component={() => <Layout><ToolsPage /></Layout>} />
-        <Route path="/outsource" component={() => <Layout><CommunityPage /></Layout>} />
         <Route path="/admin" component={() => <Layout><AdminDashboard /></Layout>} />
         <Route path="/blog-auto" component={() => <Layout><BlogAutoPage /></Layout>} />
         <Route path="/settings" component={() => <Layout><SettingsPage /></Layout>} />
