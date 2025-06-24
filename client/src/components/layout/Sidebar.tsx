@@ -90,7 +90,7 @@ export function Sidebar() {
   return (
     <nav 
       className={cn(
-        "fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col py-4 z-30 transition-all duration-700 ease-in-out group",
+        "fixed left-0 top-8 bottom-0 bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col py-4 z-30 transition-all duration-700 ease-in-out group",
         isExpanded ? "w-56" : "w-16"
       )}
       onMouseEnter={() => setIsExpanded(true)}
