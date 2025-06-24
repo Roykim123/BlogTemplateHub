@@ -95,8 +95,9 @@ export default function HomePage() {
           </Card>
         </div>
 
-        {/* Right 40% - Tutorial Video Section */}
-        <div className="lg:col-span-2">
+        {/* Right 40% - 2 vertical sections */}
+        <div className="lg:col-span-2 grid grid-rows-2 gap-4">
+          {/* Top Right - Tutorial Video */}
           <Card className="h-full">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg font-semibold flex items-center space-x-2">
@@ -107,37 +108,103 @@ export default function HomePage() {
                 )}
               </CardTitle>
             </CardHeader>
-            <CardContent className="h-[calc(100%-80px)]">
-              <div className="relative w-full h-full bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
-                <div className="aspect-video w-full h-full">
-                  <iframe
-                    className="w-full h-full"
-                    src={`https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&modestbranding=1&rel=0${isAuthenticated ? '&autoplay=1' : ''}`}
-                    title="걱정마AI 사용법"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  ></iframe>
-                </div>
+            <CardContent className="h-full">
+              <div className="relative w-full h-32 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
+                <iframe
+                  className="w-full h-full"
+                  src={`https://www.youtube.com/embed/dQw4w9WgXcQ?controls=1&modestbranding=1&rel=0${isAuthenticated ? '&autoplay=1' : ''}`}
+                  title="걱정마AI 사용법"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
               </div>
-              <div className="mt-4">
-                <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
+              <div className="mt-3">
+                <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-2">
                   걱정마AI 시작하기 - 기본 사용법
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  초보자를 위한 완벽한 AI 글쓰기 가이드를 확인해보세요. 
-                  {isAuthenticated ? ' 로그인하셨으니 자동으로 재생됩니다!' : ' 로그인하시면 자동 재생됩니다.'}
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  초보자를 위한 완벽한 AI 글쓰기 가이드를 확인해보세요.
+                  {isAuthenticated ? ' 자동재생 중!' : ' 로그인하면 자동재생됩니다.'}
                 </p>
-                <div className="flex items-center space-x-4">
-                  <Badge variant="outline" className="text-xs">
-                    15분 강의
-                  </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    초급자용
-                  </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    2024년 최신
-                  </Badge>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Bottom Right - Premium Content Section */}
+          <Card className="h-full">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg font-semibold flex items-center space-x-2">
+                <Star className="h-5 w-5 text-hermes-orange" />
+                <span>프리미엄 콘텐츠</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 max-h-64 overflow-y-auto">
+              <div 
+                className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-3 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
+                onClick={() => window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')}
+              >
+                <h4 className="font-semibold mb-1 text-sm flex items-center">
+                  <Play className="h-4 w-4 mr-2" />
+                  🎥 고급 AI 활용법
+                </h4>
+                <p className="text-xs opacity-90 mb-2">
+                  전문가만 아는 AI 글쓰기 노하우를 공개합니다.
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs opacity-75">15분 강의</span>
+                  <Button 
+                    size="sm" 
+                    className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-6"
+                  >
+                    YouTube에서 보기
+                  </Button>
+                </div>
+              </div>
+              
+              <div 
+                className="border border-gray-200 dark:border-gray-700 p-3 rounded-lg cursor-pointer hover:shadow-sm transition-shadow"
+                onClick={() => window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')}
+              >
+                <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm flex items-center">
+                  <Play className="h-4 w-4 mr-2 text-hermes-orange" />
+                  📚 마스터 클래스
+                </h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                  AI를 활용한 마케팅 전략과 실전 기법을 배워보세요.
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-500">25분 강의</span>
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    className="text-xs h-6"
+                  >
+                    YouTube에서 보기
+                  </Button>
+                </div>
+              </div>
+
+              <div 
+                className="border border-gray-200 dark:border-gray-700 p-3 rounded-lg cursor-pointer hover:shadow-sm transition-shadow"
+                onClick={() => window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank')}
+              >
+                <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-1 text-sm flex items-center">
+                  <Play className="h-4 w-4 mr-2 text-hermes-orange" />
+                  🚀 실전 프로젝트
+                </h4>
+                <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                  실제 프로젝트를 통해 AI 도구 활용법을 익혀보세요.
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-500">35분 강의</span>
+                  <Button 
+                    size="sm" 
+                    variant="outline"
+                    className="text-xs h-6"
+                  >
+                    YouTube에서 보기
+                  </Button>
                 </div>
               </div>
             </CardContent>
