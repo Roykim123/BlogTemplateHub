@@ -157,6 +157,11 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Restored premium content section with click-to-play YouTube videos
   - Centered content layout for consistent display across all monitor sizes
   - Enhanced tutorial video to fill available space within its section
+  - Fixed mobile responsiveness for Galaxy Fold5, iPhone, iPad, Galaxy Ultra
+  - Optimized title display and reduced bottom navigation height for mobile
+  - Added continuous YouTube video playback with loop parameter
+  - Improved text visibility in premium content with proper white text styling
+  - Updated community board categories and fixed missing content prompts
 
 - June 24, 2025: Final customer-focused refinements and error fixes
   - Fixed TypeError in formatNumber utility with null/undefined safety checks

@@ -97,7 +97,7 @@ export default function CommunityPage() {
     };
     
     setPosts([post, ...posts]);
-    setNewPost({ title: "", content: "", category: "일반" });
+    setNewPost({ title: "", content: "", category: "자유게시판" });
     setIsWriteModalOpen(false);
     toast({
       title: "게시글 작성 완료",
@@ -121,7 +121,7 @@ export default function CommunityPage() {
         : post
     ));
     setEditingPost(null);
-    setNewPost({ title: "", content: "", category: "일반" });
+    setNewPost({ title: "", content: "", category: "자유게시판" });
     toast({
       title: "게시글 수정 완료",
       description: "게시글이 성공적으로 수정되었습니다.",
@@ -194,7 +194,10 @@ export default function CommunityPage() {
                           </div>
                         </div>
                       )) : (
-                        <p className="text-center text-gray-500 text-sm py-4">등록된 게시글이 없습니다</p>
+                        <p className="text-center text-gray-500 text-sm py-4">
+                          등록된 게시글이 없습니다<br/>
+                          <span className="text-xs">첫 번째 게시글을 작성해보세요!</span>
+                        </p>
                       )}
 
                     </div>
@@ -226,7 +229,7 @@ export default function CommunityPage() {
             </CardHeader>
             <CardContent className="p-6">
               <div className="space-y-3">
-                {posts.filter(post => post.isHot).slice(0, 5).map((post) => (
+                {posts.filter(post => post.hot || post.isHot).slice(0, 5).map((post) => (
                   <div key={post.id} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
                     <Badge className="bg-red-500 text-white text-xs">HOT</Badge>
                     <Badge variant="outline" className="text-xs">
@@ -297,10 +300,10 @@ export default function CommunityPage() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="일반">일반</SelectItem>
-                        <SelectItem value="질문">질문</SelectItem>
-                        <SelectItem value="팁">팁</SelectItem>
-                        <SelectItem value="후기">후기</SelectItem>
+                        <SelectItem value="외주게시판">외주게시판</SelectItem>
+                        <SelectItem value="자유게시판">자유게시판</SelectItem>
+                        <SelectItem value="AI정보게시판">AI정보게시판</SelectItem>
+                        <SelectItem value="공지사항">공지사항</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

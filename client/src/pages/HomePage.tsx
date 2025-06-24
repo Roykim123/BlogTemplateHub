@@ -153,11 +153,11 @@ export default function HomePage() {
                   className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
                   onClick={() => handleMenuNavigation('/tutorial')}
                 >
-                  <h4 className="font-semibold mb-1 text-xs sm:text-sm">🎥 AI 활용법</h4>
-                  <p className="text-xs opacity-90 mb-2 hidden sm:block">전문가만 아는 AI 글쓰기 노하우를 배워보세요</p>
+                  <h4 className="font-bold mb-1 text-xs sm:text-sm text-white">🎥 AI 활용법</h4>
+                  <p className="text-xs text-white/90 mb-2 hidden sm:block">전문가만 아는 AI 글쓰기 노하우를 배워보세요</p>
                   <Button 
                     size="sm" 
-                    className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-5 sm:h-6 w-full"
+                    className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-5 sm:h-6 w-full font-medium"
                   >
                     튜토리얼 페이지로 이동
                   </Button>
