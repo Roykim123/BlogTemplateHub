@@ -18,7 +18,8 @@ import {
   Target,
   Award,
   Zap,
-  Briefcase
+  Briefcase,
+  FileText
 } from "lucide-react";
 
 // 1) 대시보드
@@ -32,21 +33,42 @@ export const DASHBOARD_ITEMS = [
   }
 ];
 
-// 2) 자동화기능 (블로그/기타)
+// 2) 자동화기능
 export const AUTOMATION_ITEMS = [
   {
-    id: "blog-auto",
+    id: "sns-auto",
     label: "딸깍AI",
     icon: Zap,
-    path: "/blog-auto",
-    description: "블로그 자동화"
+    path: "/sns-auto",
+    description: "SNS 자동화"
   },
   {
-    id: "tools",
-    label: "추가기능",
+    id: "blog-templates",
+    label: "블로그 템플릿",
+    icon: FileText,
+    path: "/blog-templates",
+    description: "블로그 템플릿"
+  },
+  {
+    id: "insta-threads",
+    label: "인스타/스레드",
+    icon: MessageCircle,
+    path: "/insta-threads",
+    description: "인스타/스레드 자동화"
+  },
+  {
+    id: "additional-ai",
+    label: "추가 AI",
     icon: Wrench,
-    path: "/tools",
-    description: "유튜브, 스레드 등"
+    path: "/additional-ai",
+    description: "기타 AI 도구"
+  },
+  {
+    id: "custom-requests",
+    label: "고객요청 AI",
+    icon: Users,
+    path: "/custom-requests",
+    description: "승인된 맞춤 기능"
   }
 ];
 

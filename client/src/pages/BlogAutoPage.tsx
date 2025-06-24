@@ -198,9 +198,9 @@ export default function BlogAutoPage() {
                       <Button 
                         onClick={generateContent}
                         disabled={isGenerating}
-                        className="bg-hermes-orange hover:bg-hermes-orange/90"
+                        className="bg-hermes-orange hover:bg-hermes-orange/90 text-xl font-bold py-6"
                       >
-                        {isGenerating ? "생성중..." : "바로 생성하기"}
+                        {isGenerating ? "생성중..." : "딸깍"}
                       </Button>
                     </div>
                   ) : (

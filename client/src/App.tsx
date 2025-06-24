@@ -24,6 +24,9 @@ import MyPage from "@/pages/MyPage";
 import CommunityPage from "@/pages/CommunityPage";
 import GamesPage from "@/pages/GamesPage";
 import BlogAutoPage from "@/pages/BlogAutoPage";
+import SnsAutoPage from "@/pages/SnsAutoPage";
+import InstaThreadsPage from "@/pages/InstaThreadsPage";
+import BlogTemplatesPage from "@/pages/BlogTemplatesPage";
 import SettingsPage from "@/pages/SettingsPage";
 import NotFound from "@/pages/not-found";
 
@@ -67,6 +70,11 @@ function Router() {
         <Route path="/mypage" component={() => <Layout><MyPage /></Layout>} />
         <Route path="/community" component={() => <Layout><CommunityPage /></Layout>} />
         <Route path="/games" component={() => <Layout><GamesPage /></Layout>} />
+        <Route path="/sns-auto" component={() => <Layout><SnsAutoPage /></Layout>} />
+        <Route path="/blog-templates" component={() => <Layout><BlogTemplatesPage /></Layout>} />
+        <Route path="/insta-threads" component={() => <Layout><InstaThreadsPage /></Layout>} />
+        <Route path="/additional-ai" component={() => <Layout><ToolsPage /></Layout>} />
+        <Route path="/custom-requests" component={() => <Layout><TemplatesPage /></Layout>} />
         <Route path="/blog-auto" component={() => <Layout><BlogAutoPage /></Layout>} />
         <Route path="/settings" component={() => <Layout><SettingsPage /></Layout>} />
         <Route path="/templates" component={() => <Layout><TemplatesPage /></Layout>} />
