@@ -34,7 +34,7 @@ export default function HomePage() {
       {/* Achievement Banner */}
       <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-6xl mx-auto px-4 py-3 sm:py-6">
+        <div className="relative max-w-6xl mx-auto px-4 py-2 sm:py-3">
           <div className="flex items-center justify-center space-x-2 sm:space-x-4">
             <div className="flex items-center space-x-1 sm:space-x-2">
               <div className="w-6 h-6 sm:w-8 sm:h-8 bg-yellow-400 rounded-full flex items-center justify-center">
