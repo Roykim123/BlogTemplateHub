@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Calendar, Trophy, Target, Zap, CheckCircle, PenTool, Play, Share2, Eye } from "lucide-react";
+import { Calendar, Trophy, Target, Zap, CheckCircle, PenTool, Play, Share2, Eye, Users } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 export default function ChallengerPage() {

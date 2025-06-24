@@ -16,7 +16,9 @@ import {
   Wallet,
   TrendingUp,
   Gift,
-  Zap
+  Zap,
+  Shield,
+  Users
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
