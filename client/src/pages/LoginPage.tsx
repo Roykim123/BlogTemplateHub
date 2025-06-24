@@ -39,7 +39,7 @@ export default function LoginPage() {
             걱정마<span className="text-orange-500">AI</span>
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            AI와 함께하는 스마트한 일상
+            🎉 2025년 서울AI허브 기업 선정 경축!
           </p>
         </div>
 

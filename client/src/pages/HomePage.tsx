@@ -169,21 +169,16 @@ export default function HomePage() {
               </CardHeader>
               <CardContent className="space-y-2 sm:space-y-3 max-h-48 sm:max-h-64 overflow-y-auto p-2 sm:p-6">
                 <div 
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
-                  onClick={() => handleMenuNavigation('/blog-templates')}
+                  className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
+                  onClick={() => handleMenuNavigation('/tutorial')}
                 >
-                  <h4 className="font-bold mb-1 text-xs sm:text-sm text-white">📝 정보성 블로그 v2 Upgrade!</h4>
-                  <div className="text-xs mb-2 text-white/90">
-                    <p>• 더 정확한 정보 제공과 최신 트렌드 반영</p>
-                    <p>• SEO 최적화된 글 구조로 검색 노출 향상</p>
-                    <p className="hidden sm:block">• 다양한 템플릿과 스타일 옵션 추가</p>
-                    <p className="hidden sm:block">• 빠른 생성 속도와 향상된 품질</p>
-                  </div>
+                  <h4 className="font-bold mb-1 text-xs sm:text-sm text-white">🎥 고급 AI활용법</h4>
+                  <p className="text-xs mb-2 hidden sm:block text-white/90">전문가만 아는 AI 글쓰기 노하우를 배워보세요</p>
                   <Button 
                     size="sm" 
-                    className="bg-white text-blue-600 hover:bg-gray-50 text-xs h-5 sm:h-6 w-full font-medium"
+                    className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-5 sm:h-6 w-full font-medium"
                   >
-                    업그레이드 확인하기
+                    튜토리얼 페이지로 이동
                   </Button>
                 </div>
                 
