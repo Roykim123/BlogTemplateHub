@@ -49,7 +49,7 @@ export default function LoginPage() {
               간편하게 시작하세요
             </CardTitle>
             <p className="text-gray-600 dark:text-gray-400">
-              카카오톡 계정으로 바로 이용할 수 있습니다
+              🏆 서울AI허브 선정 기념 특별 혜택과 함께 시작하세요
             </p>
           </CardHeader>
           <CardContent className="space-y-6">
