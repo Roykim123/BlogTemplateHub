@@ -22,7 +22,7 @@ export default function CommunityPage() {
   const [newPost, setNewPost] = useState({
     title: "",
     content: "",
-    category: "일반"
+    category: "자유게시판"
   });
   const { toast } = useToast();
 
@@ -30,10 +30,10 @@ export default function CommunityPage() {
   const filteredPosts = useMemo(() => {
     if (!selectedBoard) return [];
     const categoryMap: Record<string, string> = {
-      general: "일반",
-      question: "질문", 
-      tips: "팁",
-      review: "후기"
+      outsourcing: "외주게시판",
+      free: "자유게시판", 
+      aiinfo: "AI정보게시판",
+      notice: "공지사항"
     };
     return arrayUtils.filterWithEarlyReturn(
       posts, 
@@ -44,39 +44,39 @@ export default function CommunityPage() {
 
   const boardCategories = useMemo(() => [
     {
-      id: "general",
-      name: "일반 게시판",
-      description: "자유로운 소통과 정보 공유",
+      id: "outsourcing",
+      name: "외주게시판",
+      description: "개발/마케팅/디자인 외주 의뢰 및 제안",
       icon: Users,
       color: "from-blue-500 to-cyan-500",
-      posts: posts.filter(post => post.category === "일반"),
+      posts: posts.filter(post => post.category === "외주게시판"),
       latestPost: "2시간 전"
     },
     {
-      id: "question", 
-      name: "질문 게시판",
-      description: "AI 활용 관련 질문과 답변",
-      icon: HelpCircle,
+      id: "free", 
+      name: "자유게시판",
+      description: "자유로운 소통과 정보 공유",
+      icon: MessageCircle,
       color: "from-green-500 to-emerald-500", 
-      posts: posts.filter(post => post.category === "질문"),
+      posts: posts.filter(post => post.category === "자유게시판"),
       latestPost: "1시간 전"
     },
     {
-      id: "tips",
-      name: "팁 게시판", 
-      description: "유용한 팁과 노하우 공유",
+      id: "aiinfo",
+      name: "AI정보게시판", 
+      description: "AI 관련 최신 정보와 트렌드",
       icon: Lightbulb,
       color: "from-yellow-500 to-orange-500",
-      posts: posts.filter(post => post.category === "팁"),
+      posts: posts.filter(post => post.category === "AI정보게시판"),
       latestPost: "30분 전"
     },
     {
-      id: "review",
-      name: "후기 게시판",
-      description: "서비스 이용 후기와 경험담",
+      id: "notice",
+      name: "공지사항",
+      description: "중요한 공지사항과 업데이트",
       icon: Star, 
       color: "from-purple-500 to-pink-500",
-      posts: posts.filter(post => post.category === "후기"),
+      posts: posts.filter(post => post.category === "공지사항"),
       latestPost: "15분 전"
     }
   ], [posts]);

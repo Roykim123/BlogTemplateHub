@@ -148,58 +148,46 @@ export default function HomePage() {
                   <span>프리미엄 콘텐츠</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-3">
+              <CardContent className="space-y-3 max-h-64 overflow-y-auto">
                 <div 
-                  className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-4 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
+                  className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-3 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
                   onClick={() => handleMenuNavigation('/tutorial')}
                 >
-                  <h4 className="font-semibold mb-2 text-sm">
-                    🎥 AI 활용법
-                  </h4>
-                  <p className="text-xs opacity-90 mb-3">
-                    전문가만 아는 AI 글쓰기 노하우를 배워보세요
-                  </p>
+                  <h4 className="font-semibold mb-1 text-sm">🎥 AI 활용법</h4>
+                  <p className="text-xs opacity-90 mb-2">전문가만 아는 AI 글쓰기 노하우를 배워보세요</p>
                   <Button 
                     size="sm" 
-                    className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-7 w-full"
+                    className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-6"
                   >
                     튜토리얼 페이지로 이동
                   </Button>
                 </div>
                 
                 <div 
-                  className="border-2 border-hermes-orange bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
+                  className="border border-hermes-orange bg-orange-50 dark:bg-orange-900/20 p-3 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
                   onClick={() => handleMenuNavigation('/challenger')}
                 >
-                  <h4 className="font-semibold text-hermes-orange mb-2 text-sm">
-                    🏆 7일 챌린지
-                  </h4>
-                  <p className="text-xs text-gray-700 dark:text-gray-300 mb-3">
-                    AI 마스터가 되는 7일간의 특별한 여정
-                  </p>
+                  <h4 className="font-semibold text-hermes-orange mb-1 text-sm">🏆 7일 챌린지</h4>
+                  <p className="text-xs text-gray-700 dark:text-gray-300 mb-2">AI 마스터가 되는 7일간의 특별한 여정</p>
                   <Button 
                     size="sm" 
                     variant="outline"
-                    className="border-hermes-orange text-hermes-orange hover:bg-hermes-orange hover:text-white text-xs h-7 w-full"
+                    className="border-hermes-orange text-hermes-orange hover:bg-hermes-orange hover:text-white text-xs h-6"
                   >
                     챌린지 참여하기
                   </Button>
                 </div>
 
                 <div 
-                  className="border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
+                  className="border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-3 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
                   onClick={handleKakaoConsultation}
                 >
-                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 text-sm">
-                    💬 1:1 컨설팅
-                  </h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-3">
-                    개인 맞춤형 AI 활용 전략을 상담받아보세요
-                  </p>
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1 text-sm">💬 1:1 컨설팅</h4>
+                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">개인 맞춤형 AI 활용 전략을 상담받아보세요</p>
                   <Button 
                     size="sm" 
                     variant="outline"
-                    className="text-xs h-7 w-full"
+                    className="text-xs h-6 w-full"
                   >
                     카카오톡 상담하기
                   </Button>
