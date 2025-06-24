@@ -1,15 +1,94 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, Crown, Zap } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { 
+  CreditCard, 
+  Smartphone, 
+  Building2, 
+  Clock, 
+  CheckCircle, 
+  Star,
+  Coins,
+  Wallet,
+  TrendingUp,
+  Gift,
+  Zap
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function PaymentPage() {
-  const [selectedPlan, setSelectedPlan] = useState("pro");
-  const [activeTab, setActiveTab] = useState("plans");
+  const [userCash] = useState(2450);
+  const [chargeAmount, setChargeAmount] = useState("");
+  const { toast } = useToast();
+
+  const aiCashPackages = [
+    { id: 1, amount: 10000, bonus: 0, price: 10000, popular: false },
+    { id: 2, amount: 30000, bonus: 3000, price: 30000, popular: true },
+    { id: 3, amount: 50000, bonus: 7000, price: 50000, popular: false },
+    { id: 4, amount: 100000, bonus: 20000, price: 100000, popular: false }
+  ];
+
+  const subscriptionPlans = [
+    {
+      name: "Free",
+      price: "0",
+      description: "개인 사용자를 위한 기본 플랜",
+      features: ["월 10회 AI 글쓰기", "기본 템플릿 5개", "커뮤니티 참여"],
+      popular: false,
+      aiCashIncluded: 1000
+    },
+    {
+      name: "Basic",
+      price: "29,000",
+      description: "소규모 비즈니스에 적합",
+      features: ["월 100회 AI 글쓰기", "모든 템플릿 사용", "우선 고객지원", "고급 분석"],
+      popular: true,
+      aiCashIncluded: 30000
+    },
+    {
+      name: "Pro",
+      price: "59,000",
+      description: "전문가와 중견기업을 위한",
+      features: ["무제한 AI 글쓰기", "맞춤 템플릿 생성", "API 접근", "전담 매니저"],
+      popular: false,
+      aiCashIncluded: 70000
+    }
+  ];
+
+  const recentTransactions = [
+    { id: 1, type: "AI캐쉬 충전", plan: "30,000 캐쉬 + 보너스 3,000", amount: "30,000원", date: "2025-01-20", status: "완료" },
+    { id: 2, type: "구독", plan: "Basic 플랜", amount: "29,000원", date: "2025-01-15", status: "완료" },
+    { id: 3, type: "AI캐쉬 사용", plan: "프리미엄 강의", amount: "-50,000 캐쉬", date: "2025-01-10", status: "완료" },
+    { id: 4, type: "AI캐쉬 충전", plan: "10,000 캐쉬", amount: "10,000원", date: "2025-01-05", status: "완료" }
+  ];
+
+  const handleCharge = (packageInfo: any) => {
+    toast({
+      title: "AI캐쉬 충전 완료!",
+      description: `${packageInfo.amount.toLocaleString()}캐쉬${packageInfo.bonus > 0 ? ` + 보너스 ${packageInfo.bonus.toLocaleString()}캐쉬` : ''}가 충전되었습니다.`,
+    });
+  };
+
+  const handleCustomCharge = () => {
+    const amount = parseInt(chargeAmount);
+    if (amount && amount >= 1000) {
+      toast({
+        title: "AI캐쉬 충전 완료!",
+        description: `${amount.toLocaleString()}캐쉬가 충전되었습니다.`,
+      });
+      setChargeAmount("");
+    } else {
+      toast({
+        title: "잘못된 금액",
+        description: "최소 1,000원부터 충전 가능합니다.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const plans = [
     {
