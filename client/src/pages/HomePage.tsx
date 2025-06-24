@@ -43,7 +43,7 @@ export default function HomePage() {
               <span className="text-xs sm:text-base font-bold">2025년 서울AI허브 기업 선정</span>
             </div>
             <div className="hidden sm:block w-px h-6 bg-white/30"></div>
-            <span className="text-xs sm:text-sm opacity-90">🎉 경축! AI 혁신 기업으로 인정받았습니다</span>
+            <span className="text-xs sm:text-sm opacity-90">🎉 경축! AI 혁신 기업으로 선정되었습니다</span>
           </div>
         </div>
         <div className="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
@@ -172,8 +172,8 @@ export default function HomePage() {
                   className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-lg transition-shadow"
                   onClick={() => handleMenuNavigation('/tutorial')}
                 >
-                  <h4 className="font-bold mb-1 text-xs sm:text-sm text-white">🎥 고급 AI활용법</h4>
-                  <p className="text-xs text-white/90 mb-2 hidden sm:block">전문가만 아는 AI 글쓰기 노하우를 배워보세요</p>
+                  <h4 className="font-bold mb-1 text-xs sm:text-sm" style={{color: 'white'}}>🎥 고급 AI활용법</h4>
+                  <p className="text-xs mb-2 hidden sm:block" style={{color: 'rgba(255,255,255,0.9)'}}>전문가만 아는 AI 글쓰기 노하우를 배워보세요</p>
                   <Button 
                     size="sm" 
                     className="bg-white text-hermes-orange hover:bg-gray-50 text-xs h-5 sm:h-6 w-full font-medium"
@@ -186,8 +186,8 @@ export default function HomePage() {
                   className="border border-hermes-orange bg-orange-50 dark:bg-orange-900/20 p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
                   onClick={() => handleMenuNavigation('/challenger')}
                 >
-                  <h4 className="font-semibold text-hermes-orange mb-1 text-xs sm:text-sm">🏆 7일 챌린지</h4>
-                  <p className="text-xs text-gray-700 dark:text-gray-300 mb-2 hidden sm:block">AI 마스터가 되는 7일간의 특별한 여정</p>
+                  <h4 className="font-semibold mb-1 text-xs sm:text-sm" style={{color: '#f97316'}}>🏆 7일 챌린지</h4>
+                  <p className="text-xs mb-2 hidden sm:block" style={{color: '#374151'}}>AI 마스터가 되는 7일간의 특별한 여정</p>
                   <Button 
                     size="sm" 
                     variant="outline"
@@ -201,8 +201,8 @@ export default function HomePage() {
                   className="border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-2 sm:p-3 rounded-lg cursor-pointer hover:shadow-md transition-shadow"
                   onClick={handleKakaoConsultation}
                 >
-                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-1 text-xs sm:text-sm">💬 1:1 컨설팅</h4>
-                  <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 hidden sm:block">개인 맞춤형 AI 활용 전략을 상담받아보세요</p>
+                  <h4 className="font-semibold mb-1 text-xs sm:text-sm" style={{color: '#111827'}}>💬 1:1 컨설팅</h4>
+                  <p className="text-xs mb-2 hidden sm:block" style={{color: '#4b5563'}}>개인 맞춤형 AI 활용 전략을 상담받아보세요</p>
                   <Button 
                     size="sm" 
                     variant="outline"
