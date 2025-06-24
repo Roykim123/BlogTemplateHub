@@ -4,9 +4,11 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { TopBar } from "@/components/layout/TopBar";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { UpgradeModal } from "@/components/modals/UpgradeModal";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useMobile } from "@/hooks/use-mobile";
 import { useState, useEffect } from "react";
 
@@ -30,6 +32,7 @@ import BlogTemplatesPage from "@/pages/BlogTemplatesPage";
 import ChallengerPage from "@/pages/ChallengerPage";
 import SettingsPage from "@/pages/SettingsPage";
 import NotFound from "@/pages/not-found";
+import LoginPage from "@/pages/LoginPage";
 
 function Layout({ children }: { children: React.ReactNode }) {
   const isMobile = useMobile();
@@ -63,29 +66,33 @@ function Router() {
   return (
     <>
       <Switch>
+        <Route path="/login" component={LoginPage} />
+        
+        {/* Public routes */}
         <Route path="/" component={() => <Layout><HomePage /></Layout>} />
-        <Route path="/chatbot" component={() => <Layout><ChatPage /></Layout>} />
-        <Route path="/tools" component={() => <Layout><ToolsPage /></Layout>} />
-        <Route path="/rewards" component={() => <Layout><RewardsPage /></Layout>} />
-        <Route path="/referral" component={() => <Layout><ReferralPage /></Layout>} />
-        <Route path="/mypage" component={() => <Layout><MyPage /></Layout>} />
         <Route path="/community" component={() => <Layout><CommunityPage /></Layout>} />
-        <Route path="/games" component={() => <Layout><GamesPage /></Layout>} />
-        <Route path="/sns-auto" component={() => <Layout><SnsAutoPage /></Layout>} />
-        <Route path="/blog-templates" component={() => <Layout><BlogTemplatesPage /></Layout>} />
-        <Route path="/insta-threads" component={() => <Layout><InstaThreadsPage /></Layout>} />
-        <Route path="/challenger" component={() => <Layout><ChallengerPage /></Layout>} />
-        <Route path="/premium-courses" component={() => <Layout><TutorialPage /></Layout>} />
-        <Route path="/youtube-auto" component={() => <Layout><ToolsPage /></Layout>} />
-        <Route path="/admin" component={() => <Layout><AdminDashboard /></Layout>} />
-        <Route path="/blog-auto" component={() => <Layout><BlogAutoPage /></Layout>} />
-        <Route path="/settings" component={() => <Layout><SettingsPage /></Layout>} />
-        <Route path="/templates" component={() => <Layout><TemplatesPage /></Layout>} />
-        <Route path="/naver/reviews" component={() => <Layout><TemplatesPage /></Layout>} />
-        <Route path="/youtube/a1" component={() => <Layout><TemplatesPage /></Layout>} />
-        <Route path="/tutorial" component={() => <Layout><TutorialPage /></Layout>} />
-        <Route path="/admin" component={() => <Layout><AdminDashboard /></Layout>} />
-        <Route path="/payment" component={() => <Layout><PaymentPage /></Layout>} />
+        
+        {/* Protected routes */}
+        <Route path="/chatbot" component={() => <Layout><ProtectedRoute><ChatPage /></ProtectedRoute></Layout>} />
+        <Route path="/tools" component={() => <Layout><ProtectedRoute><ToolsPage /></ProtectedRoute></Layout>} />
+        <Route path="/rewards" component={() => <Layout><ProtectedRoute><RewardsPage /></ProtectedRoute></Layout>} />
+        <Route path="/referral" component={() => <Layout><ProtectedRoute><ReferralPage /></ProtectedRoute></Layout>} />
+        <Route path="/mypage" component={() => <Layout><ProtectedRoute><MyPage /></ProtectedRoute></Layout>} />
+        <Route path="/games" component={() => <Layout><ProtectedRoute><GamesPage /></ProtectedRoute></Layout>} />
+        <Route path="/sns-auto" component={() => <Layout><ProtectedRoute><SnsAutoPage /></ProtectedRoute></Layout>} />
+        <Route path="/blog-templates" component={() => <Layout><ProtectedRoute><BlogTemplatesPage /></ProtectedRoute></Layout>} />
+        <Route path="/insta-threads" component={() => <Layout><ProtectedRoute><InstaThreadsPage /></ProtectedRoute></Layout>} />
+        <Route path="/challenger" component={() => <Layout><ProtectedRoute><ChallengerPage /></ProtectedRoute></Layout>} />
+        <Route path="/premium-courses" component={() => <Layout><ProtectedRoute><TutorialPage /></ProtectedRoute></Layout>} />
+        <Route path="/youtube-auto" component={() => <Layout><ProtectedRoute><ToolsPage /></ProtectedRoute></Layout>} />
+        <Route path="/admin" component={() => <Layout><ProtectedRoute><AdminDashboard /></ProtectedRoute></Layout>} />
+        <Route path="/blog-auto" component={() => <Layout><ProtectedRoute><BlogAutoPage /></ProtectedRoute></Layout>} />
+        <Route path="/settings" component={() => <Layout><ProtectedRoute><SettingsPage /></ProtectedRoute></Layout>} />
+        <Route path="/templates" component={() => <Layout><ProtectedRoute><TemplatesPage /></ProtectedRoute></Layout>} />
+        <Route path="/naver/reviews" component={() => <Layout><ProtectedRoute><TemplatesPage /></ProtectedRoute></Layout>} />
+        <Route path="/youtube/a1" component={() => <Layout><ProtectedRoute><TemplatesPage /></ProtectedRoute></Layout>} />
+        <Route path="/tutorial" component={() => <Layout><ProtectedRoute><TutorialPage /></ProtectedRoute></Layout>} />
+        <Route path="/payment" component={() => <Layout><ProtectedRoute><PaymentPage /></ProtectedRoute></Layout>} />
         <Route component={NotFound} />
       </Switch>
       
@@ -101,10 +108,12 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Router />
+          </TooltipProvider>
+        </AuthProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
