@@ -30,8 +30,28 @@ export default function TutorialPage() {
   const [selectedLevel, setSelectedLevel] = useState("all");
   const [sortBy, setSortBy] = useState("popular");
   const [selectedCourse, setSelectedCourse] = useState<PremiumCourse | null>(null);
-  const [userCash] = useState(2450); // Mock user AI Cash
   const { toast } = useToast();
+
+  const handleWatchCourse = (course: PremiumCourse) => {
+    // Simulate AI Cash deduction
+    toast({
+      title: "강의 시청 시작",
+      description: `${course.title} 강의를 시청합니다. 10캐쉬가 차감되었습니다.`,
+    });
+    console.log('Watching course:', course.title);
+    // TODO: Implement actual watch logic with AI Cash deduction
+  };
+
+  const handleEnrollCourse = (course: PremiumCourse) => {
+    toast({
+      title: "강의 수강 신청",
+      description: `${course.title} 강의에 수강 신청했습니다. ${course.price.toLocaleString()}캐쉬가 차감되었습니다.`,
+    });
+    console.log('Enrolling in course:', course.title);
+    // TODO: Implement actual enrollment logic with AI Cash deduction
+  };
+
+  const [userCash] = useState(2450); // Mock user AI Cash
 
   const filteredCourses = premiumCourses.filter(course => {
     const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -54,22 +74,6 @@ export default function TutorialPage() {
         return 0;
     }
   });
-
-  const handleEnrollCourse = (course: PremiumCourse) => {
-    if (userCash >= course.price) {
-      toast({
-        title: "클래스 신청 완료!",
-        description: `${course.title} 강의를 신청했습니다. AI캐쉬 ${course.price.toLocaleString()}캐쉬가 차감되었습니다.`,
-      });
-      setSelectedCourse(null);
-    } else {
-      toast({
-        title: "AI캐쉬 부족",
-        description: "AI캐쉬가 부족합니다. 결제 메뉴에서 충전해주세요.",
-        variant: "destructive",
-      });
-    }
-  };
 
   return (
     <div className="h-full bg-white dark:bg-gray-900 p-4 sm:p-6 overflow-y-auto">
@@ -237,6 +241,15 @@ export default function TutorialPage() {
 
                         {/* Action buttons */}
                         <div className="space-y-3">
+                          <Button 
+                            onClick={() => handleWatchCourse(course)}
+                            variant="outline"
+                            className="w-full border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950"
+                          >
+                            <Play className="h-4 w-4 mr-2" />
+                            시청하기 (-10캐쉬)
+                          </Button>
+                          
                           <Dialog>
                             <DialogTrigger asChild>
                               <Button 
@@ -270,14 +283,23 @@ export default function TutorialPage() {
                                         <div className="text-2xl font-bold text-hermes-orange mb-2">
                                           {selectedCourse.price.toLocaleString()} 캐쉬
                                         </div>
-                                        <div className="space-y-2">
+                                        <div className="space-y-3">
+                                          <Button 
+                                            onClick={() => handleWatchCourse(selectedCourse)}
+                                            variant="outline"
+                                            className="w-full border-blue-500 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950"
+                                          >
+                                            <Play className="h-4 w-4 mr-2" />
+                                            시청하기 (-10캐쉬)
+                                          </Button>
                                           <Button
                                             onClick={() => handleEnrollCourse(selectedCourse)}
                                             className="w-full bg-hermes-orange hover:bg-hermes-orange/90"
                                           >
+                                            <BookOpen className="h-4 w-4 mr-2" />
                                             클래스 신청
                                           </Button>
-                                          <div className="flex items-center text-sm text-gray-500">
+                                          <div className="flex items-center justify-center text-sm text-gray-500">
                                             <Coins className="h-4 w-4 mr-1" />
                                             AI캐쉬로 결제
                                           </div>
