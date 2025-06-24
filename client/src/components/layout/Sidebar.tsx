@@ -119,14 +119,14 @@ export function Sidebar() {
                     isExpanded ? "px-3 py-2" : "px-3 py-3 justify-center",
                     currentPage === item.id
                       ? "bg-hermes-orange text-white shadow-md"
-                      : "text-gray-600 dark:text-gray-400 hover:bg-hermes-orange hover:text-white hover:shadow-sm"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
                   )}
                 >
                   <item.icon className={cn("flex-shrink-0", isExpanded ? "h-5 w-5" : "h-6 w-6")} />
                   
                   {isExpanded && (
                     <>
-                      <span className="ml-3 text-sm font-medium truncate">
+                      <span className="ml-3 text-sm font-medium truncate text-gray-700 dark:text-gray-300">
                         {item.label}
                       </span>
                       {item.badge && (

@@ -162,7 +162,7 @@ export default function HomePage() {
             {/* Bottom Right - Premium Content Section */}
             <Card className="h-full">
               <CardHeader className="pb-2 sm:pb-4">
-                <CardTitle className="text-sm sm:text-lg font-semibold flex items-center space-x-1 sm:space-x-2">
+                <CardTitle className="text-sm sm:text-lg font-semibold flex items-center space-x-1 sm:space-x-2 text-gray-900 dark:text-gray-100">
                   <Star className="h-4 w-4 sm:h-5 sm:w-5 text-hermes-orange" />
                   <span>프리미엄 콘텐츠</span>
                 </CardTitle>
