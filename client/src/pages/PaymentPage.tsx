@@ -90,280 +90,300 @@ export default function PaymentPage() {
     }
   };
 
-  const plans = [
-    {
-      id: "free",
-      name: "Free",
-      price: "무료",
-      originalPrice: "",
-      discount: "",
-      aiCash: "20 coin",
-      period: "14일간",
-      features: [
-        "G-코인 20 coin 제공 (유효기간 14일)",
-        "정보성 블로그 기준 10회 생성 가능",
-        "블로그 상위노출 AI 추천 키워드 제공",
-        "다양한 생성 AI 툴 무제한",
-        "한번에 1개 생성 결과물 제공",
-        "AI 이미지 생성 제공",
-        "생성 이력 3개월 저장",
-        "속도제한"
-      ],
-      popular: false
-    },
-    {
-      id: "basic",
-      name: "베이직",
-      price: "₩29,700원",
-      originalPrice: "₩54,000",
-      discount: "45%",
-      aiCash: "300 coin",
-      period: "/월",
-      features: [
-        "G-코인 300 coin 매월 충전",
-        "정보성 블로그 기준 월 150회 생성 가능",
-        "매장후기 블로그 기준 월 75회 생성 이용",
-        "블로그 상위노출 AI 추천 키워드 제공",
-        "다양한 생성 AI 툴 무제한",
-        "한번에 다건 생성 결과물 제공",
-        "황금키워드/스마트블록 키워드 제공",
-        "AI 이미지 생성 제공",
-        "가제트 생성 API 제공",
-        "생성 이력 3개월 저장",
-        "더 빠른 생성 속도"
-      ],
-      popular: true
-    },
-    {
-      id: "enterprise",
-      name: "엔터프라이즈",
-      price: "영업팀 문의",
-      originalPrice: "",
-      discount: "",
-      aiCash: "3,000+ coin",
-      period: "",
-      features: [
-        "G-코인 3,000 coin 이상 필요시 가능 (협의)",
-        "정보성 블로그 기준 월 1,500회 생성 가능",
-        "매장후기 블로그 기준 월 750회 생성 가능",
-        "블로그 상위노출 AI 추천 키워드 제공",
-        "다양한 생성 AI 툴 무제한",
-        "한번에 다건 생성 결과물 제공",
-        "AI 이미지 생성 제공",
-        "생성 이력 3개월 저장",
-        "더 빠른 생성 속도",
-        "별도 대량 글생성 후 txt 파일 제공",
-        "기업 전용 커스터마이징 및 API 제공",
-        "황금키워드/스마트블록 키워드 제공",
-        "엔터프라이즈 전담데스크"
-      ],
-      popular: false
-    }
-  ];
-
-  const coinPackages = [
-    { coins: 80, price: "$6.99", originalPrice: "$7.77" },
-    { coins: 200, price: "$14.99", originalPrice: "$16.66" },
-    { coins: 450, price: "$29.99", originalPrice: "$33.33" },
-    { coins: 1000, price: "$59.99", originalPrice: "$66.66" },
-    { coins: 2000, price: "$99.99", originalPrice: "$111.11" },
-    { coins: 3500, price: "$219.00", originalPrice: "$243.33", annual: true }
-  ];
-
-  const paymentHistory = [
-    { id: 1, date: "2025-01-15", plan: "프로", amount: "19,900원", status: "결제완료" },
-    { id: 2, date: "2024-12-15", plan: "프로", amount: "19,900원", status: "결제완료" },
-    { id: 3, date: "2024-11-15", plan: "프로", amount: "19,900원", status: "결제완료" },
-  ];
-
-  const userInfo = {
-    email: "user@example.com",
-    name: "홍길동",
-    currentPlan: "프로",
-    aiCash: "2,450 AI캐쉬",
-    nextBilling: "2025-02-15"
-  };
-
   return (
-    <div className="h-full bg-white dark:bg-gray-900 p-6 overflow-y-auto">
+    <div className="h-full bg-white dark:bg-gray-900 p-4 sm:p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto">
-        {/* Tab Navigation */}
-        <div className="flex space-x-1 mb-8 bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
-          {[
-            { id: "plans", label: "요금제" },
-            { id: "referral", label: "친구초대" }
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                activeTab === tab.id
-                  ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        <div className="mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">
+            결제 관리
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            AI캐쉬 충전 및 구독 요금제를 관리하세요
+          </p>
+          
+          {/* Current Balance */}
+          <div className="mt-4 p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center">
+                  <Coins className="h-6 w-6 text-yellow-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-800 dark:text-gray-200">현재 보유 AI캐쉬</h3>
+                  <p className="text-2xl font-bold text-yellow-600">{userCash.toLocaleString()}원</p>
+                </div>
+              </div>
+              <Button className="bg-yellow-500 hover:bg-yellow-600 text-white">
+                <Wallet className="h-4 w-4 mr-2" />
+                사용 내역
+              </Button>
+            </div>
+          </div>
         </div>
 
-        {activeTab === "plans" && (
-          <>
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">요금제</h1>
-              <p className="text-gray-600 dark:text-gray-400">좌우로 스크롤을 움직여서 원하는 요금제를 선택하세요</p>
-            </div>
+        <Tabs defaultValue="aicash" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="aicash">AI캐쉬 충전</TabsTrigger>
+            <TabsTrigger value="subscription">구독 요금제</TabsTrigger>
+            <TabsTrigger value="payment">결제 수단</TabsTrigger>
+            <TabsTrigger value="history">결제 내역</TabsTrigger>
+          </TabsList>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              {plans.map((plan) => (
-                <Card 
-                  key={plan.id}
-                  className={`relative cursor-pointer transition-all hover:shadow-lg ${
-                    selectedPlan === plan.id 
-                      ? "ring-2 ring-hermes-orange border-hermes-orange" 
-                      : "hover:border-gray-300"
-                  }`}
-                  onClick={() => setSelectedPlan(plan.id)}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                      <div className="bg-hermes-orange text-white px-3 py-1 rounded-full text-sm font-medium flex items-center space-x-1">
-                        <Crown className="h-3 w-3" />
-                        <span>인기</span>
-                      </div>
-                    </div>
-                  )}
-                  
-                  <CardHeader className="text-center">
-                    <CardTitle className="text-xl font-bold text-gray-800 dark:text-gray-200">
-                      {plan.name}
-                    </CardTitle>
-                    <div className="space-y-2">
-                      {plan.discount && (
-                        <div className="bg-red-100 text-red-600 px-2 py-1 rounded text-sm font-bold">
-                          {plan.discount} 할인
+          <TabsContent value="aicash" className="space-y-6">
+            {/* Quick Charge Packages */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center space-x-2">
+                  <Zap className="h-5 w-5 text-hermes-orange" />
+                  <span>AI캐쉬 충전 패키지</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {aiCashPackages.map((pkg) => (
+                    <Card key={pkg.id} className={`cursor-pointer hover:shadow-md transition-all ${pkg.popular ? 'ring-2 ring-hermes-orange' : ''}`}>
+                      {pkg.popular && (
+                        <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                          <Badge className="bg-hermes-orange text-white">
+                            <Star className="h-3 w-3 mr-1" />
+                            인기
+                          </Badge>
                         </div>
                       )}
-                      <div className="space-y-1">
-                        <div className="text-2xl font-bold text-hermes-orange">
-                          {plan.price}
-                          <span className="text-sm text-gray-500 font-normal">{plan.period}</span>
+                      <CardContent className="p-4 text-center">
+                        <div className="mb-3">
+                          <div className="text-2xl font-bold text-hermes-orange">
+                            {pkg.amount.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-gray-500">AI캐쉬</div>
                         </div>
-                        {plan.originalPrice && (
-                          <div className="text-sm text-gray-500 line-through">
-                            {plan.originalPrice}
+                        
+                        {pkg.bonus > 0 && (
+                          <div className="mb-3 p-2 bg-green-50 dark:bg-green-900/20 rounded">
+                            <div className="text-sm font-medium text-green-600">
+                              + {pkg.bonus.toLocaleString()} 보너스
+                            </div>
                           </div>
                         )}
+                        
+                        <div className="mb-3">
+                          <div className="text-lg font-semibold">
+                            {pkg.price.toLocaleString()}원
+                          </div>
+                        </div>
+                        
+                        <Button 
+                          onClick={() => handleCharge(pkg)}
+                          className={`w-full ${pkg.popular ? 'bg-hermes-orange hover:bg-hermes-orange/90' : ''}`}
+                          variant={pkg.popular ? 'default' : 'outline'}
+                        >
+                          충전하기
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Custom Amount Charge */}
+            <Card>
+              <CardHeader>
+                <CardTitle>직접 입력 충전</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col sm:flex-row gap-4 max-w-md">
+                  <Input
+                    type="number"
+                    placeholder="충전할 금액 (최소 1,000원)"
+                    value={chargeAmount}
+                    onChange={(e) => setChargeAmount(e.target.value)}
+                    min="1000"
+                    step="1000"
+                  />
+                  <Button onClick={handleCustomCharge} className="bg-hermes-orange hover:bg-hermes-orange/90">
+                    충전하기
+                  </Button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">
+                  * 최소 1,000원부터 충전 가능하며, 1,000원 단위로 충전됩니다.
+                </p>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="subscription" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {subscriptionPlans.map((plan) => (
+                <Card key={plan.name} className={`relative ${plan.popular ? 'ring-2 ring-hermes-orange' : ''}`}>
+                  {plan.popular && (
+                    <div className="absolute -top-2 left-1/2 transform -translate-x-1/2">
+                      <Badge className="bg-hermes-orange text-white">
+                        <Star className="h-3 w-3 mr-1" />
+                        인기
+                      </Badge>
+                    </div>
+                  )}
+                  <CardHeader className="text-center">
+                    <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                    <div className="text-3xl font-bold text-hermes-orange">
+                      {plan.price}원
+                      <span className="text-sm text-gray-500 font-normal">/월</span>
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-400">{plan.description}</p>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {/* AI Cash Included */}
+                    <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg text-center">
+                      <div className="flex items-center justify-center space-x-2 mb-1">
+                        <Coins className="h-4 w-4 text-yellow-600" />
+                        <span className="text-sm font-medium">AI캐쉬 포함</span>
                       </div>
-                      <div className="text-sm font-semibold text-blue-600">
-                        G-코인: {plan.aiCash}
+                      <div className="text-lg font-bold text-yellow-600">
+                        {plan.aiCashIncluded.toLocaleString()}원
                       </div>
                     </div>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <ul className="space-y-3 mb-4">
+
+                    <ul className="space-y-2">
                       {plan.features.map((feature, index) => (
                         <li key={index} className="flex items-center space-x-2">
-                          <Check className="h-4 w-4 text-green-500 flex-shrink-0" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{feature}</span>
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                          <span className="text-sm">{feature}</span>
                         </li>
                       ))}
                     </ul>
                     <Button 
-                      className={`w-full ${
-                        plan.popular 
-                          ? "bg-hermes-orange hover:bg-hermes-orange/90" 
-                          : "bg-gray-600 hover:bg-gray-700"
-                      }`}
+                      className={`w-full ${plan.popular ? 'bg-hermes-orange hover:bg-hermes-orange/90' : ''}`}
+                      variant={plan.popular ? 'default' : 'outline'}
                     >
-                      {plan.id === "enterprise" ? "영업팀 문의" : "선택하기"}
+                      {plan.name === 'Free' ? '현재 플랜' : '선택하기'}
                     </Button>
                   </CardContent>
                 </Card>
               ))}
             </div>
 
-            {/* Coin Packages */}
-            <div className="mb-8">
-              <h2 className="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 text-center">AI캐쉬 충전</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                {coinPackages.map((pkg, index) => (
-                  <Card key={index} className="text-center cursor-pointer hover:shadow-lg transition-shadow">
-                    <CardContent className="p-4">
-                      {pkg.annual && (
-                        <Badge className="bg-green-100 text-green-800 mb-2">연간 10% 할인</Badge>
-                      )}
-                      <div className="text-lg font-bold text-hermes-orange">{pkg.coins}캐쉬</div>
-                      <div className="text-sm font-semibold">{pkg.price}</div>
-                      {pkg.originalPrice && (
-                        <div className="text-xs text-gray-500 line-through">{pkg.originalPrice}</div>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </>
-        )}
-
-        {activeTab === "referral" && (
-          <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200">친구 초대</h2>
-            
-            <Card>
-              <CardHeader>
-                <CardTitle>친구를 초대하고 함께 AI캐쉬를 받으세요!</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            <Card className="bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800">
+              <CardContent className="p-6">
+                <div className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
+                    <TrendingUp className="h-6 w-6 text-blue-600" />
+                  </div>
                   <div>
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl">👥</span>
-                    </div>
-                    <h3 className="font-semibold mb-2">1. 친구 초대</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      초대 링크를 친구에게 공유하세요
+                    <h3 className="font-semibold text-blue-800 dark:text-blue-200 mb-2">
+                      구독 요금제 vs AI캐쉬 시스템
+                    </h3>
+                    <p className="text-sm text-blue-700 dark:text-blue-300">
+                      구독 요금제는 월정액으로 AI캐쉬가 자동 충전됩니다. 
+                      별도 충전 없이 서비스 내의 모든 기능을 AI캐쉬로 이용하실 수 있습니다.
                     </p>
                   </div>
-                  
-                  <div>
-                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl">✅</span>
-                    </div>
-                    <h3 className="font-semibold mb-2">2. 친구 가입</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      친구가 링크를 통해 가입 완료
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-2xl">🎁</span>
-                    </div>
-                    <h3 className="font-semibold mb-2">3. 보상 지급</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      둘 다 5,000 AI캐쉬 지급
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="mt-6 text-center">
-                  <Button 
-                    className="bg-hermes-orange hover:bg-hermes-orange/90"
-                    onClick={() => window.location.href = "/referral"}
-                  >
-                    지금 친구 초대하기
-                  </Button>
                 </div>
               </CardContent>
             </Card>
-          </div>
-        )}
+          </TabsContent>
 
+          <TabsContent value="payment" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>결제 수단</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <Card className="cursor-pointer hover:shadow-md transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <CreditCard className="h-12 w-12 mx-auto mb-4 text-hermes-orange" />
+                      <h3 className="font-semibold mb-2">신용카드</h3>
+                      <p className="text-sm text-gray-600">간편하고 안전한 카드 결제</p>
+                      <p className="text-xs text-gray-500 mt-2">VISA, MasterCard, JCB</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="cursor-pointer hover:shadow-md transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <Smartphone className="h-12 w-12 mx-auto mb-4 text-hermes-orange" />
+                      <h3 className="font-semibold mb-2">간편결제</h3>
+                      <p className="text-sm text-gray-600">모바일 간편결제</p>
+                      <p className="text-xs text-gray-500 mt-2">카카오페이, 네이버페이, 토스</p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="cursor-pointer hover:shadow-md transition-shadow">
+                    <CardContent className="p-6 text-center">
+                      <Building2 className="h-12 w-12 mx-auto mb-4 text-hermes-orange" />
+                      <h3 className="font-semibold mb-2">계좌이체</h3>
+                      <p className="text-sm text-gray-600">실시간 계좌이체</p>
+                      <p className="text-xs text-gray-500 mt-2">국내 모든 은행</p>
+                    </CardContent>
+                  </Card>
+                </div>
 
+                <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <h4 className="font-medium mb-2">결제 정보</h4>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                    <li>• 결제는 SSL 보안 프로토콜로 안전하게 처리됩니다</li>
+                    <li>• AI캐쉬 충전 후 환불은 사용하지 않은 캐쉬에 한해 가능합니다</li>
+                    <li>• 구독 요금제는 언제든지 변경 또는 해지 가능합니다</li>
+                  </ul>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-
+          <TabsContent value="history" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle>결제 내역</CardTitle>
+                  <Select defaultValue="all">
+                    <SelectTrigger className="w-32">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">전체</SelectItem>
+                      <SelectItem value="charge">충전</SelectItem>
+                      <SelectItem value="usage">사용</SelectItem>
+                      <SelectItem value="subscription">구독</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {recentTransactions.map((transaction) => (
+                    <div key={transaction.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <Badge 
+                            variant={transaction.type.includes('충전') ? 'default' : transaction.type.includes('사용') ? 'destructive' : 'outline'}
+                          >
+                            {transaction.type}
+                          </Badge>
+                          <span className="font-medium">{transaction.plan}</span>
+                        </div>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 flex items-center">
+                          <Clock className="h-3 w-3 mr-1" />
+                          {transaction.date}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <div className={`font-semibold ${transaction.amount.startsWith('-') ? 'text-red-600' : 'text-green-600'}`}>
+                          {transaction.amount}
+                        </div>
+                        <Badge 
+                          variant={transaction.status === '완료' ? 'default' : 'secondary'}
+                          className="mt-1"
+                        >
+                          {transaction.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
