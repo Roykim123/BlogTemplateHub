@@ -2,344 +2,361 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Zap, 
+  Clock, 
+  CheckCircle, 
+  Calendar, 
   TrendingUp, 
-  Store, 
-  Star, 
-  BookOpen, 
-  ShoppingBag,
-  ArrowRight,
-  Edit3,
-  Eye,
-  Upload,
-  CheckCircle,
-  Coins
+  Users,
+  Play,
+  Pause,
+  Settings,
+  ShoppingCart
 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function BlogAutoPage() {
-  const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [isAutomationActive, setIsAutomationActive] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [isGenerating, setIsGenerating] = useState(false);
-  const [generatedContent, setGeneratedContent] = useState("");
+  const [currentTask, setCurrentTask] = useState("");
+  const [generatedPosts, setGeneratedPosts] = useState(0);
+  const { toast } = useToast();
 
-  const blogTemplates = [
-    {
-      id: "traffic",
-      name: "방문자 늘리기",
-      description: "황금키워드 기준으로 글을 작성하여 방문자가 지속적으로 진입되게 합니다",
-      icon: TrendingUp,
-      cost: 0,
-      color: "bg-green-500",
-      inputs: []
-    },
-    {
-      id: "store",
-      name: "매장 홍보용 블로그",
-      description: "URL링크, 제품/상호명, 키워드, 해시태그 입력으로 매장 홍보",
-      icon: Store,
-      cost: 2,
-      color: "bg-blue-500",
-      inputs: ["url", "storeName", "keywords", "hashtags"]
-    },
-    {
-      id: "review",
-      name: "체험 후기/여행기",
-      description: "SEO 최적화 기반 광고주용 글 자동작성",
-      icon: Star,
-      cost: 3,
-      color: "bg-purple-500",
-      inputs: ["subject", "location", "experience"]
-    },
-    {
-      id: "expert",
-      name: "전문 정보 블로그",
-      description: "전문가의 글을 참고한 SEO형 2000자 블로그 생성",
-      icon: BookOpen,
-      cost: 4,
-      color: "bg-orange-500",
-      inputs: ["topic", "targetKeywords", "expertiseLevel"]
-    },
-    {
-      id: "business",
-      name: "부업/제품홍보 블로그",
-      description: "스마트스토어, 쿠팡 링크 기반 글 작성",
-      icon: ShoppingBag,
-      cost: 3,
-      color: "bg-red-500",
-      inputs: ["productLink", "productName", "targetAudience"]
-    }
-  ];
-
-  const workflowSteps = [
-    { id: 1, name: "키워드 입력", icon: Edit3, status: "completed" },
-    { id: 2, name: "AI 생성", icon: Zap, status: isGenerating ? "current" : "pending" },
-    { id: 3, name: "인터넷 접속", icon: TrendingUp, status: "pending" },
-    { id: 4, name: "업로딩", icon: Upload, status: "pending" },
-    { id: 5, name: "게시완료", icon: CheckCircle, status: "pending" }
-  ];
-
-  const generateContent = async () => {
-    setIsGenerating(true);
+  const handleStartAutomation = () => {
+    setIsAutomationActive(true);
     setProgress(0);
+    setCurrentTask("매장 정보 분석 중...");
+    setGeneratedPosts(0);
     
-    // Simulate AI generation process
-    const steps = 5;
-    for (let i = 0; i <= steps; i++) {
-      await new Promise(resolve => setTimeout(resolve, 800));
-      setProgress((i / steps) * 100);
-    }
+    // 진행도 시뮬레이션
+    const tasks = [
+      "매장 정보 분석 중...",
+      "키워드 리서치 진행 중...",
+      "AI 콘텐츠 생성 중...",
+      "SEO 최적화 적용 중...",
+      "블로그 포스팅 업로드 중...",
+      "완료!"
+    ];
     
-    setGeneratedContent(`
-# ${selectedTemplate === 'traffic' ? '방문자를 늘리는 블로그 포스트' : '생성된 블로그 콘텐츠'}
-
-이것은 AI가 생성한 샘플 블로그 콘텐츠입니다. 실제 서비스에서는 선택한 템플릿과 입력한 정보를 바탕으로 SEO 최적화된 고품질 콘텐츠가 생성됩니다.
-
-## 주요 특징
-- SEO 최적화된 키워드 배치
-- 독자 참여를 유도하는 구조
-- 검색엔진 친화적인 제목과 소제목
-- 자연스러운 키워드 밀도
-
-## 결론
-이 블로그 포스트는 target 키워드에 대한 상위 노출을 목표로 작성되었습니다.
-
-*귀여운이모티콘+ 2코인 사용됨*
-    `);
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      if (currentStep < tasks.length) {
+        setCurrentTask(tasks[currentStep]);
+        setProgress((currentStep / (tasks.length - 1)) * 100);
+        
+        if (currentStep >= 2) {
+          setGeneratedPosts(prev => prev + 1);
+        }
+      } else {
+        clearInterval(interval);
+        setCurrentTask("자동화 진행 중... (24시간 운영)");
+        setProgress(100);
+      }
+    }, 2000);
     
-    setIsGenerating(false);
+    toast({
+      title: "딸깍AI 자동화 시작!",
+      description: "블로그 자동화가 시작되었습니다.",
+    });
   };
 
-  const getStepColor = (status: string) => {
-    switch (status) {
-      case "completed": return "text-green-600 bg-green-100";
-      case "current": return "text-hermes-orange bg-orange-100";
-      default: return "text-gray-400 bg-gray-100";
-    }
+  const handlePauseAutomation = () => {
+    setIsAutomationActive(false);
+    setProgress(0);
+    setCurrentTask("");
+    toast({
+      title: "딸깍AI 자동화 일시정지",
+      description: "블로그 자동화가 일시정지되었습니다.",
+    });
+  };
+
+  const handlePurchaseAutomation = () => {
+    toast({
+      title: "딸깍AI 구매 완료!",
+      description: "딸깍AI 자동화 서비스를 구매했습니다. AI캐쉬 5000캐쉬가 차감되었습니다.",
+    });
   };
 
   return (
     <div className="h-full bg-white dark:bg-gray-900 p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">
-            딸깍AI - 블로그 자동화
-          </h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200">
+              ⚡ 딸깍AI 블로그 자동화
+            </h1>
+            <div className="flex space-x-2">
+              <Button
+                onClick={handlePurchaseAutomation}
+                className="bg-yellow-500 hover:bg-yellow-600"
+              >
+                <ShoppingCart className="h-4 w-4 mr-2" />
+                딸깍AI 구매하기
+              </Button>
+              {isAutomationActive ? (
+                <Button
+                  onClick={handlePauseAutomation}
+                  variant="outline"
+                  className="border-red-500 text-red-500 hover:bg-red-50"
+                >
+                  <Pause className="h-4 w-4 mr-2" />
+                  일시정지
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleStartAutomation}
+                  className="bg-hermes-orange hover:bg-hermes-orange/90"
+                >
+                  <Play className="h-4 w-4 mr-2" />
+                  딸깍 시작하기
+                </Button>
+              )}
+            </div>
+          </div>
           <p className="text-gray-600 dark:text-gray-400">
-            AI가 자동으로 SEO 최적화된 블로그 글을 작성해드립니다
+            AI가 자동으로 블로그 콘텐츠를 생성하고 발행합니다
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Template Selection */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>블로그 템플릿 선택</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {blogTemplates.map((template) => (
-                    <Card 
-                      key={template.id}
-                      className={`cursor-pointer transition-all hover:shadow-lg ${
-                        selectedTemplate === template.id 
-                          ? 'ring-2 ring-hermes-orange border-hermes-orange' 
-                          : ''
-                      }`}
-                      onClick={() => setSelectedTemplate(template.id)}
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex items-start space-x-3">
-                          <div className={`w-10 h-10 rounded-lg ${template.color} flex items-center justify-center`}>
-                            <template.icon className="h-5 w-5 text-white" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between mb-2">
-                              <h3 className="font-semibold text-sm">{template.name}</h3>
-                              <div className="flex items-center space-x-1">
-                                <Coins className="h-3 w-3 text-hermes-orange" />
-                                <span className="text-xs text-hermes-orange font-bold">
-                                  {template.cost}
-                                </span>
-                              </div>
-                            </div>
-                            <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">
-                              {template.description}
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+        {/* 매장 정보 선택 */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle>매장 정보 선택</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Select>
+              <SelectTrigger>
+                <SelectValue placeholder="사용할 매장 정보를 선택하세요" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="store1">카페 걱정마 - 아메리카노</SelectItem>
+                <SelectItem value="add-new">+ 새 매장 정보 추가 (마이페이지에서)</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-gray-500 mt-2">
+              매장 정보는 마이페이지 &gt; 상품정보에서 관리할 수 있습니다.
+            </p>
+          </CardContent>
+        </Card>
 
-            {/* Input Form */}
-            {selectedTemplate && (
-              <Card className="mt-6">
+        {/* 실시간 진행 상황 */}
+        {isAutomationActive && (
+          <Card className="mb-6 border-hermes-orange bg-orange-50 dark:bg-orange-900/10">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2 text-hermes-orange">
+                <Zap className="h-5 w-5 animate-pulse" />
+                <span>딸깍AI 실행 중</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span>{currentTask}</span>
+                    <span>{Math.round(progress)}%</span>
+                  </div>
+                  <Progress value={progress} className="h-3" />
+                </div>
+                
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div>
+                    <div className="text-xl font-bold text-hermes-orange">{generatedPosts}</div>
+                    <div className="text-xs text-gray-500">생성된 포스트</div>
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-hermes-orange">
+                      {isAutomationActive ? "진행중" : "대기"}
+                    </div>
+                    <div className="text-xs text-gray-500">현재 상태</div>
+                  </div>
+                  <div>
+                    <div className="text-xl font-bold text-hermes-orange">
+                      {new Date().toLocaleTimeString()}
+                    </div>
+                    <div className="text-xs text-gray-500">시작 시간</div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* 현재 진행 상황 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">오늘 생성</p>
+                  <p className="text-2xl font-bold">{24 + generatedPosts}</p>
+                </div>
+                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
+                  <Calendar className="h-6 w-6 text-blue-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">이번 달 총</p>
+                  <p className="text-2xl font-bold">347</p>
+                </div>
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+                  <TrendingUp className="h-6 w-6 text-green-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">평균 조회수</p>
+                  <p className="text-2xl font-bold">1.2K</p>
+                </div>
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center">
+                  <Users className="h-6 w-6 text-purple-600" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Tabs defaultValue="automation" className="space-y-6">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="automation">자동화 설정</TabsTrigger>
+            <TabsTrigger value="schedule">스케줄 관리</TabsTrigger>
+            <TabsTrigger value="analytics">성과 분석</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="automation" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
                 <CardHeader>
-                  <CardTitle>입력 정보</CardTitle>
+                  <CardTitle>자동화 설정</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {selectedTemplate === 'traffic' ? (
-                    <div className="text-center py-8">
-                      <Zap className="h-12 w-12 text-hermes-orange mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold mb-2">원클릭 생성</h3>
-                      <p className="text-gray-600 dark:text-gray-400 mb-4">
-                        추가 입력 없이 바로 글을 생성할 수 있습니다
-                      </p>
-                      <Button 
-                        onClick={generateContent}
-                        disabled={isGenerating}
-                        className="bg-hermes-orange hover:bg-hermes-orange/90 text-xl font-bold py-6"
-                      >
-                        {isGenerating ? "생성중..." : "딸깍"}
-                      </Button>
-                    </div>
-                  ) : (
-                    <>
-                      {selectedTemplate === 'store' && (
-                        <>
-                          <div className="space-y-2">
-                            <Label>매장 URL</Label>
-                            <Input placeholder="https://store.example.com" />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>매장/상호명</Label>
-                            <Input placeholder="우리 카페" />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>주요 키워드</Label>
-                            <Input placeholder="카페, 원두, 디저트" />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>해시태그</Label>
-                            <Input placeholder="#카페 #원두 #디저트" />
-                          </div>
-                        </>
-                      )}
-                      
-                      {selectedTemplate === 'review' && (
-                        <>
-                          <div className="space-y-2">
-                            <Label>체험 주제</Label>
-                            <Input placeholder="제주도 여행" />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>장소/위치</Label>
-                            <Input placeholder="제주도 서귀포시" />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>체험 내용</Label>
-                            <Textarea placeholder="어떤 체험을 했는지 간단히 설명해주세요" />
-                          </div>
-                        </>
-                      )}
-
-                      <Button 
-                        onClick={generateContent}
-                        disabled={isGenerating}
-                        className="w-full bg-hermes-orange hover:bg-hermes-orange/90"
-                      >
-                        {isGenerating ? "생성중..." : "AI 블로그 생성하기"}
-                      </Button>
-                    </>
-                  )}
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Generated Content */}
-            {generatedContent && (
-              <Card className="mt-6">
-                <CardHeader>
                   <div className="flex items-center justify-between">
-                    <CardTitle>생성된 콘텐츠</CardTitle>
-                    <div className="flex space-x-2">
-                      <Button variant="outline" size="sm">
-                        <Edit3 className="h-4 w-4 mr-2" />
-                        수정
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Eye className="h-4 w-4 mr-2" />
-                        미리보기
-                      </Button>
-                      <Button size="sm" className="bg-hermes-orange hover:bg-hermes-orange/90">
-                        <Upload className="h-4 w-4 mr-2" />
-                        발행하기
-                      </Button>
-                    </div>
+                    <span className="text-sm font-medium">AI 글쓰기 강도</span>
+                    <Badge variant="outline">창의적</Badge>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
-                    <pre className="whitespace-pre-wrap text-sm">{generatedContent}</pre>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">포스팅 주기</span>
+                    <Badge variant="outline">매일 3회</Badge>
                   </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">SEO 최적화</span>
+                    <Badge className="bg-green-100 text-green-800">활성</Badge>
+                  </div>
+                  <Button variant="outline" className="w-full">
+                    <Settings className="h-4 w-4 mr-2" />
+                    고급 설정
+                  </Button>
                 </CardContent>
               </Card>
-            )}
-          </div>
 
-          {/* Progress Dashboard */}
-          <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>자동 발행 플랫폼</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">네이버 블로그</span>
+                      <Badge className="bg-green-100 text-green-800">연결됨</Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">티스토리</span>
+                      <Badge className="bg-yellow-100 text-yellow-800">대기중</Badge>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">워드프레스</span>
+                      <Badge variant="outline">연결 필요</Badge>
+                    </div>
+                  </div>
+                  <Button variant="outline" className="w-full">
+                    플랫폼 연결 관리
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="schedule" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>업무 진척도</CardTitle>
+                <CardTitle>예약 발행 일정</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {workflowSteps.map((step, index) => (
-                    <div key={step.id} className="flex items-center space-x-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${getStepColor(step.status)}`}>
-                        <step.icon className="h-4 w-4" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-medium">{step.name}</p>
-                        {step.status === "current" && (
-                          <Progress value={progress} className="mt-1" />
-                        )}
-                      </div>
-                      {index < workflowSteps.length - 1 && (
-                        <ArrowRight className="h-4 w-4 text-gray-400" />
-                      )}
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-medium">오늘의 커피 트렌드</h4>
+                      <Badge className="bg-blue-100 text-blue-800">예약됨</Badge>
                     </div>
-                  ))}
+                    <p className="text-sm text-gray-600">발행 예정: 오후 2:00</p>
+                  </div>
+                  <div className="p-4 border rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-medium">신메뉴 소개 포스트</h4>
+                      <Badge className="bg-green-100 text-green-800">발행됨</Badge>
+                    </div>
+                    <p className="text-sm text-gray-600">발행 완료: 오전 10:30</p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>사용 안내</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm">
-                <div className="flex items-start space-x-2">
-                  <div className="w-2 h-2 bg-hermes-orange rounded-full mt-2"></div>
-                  <p>템플릿을 선택하고 필요한 정보를 입력하세요</p>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <div className="w-2 h-2 bg-hermes-orange rounded-full mt-2"></div>
-                  <p>AI가 SEO 최적화된 글을 자동 생성합니다</p>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <div className="w-2 h-2 bg-hermes-orange rounded-full mt-2"></div>
-                  <p>생성된 글은 수정 후 네이버 블로그로 발행됩니다</p>
-                </div>
-                <div className="flex items-start space-x-2">
-                  <div className="w-2 h-2 bg-hermes-orange rounded-full mt-2"></div>
-                  <p>글 하단에 사용된 코인 수가 표시됩니다</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+          <TabsContent value="analytics" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>이번 주 성과</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">총 조회수</span>
+                      <span className="font-semibold">12,450</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">평균 체류시간</span>
+                      <span className="font-semibold">2분 15초</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm">댓글 수</span>
+                      <span className="font-semibold">89</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>인기 키워드</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <Badge variant="outline" className="mr-2">#강남카페</Badge>
+                    <Badge variant="outline" className="mr-2">#아메리카노</Badge>
+                    <Badge variant="outline" className="mr-2">#커피맛집</Badge>
+                    <Badge variant="outline" className="mr-2">#데이트코스</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );

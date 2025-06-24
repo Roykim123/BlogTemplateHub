@@ -2,586 +2,524 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { 
-  User, 
-  Calendar, 
-  Mail,
-  CreditCard,
-  Gift,
-  Clock,
-  TrendingUp,
-  Award,
-  Key,
-  Settings,
-  Zap,
-  Shield
-} from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { User, Settings, Award, Coins, TrendingUp, Calendar, Crown, Plus, Edit, Trash2, Store } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function MyPage() {
-  const [userInfo] = useState({
-    name: "홍길동",
-    email: "hong@kakao.com",
-    joinDate: "2024년 11월 15일",
-    plan: "베이직",
-    aiCash: 2450,
-    totalUsage: 1247,
-    nextBilling: "2025-02-15",
-    level: 3,
-    levelPoints: 1250,
-    nextLevelPoints: 2000,
-    favoriteTools: ["AI 블로그 글쓰기", "AI 유튜브 스크립트", "AI 인스타그램 포스트"]
+  const userLevel = "Gold";
+  const progress = 65;
+  const aiCash = 12450;
+  const { toast } = useToast();
+
+  const [storeInfos, setStoreInfos] = useState([
+    {
+      id: 1,
+      storeName: "카페 걱정마",
+      productName: "아메리카노",
+      address: "서울시 강남구 테헤란로 123",
+      website: "https://ggokcafe.com",
+      description: "신선한 원두로 만든 프리미엄 커피",
+      mainKeyword: "강남 카페",
+      hashtags: "#강남카페 #아메리카노 #프리미엄커피"
+    }
+  ]);
+
+  const [newStoreInfo, setNewStoreInfo] = useState({
+    storeName: "",
+    productName: "",
+    address: "",
+    website: "",
+    description: "",
+    mainKeyword: "",
+    hashtags: ""
   });
 
-  const getLevelInfo = (level: number) => {
-    const levels = [
-      { name: "Red", color: "red", benefits: ["기본 기능 이용"] },
-      { name: "Orange", color: "orange", benefits: ["월 50 무료 캐시"] },
-      { name: "Yellow", color: "yellow", benefits: ["월 100 무료 캐시", "자동 요약 2회"] },
-      { name: "Green", color: "green", benefits: ["월 200 무료 캐시", "자동 요약 5회"] },
-      { name: "Blue", color: "blue", benefits: ["월 300 무료 캐시", "게시글 상단 노출"] },
-      { name: "Indigo", color: "indigo", benefits: ["월 500 무료 캐시", "외주 자동 승인"] },
-      { name: "Violet", color: "violet", benefits: ["월 1000 무료 캐시", "모든 프리미엄 기능"] }
-    ];
-    return levels[level - 1] || levels[0];
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingStore, setEditingStore] = useState<any>(null);
+
+  const handleSaveStoreInfo = () => {
+    if (storeInfos.length >= 1 && !editingStore) {
+      // 2개부터는 캐시 차감
+      const cashRequired = 500;
+      if (aiCash >= cashRequired) {
+        toast({
+          title: "상품정보 추가 완료!",
+          description: `새 상품정보가 추가되었습니다. AI캐쉬 ${cashRequired}캐쉬가 차감되었습니다.`,
+        });
+      } else {
+        toast({
+          title: "AI캐쉬 부족",
+          description: "AI캐쉬가 부족합니다. 결제 메뉴에서 충전해주세요.",
+          variant: "destructive",
+        });
+        return;
+      }
+    }
+
+    if (editingStore) {
+      setStoreInfos(storeInfos.map(store => 
+        store.id === editingStore.id 
+          ? { ...store, ...newStoreInfo }
+          : store
+      ));
+      setEditingStore(null);
+      toast({
+        title: "상품정보 수정 완료!",
+        description: "상품정보가 성공적으로 수정되었습니다.",
+      });
+    } else {
+      const newStore = {
+        id: storeInfos.length + 1,
+        ...newStoreInfo
+      };
+      setStoreInfos([...storeInfos, newStore]);
+      toast({
+        title: "상품정보 저장 완료!",
+        description: storeInfos.length === 0 ? "첫 번째 상품정보가 무료로 저장되었습니다." : "상품정보가 저장되었습니다.",
+      });
+    }
+
+    setNewStoreInfo({
+      storeName: "",
+      productName: "",
+      address: "",
+      website: "",
+      description: "",
+      mainKeyword: "",
+      hashtags: ""
+    });
+    setIsAddModalOpen(false);
   };
 
-  const [apiKeys, setApiKeys] = useState({
-    openai: "",
-    claude: "",
-    gemini: "",
-    googleai: ""
-  });
+  const handleEditStore = (store: any) => {
+    setEditingStore(store);
+    setNewStoreInfo({
+      storeName: store.storeName,
+      productName: store.productName,
+      address: store.address,
+      website: store.website,
+      description: store.description,
+      mainKeyword: store.mainKeyword,
+      hashtags: store.hashtags
+    });
+  };
 
-  const [paymentHistory] = useState([
-    { id: 1, date: "2025-01-15", plan: "베이직", amount: "29,700원", status: "결제완료" },
-    { id: 2, date: "2024-12-15", plan: "베이직", amount: "29,700원", status: "결제완료" },
-    { id: 3, date: "2024-11-15", plan: "베이직", amount: "29,700원", status: "결제완료" },
-  ]);
-
-  const [activityData] = useState([
-    { date: "2025-01-20", activity: "AI 블로그 글쓰기 사용", aiCash: -50 },
-    { date: "2025-01-19", activity: "친구 초대 완료", aiCash: +5000 },
-    { date: "2025-01-18", activity: "출석 체크", aiCash: +100 },
-    { date: "2025-01-17", activity: "AI 유튜브 스크립트 사용", aiCash: -75 },
-    { date: "2025-01-16", activity: "AI 인스타그램 포스트 사용", aiCash: -30 }
-  ]);
-
-  const [achievements] = useState([
-    { title: "첫 글 작성", description: "첫 번째 AI 글쓰기 완료", unlocked: true },
-    { title: "활발한 사용자", description: "월 100회 이상 사용", unlocked: true },
-    { title: "친구 초대왕", description: "10명 이상 친구 초대", unlocked: true },
-    { title: "충성 고객", description: "6개월 연속 구독", unlocked: false },
-    { title: "AI 마스터", description: "모든 도구 사용 경험", unlocked: false }
-  ]);
+  const handleDeleteStore = (storeId: number) => {
+    setStoreInfos(storeInfos.filter(store => store.id !== storeId));
+    toast({
+      title: "상품정보 삭제 완료",
+      description: "상품정보가 성공적으로 삭제되었습니다.",
+    });
+  };
 
   return (
     <div className="h-full bg-white dark:bg-gray-900 p-6 overflow-y-auto">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">마이페이지</h1>
-          <p className="text-gray-600 dark:text-gray-400">나의 활동 현황과 계정 정보를 확인하세요</p>
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-4">
+            👤 마이페이지
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            프로필 정보와 계정 설정을 관리하세요
+          </p>
         </div>
 
-        <Tabs defaultValue="profile" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="profile">프로필</TabsTrigger>
-            <TabsTrigger value="level">등급</TabsTrigger>
-            <TabsTrigger value="subscription">구독 정보</TabsTrigger>
-            <TabsTrigger value="api">API 설정</TabsTrigger>
-            <TabsTrigger value="activity">활동 내역</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="profile" className="space-y-6">
-
-        {/* Profile Overview */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <Card className="lg:col-span-1">
-            <CardHeader className="text-center">
-              <Avatar className="w-20 h-20 mx-auto mb-4">
-                <AvatarFallback className="text-xl bg-hermes-orange text-white">
-                  {userInfo.name.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-              <CardTitle className="text-xl">{userInfo.name}</CardTitle>
-              <Badge className="bg-hermes-orange text-white">{userInfo.plan} 플랜</Badge>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <Mail className="h-4 w-4 text-gray-500" />
-                <span className="text-sm">{userInfo.email}</span>
-              </div>
-              <div className="space-y-2">
-                <Label>로그인 방식</Label>
-                <div className="flex items-center space-x-2 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg">
-                  <div className="w-6 h-6 bg-yellow-400 rounded flex items-center justify-center">
-                    <span className="text-xs font-bold">카</span>
-                  </div>
-                  <span className="text-sm">카카오톡 로그인</span>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Calendar className="h-4 w-4 text-gray-500" />
-                <span className="text-sm">가입일: {userInfo.joinDate}</span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="lg:col-span-2">
-            <CardHeader>
-              <CardTitle>사용 통계</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <CreditCard className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-blue-600">{userInfo.aiCash.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">보유 AI캐쉬</div>
-                </div>
-                
-                <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <TrendingUp className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-green-600">{userInfo.totalUsage}</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">총 사용횟수</div>
-                </div>
-                
-                <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                  <Gift className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-purple-600">12</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">초대한 친구</div>
-                </div>
-                
-                <div className="text-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                  <Clock className="h-8 w-8 text-hermes-orange mx-auto mb-2" />
-                  <div className="text-2xl font-bold text-hermes-orange">87</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">연속 출석일</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Recent Activity & Achievements */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="space-y-6">
+          {/* 프로필 정보 */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Clock className="h-5 w-5" />
-                <span>최근 활동</span>
+                <User className="h-5 w-5" />
+                <span>프로필 정보</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4 max-h-64 overflow-y-auto">
-                {activityData.map((activity, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                    <div>
-                      <p className="text-sm font-medium">{activity.activity}</p>
-                      <p className="text-xs text-gray-500">{activity.date}</p>
-                    </div>
-                    <div className={`text-sm font-semibold ${
-                      activity.aiCash > 0 ? 'text-green-600' : 'text-red-600'
-                    }`}>
-                      {activity.aiCash > 0 ? '+' : ''}{activity.aiCash} AI캐쉬
+              <div className="flex items-center space-x-6">
+                <Avatar className="h-20 w-20">
+                  <AvatarImage src="/api/placeholder/100/100" />
+                  <AvatarFallback className="bg-hermes-orange text-white text-xl">
+                    김
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <h3 className="text-xl font-semibold mb-1">김걱정마</h3>
+                  <p className="text-gray-600 dark:text-gray-400 mb-2">ggokcafe@example.com</p>
+                  <div className="flex items-center space-x-4">
+                    <Badge className="bg-hermes-orange text-white">
+                      {userLevel} 회원
+                    </Badge>
+                    <div className="flex items-center space-x-2">
+                      <Coins className="h-4 w-4 text-yellow-600" />
+                      <span className="font-medium">{aiCash.toLocaleString()} 캐쉬</span>
                     </div>
                   </div>
-                ))}
+                </div>
+                <Button variant="outline">
+                  <Settings className="h-4 w-4 mr-2" />
+                  편집
+                </Button>
               </div>
             </CardContent>
           </Card>
 
+          {/* 상품정보 */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Store className="h-5 w-5" />
+                  <span>상품정보</span>
+                </div>
+                <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button size="sm" className="bg-hermes-orange hover:bg-hermes-orange/90">
+                      <Plus className="h-4 w-4 mr-2" />
+                      추가
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl">
+                    <DialogHeader>
+                      <DialogTitle>
+                        {editingStore ? "상품정보 수정" : "새 상품정보 추가"}
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      {!editingStore && storeInfos.length >= 1 && (
+                        <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                          <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                            ⚠️ 첫 번째 상품정보는 무료이며, 2개부터는 500캐쉬가 차감됩니다.
+                          </p>
+                        </div>
+                      )}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-sm font-medium mb-2 block">매장명</label>
+                          <Input
+                            value={newStoreInfo.storeName}
+                            onChange={(e) => setNewStoreInfo({...newStoreInfo, storeName: e.target.value})}
+                            placeholder="매장명을 입력하세요"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium mb-2 block">상품명</label>
+                          <Input
+                            value={newStoreInfo.productName}
+                            onChange={(e) => setNewStoreInfo({...newStoreInfo, productName: e.target.value})}
+                            placeholder="상품명을 입력하세요"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">주소</label>
+                        <Input
+                          value={newStoreInfo.address}
+                          onChange={(e) => setNewStoreInfo({...newStoreInfo, address: e.target.value})}
+                          placeholder="매장 주소를 입력하세요"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">홈페이지 주소</label>
+                        <Input
+                          value={newStoreInfo.website}
+                          onChange={(e) => setNewStoreInfo({...newStoreInfo, website: e.target.value})}
+                          placeholder="https://example.com"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">상세설명</label>
+                        <Textarea
+                          value={newStoreInfo.description}
+                          onChange={(e) => setNewStoreInfo({...newStoreInfo, description: e.target.value})}
+                          placeholder="상품/매장에 대한 상세설명을 입력하세요"
+                          rows={3}
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-sm font-medium mb-2 block">메인 키워드</label>
+                          <Input
+                            value={newStoreInfo.mainKeyword}
+                            onChange={(e) => setNewStoreInfo({...newStoreInfo, mainKeyword: e.target.value})}
+                            placeholder="메인 키워드"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium mb-2 block">해시태그</label>
+                          <Input
+                            value={newStoreInfo.hashtags}
+                            onChange={(e) => setNewStoreInfo({...newStoreInfo, hashtags: e.target.value})}
+                            placeholder="#태그1 #태그2 #태그3"
+                          />
+                        </div>
+                      </div>
+                      <div className="flex space-x-2">
+                        <Button 
+                          onClick={handleSaveStoreInfo} 
+                          className="flex-1 bg-hermes-orange hover:bg-hermes-orange/90"
+                        >
+                          저장하기
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          onClick={() => {
+                            setIsAddModalOpen(false);
+                            setEditingStore(null);
+                            setNewStoreInfo({
+                              storeName: "",
+                              productName: "",
+                              address: "",
+                              website: "",
+                              description: "",
+                              mainKeyword: "",
+                              hashtags: ""
+                            });
+                          }} 
+                          className="flex-1"
+                        >
+                          취소
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {storeInfos.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                  <Store className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                  <p>등록된 상품정보가 없습니다.</p>
+                  <p className="text-sm">첫 번째 상품정보는 무료로 등록할 수 있습니다.</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {storeInfos.map((store) => (
+                    <div key={store.id} className="p-4 border rounded-lg">
+                      <div className="flex items-start justify-between mb-2">
+                        <div>
+                          <h3 className="font-medium">{store.storeName}</h3>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">{store.productName}</p>
+                        </div>
+                        <div className="flex space-x-1">
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button 
+                                variant="ghost" 
+                                size="sm" 
+                                onClick={() => handleEditStore(store)}
+                              >
+                                <Edit className="h-3 w-3" />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-2xl">
+                              <DialogHeader>
+                                <DialogTitle>상품정보 수정</DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4">
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div>
+                                    <label className="text-sm font-medium mb-2 block">매장명</label>
+                                    <Input
+                                      value={newStoreInfo.storeName}
+                                      onChange={(e) => setNewStoreInfo({...newStoreInfo, storeName: e.target.value})}
+                                      placeholder="매장명을 입력하세요"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="text-sm font-medium mb-2 block">상품명</label>
+                                    <Input
+                                      value={newStoreInfo.productName}
+                                      onChange={(e) => setNewStoreInfo({...newStoreInfo, productName: e.target.value})}
+                                      placeholder="상품명을 입력하세요"
+                                    />
+                                  </div>
+                                </div>
+                                <div>
+                                  <label className="text-sm font-medium mb-2 block">주소</label>
+                                  <Input
+                                    value={newStoreInfo.address}
+                                    onChange={(e) => setNewStoreInfo({...newStoreInfo, address: e.target.value})}
+                                    placeholder="매장 주소를 입력하세요"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-sm font-medium mb-2 block">홈페이지 주소</label>
+                                  <Input
+                                    value={newStoreInfo.website}
+                                    onChange={(e) => setNewStoreInfo({...newStoreInfo, website: e.target.value})}
+                                    placeholder="https://example.com"
+                                  />
+                                </div>
+                                <div>
+                                  <label className="text-sm font-medium mb-2 block">상세설명</label>
+                                  <Textarea
+                                    value={newStoreInfo.description}
+                                    onChange={(e) => setNewStoreInfo({...newStoreInfo, description: e.target.value})}
+                                    placeholder="상품/매장에 대한 상세설명을 입력하세요"
+                                    rows={3}
+                                  />
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                  <div>
+                                    <label className="text-sm font-medium mb-2 block">메인 키워드</label>
+                                    <Input
+                                      value={newStoreInfo.mainKeyword}
+                                      onChange={(e) => setNewStoreInfo({...newStoreInfo, mainKeyword: e.target.value})}
+                                      placeholder="메인 키워드"
+                                    />
+                                  </div>
+                                  <div>
+                                    <label className="text-sm font-medium mb-2 block">해시태그</label>
+                                    <Input
+                                      value={newStoreInfo.hashtags}
+                                      onChange={(e) => setNewStoreInfo({...newStoreInfo, hashtags: e.target.value})}
+                                      placeholder="#태그1 #태그2 #태그3"
+                                    />
+                                  </div>
+                                </div>
+                                <div className="flex space-x-2">
+                                  <Button 
+                                    onClick={handleSaveStoreInfo} 
+                                    className="flex-1 bg-hermes-orange hover:bg-hermes-orange/90"
+                                  >
+                                    수정하기
+                                  </Button>
+                                  <Button 
+                                    variant="outline" 
+                                    onClick={() => setEditingStore(null)} 
+                                    className="flex-1"
+                                  >
+                                    취소
+                                  </Button>
+                                </div>
+                              </div>
+                            </DialogContent>
+                          </Dialog>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleDeleteStore(store.id)}
+                            className="text-red-500 hover:text-red-700"
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="text-xs text-gray-500 space-y-1">
+                        <p>📍 {store.address}</p>
+                        <p>🔗 {store.website}</p>
+                        <p>🔑 {store.mainKeyword}</p>
+                        <p>{store.hashtags}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* 등급 정보 */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
                 <Award className="h-5 w-5" />
-                <span>업적</span>
+                <span>등급 정보</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-3 max-h-64 overflow-y-auto">
-                {achievements.map((achievement, index) => (
-                  <div key={index} className={`flex items-center space-x-3 p-3 rounded-lg ${
-                    achievement.unlocked 
-                      ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700' 
-                      : 'bg-gray-50 dark:bg-gray-800 opacity-60'
-                  }`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                      achievement.unlocked 
-                        ? 'bg-green-500 text-white' 
-                        : 'bg-gray-400 text-gray-200'
-                    }`}>
-                      <Award className="h-4 w-4" />
-                    </div>
-                    <div>
-                      <p className={`text-sm font-medium ${
-                        achievement.unlocked ? 'text-green-800 dark:text-green-200' : 'text-gray-500'
-                      }`}>
-                        {achievement.title}
-                      </p>
-                      <p className={`text-xs ${
-                        achievement.unlocked ? 'text-green-600 dark:text-green-400' : 'text-gray-400'
-                      }`}>
-                        {achievement.description}
-                      </p>
-                    </div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full flex items-center justify-center">
+                    <Crown className="h-6 w-6 text-white" />
                   </div>
-                ))}
+                  <div>
+                    <h3 className="font-semibold text-lg">{userLevel} 등급</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">다음 등급까지 {100 - progress}% 남음</p>
+                  </div>
+                </div>
+                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white">
+                  Premium
+                </Badge>
+              </div>
+              
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>진행도</span>
+                  <span>{progress}%</span>
+                </div>
+                <Progress value={progress} className="h-2" />
+              </div>
+
+              <div className="mt-4 grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-hermes-orange">156</div>
+                  <div className="text-xs text-gray-500">총 사용 횟수</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-hermes-orange">23</div>
+                  <div className="text-xs text-gray-500">이번 달 사용</div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-hermes-orange">7</div>
+                  <div className="text-xs text-gray-500">연속 사용일</div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 최근 활동 */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <TrendingUp className="h-5 w-5" />
+                <span>최근 활동</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center space-x-4">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center">
+                    <Calendar className="h-4 w-4 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium">AI 블로그 글 생성</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">2시간 전</p>
+                  </div>
+                  <Badge variant="outline">완료</Badge>
+                </div>
+                
+                <div className="flex items-center space-x-4">
+                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
+                    <Coins className="h-4 w-4 text-green-600" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium">AI캐쉬 충전</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">1일 전</p>
+                  </div>
+                  <Badge className="bg-green-100 text-green-800">+10,000</Badge>
+                </div>
+                
+                <div className="flex items-center space-x-4">
+                  <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center">
+                    <Award className="h-4 w-4 text-purple-600" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium">Gold 등급 달성</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">3일 전</p>
+                  </div>
+                  <Badge className="bg-yellow-100 text-yellow-800">업그레이드</Badge>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
-
-            {/* Favorite Tools */}
-            <Card>
-              <CardHeader>
-                <CardTitle>자주 사용하는 도구</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {userInfo.favoriteTools.map((tool, index) => (
-                    <div key={index} className="flex items-center space-x-3 p-4 bg-gradient-to-r from-hermes-orange to-soft-pink text-white rounded-lg">
-                      <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center">
-                        <span className="text-hermes-orange font-bold text-sm">AI</span>
-                      </div>
-                      <div>
-                        <p className="font-medium text-sm">{tool}</p>
-                        <p className="text-xs opacity-90">자주 사용함</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="level" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Award className="h-5 w-5" />
-                  <span>내 등급 현황</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="text-center">
-                  <div className={`w-24 h-24 rounded-full bg-${getLevelInfo(userInfo.level).color}-500 text-white flex items-center justify-center mx-auto mb-4`}>
-                    <span className="text-2xl font-bold">{getLevelInfo(userInfo.level).name}</span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">{getLevelInfo(userInfo.level).name} 등급</h3>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    레벨 포인트: {userInfo.levelPoints.toLocaleString()} / {userInfo.nextLevelPoints.toLocaleString()}
-                  </p>
-                </div>
-
-                <div className="w-full bg-gray-200 rounded-full h-3">
-                  <div 
-                    className={`bg-${getLevelInfo(userInfo.level).color}-500 h-3 rounded-full transition-all`}
-                    style={{width: `${(userInfo.levelPoints / userInfo.nextLevelPoints) * 100}%`}}
-                  ></div>
-                </div>
-
-                <Card className="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20">
-                  <CardHeader>
-                    <CardTitle className="text-lg">현재 등급 혜택</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      {getLevelInfo(userInfo.level).benefits.map((benefit, index) => (
-                        <li key={index} className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-hermes-orange rounded-full"></div>
-                          <span className="text-sm">{benefit}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <div className="grid grid-cols-1 md:grid-cols-7 gap-2">
-                  {[1,2,3,4,5,6,7].map((level) => {
-                    const levelInfo = getLevelInfo(level);
-                    const isCurrentLevel = level === userInfo.level;
-                    const isUnlocked = level <= userInfo.level;
-                    
-                    return (
-                      <div 
-                        key={level} 
-                        className={`text-center p-3 rounded-lg border-2 transition-all ${
-                          isCurrentLevel 
-                            ? `border-${levelInfo.color}-500 bg-${levelInfo.color}-50 dark:bg-${levelInfo.color}-900/20` 
-                            : isUnlocked 
-                              ? `border-${levelInfo.color}-300` 
-                              : 'border-gray-300 opacity-50'
-                        }`}
-                      >
-                        <div className={`w-8 h-8 rounded-full bg-${levelInfo.color}-500 text-white flex items-center justify-center mx-auto mb-2 text-xs font-bold`}>
-                          {level}
-                        </div>
-                        <p className="text-xs font-medium">{levelInfo.name}</p>
-                        {isCurrentLevel && (
-                          <Badge className="mt-1 text-xs">현재</Badge>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-lg">레벨업 조건</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">AI캐쉬 사용량</span>
-                        <span className="text-sm font-medium">70%</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">콘텐츠 생성 수</span>
-                        <span className="text-sm font-medium">45%</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">커뮤니티 참여</span>
-                        <span className="text-sm font-medium">60%</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">미니게임 참여</span>
-                        <span className="text-sm font-medium">30%</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="subscription" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>현재 구독 정보</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">현재 플랜</p>
-                    <p className="font-semibold">{userInfo.plan}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">보유 AI캐쉬</p>
-                    <p className="font-semibold text-hermes-orange">{userInfo.aiCash.toLocaleString()} AI캐쉬</p>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">다음 결제일</p>
-                    <p className="font-semibold">{userInfo.nextBilling}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>결제 내역</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {paymentHistory.map((payment) => (
-                    <div key={payment.id} className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
-                      <div>
-                        <p className="font-medium">{payment.plan} 플랜</p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">{payment.date}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-semibold">{payment.amount}</p>
-                        <p className="text-sm text-green-600">{payment.status}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="api" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Key className="h-5 w-5" />
-                  <span>AI API 키 관리</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                      <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                        <Zap className="h-6 w-6 text-green-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium">OpenAI GPT</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">ChatGPT, GPT-4 모델</p>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="openai-key">API 키</Label>
-                      <Input
-                        id="openai-key"
-                        type="password"
-                        placeholder="sk-..."
-                        value={apiKeys.openai}
-                        onChange={(e) => setApiKeys({...apiKeys, openai: e.target.value})}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                      <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                        <Shield className="h-6 w-6 text-purple-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium">Claude</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Anthropic Claude 모델</p>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="claude-key">API 키</Label>
-                      <Input
-                        id="claude-key"
-                        type="password"
-                        placeholder="sk-ant-..."
-                        value={apiKeys.claude}
-                        onChange={(e) => setApiKeys({...apiKeys, claude: e.target.value})}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                      <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                        <Settings className="h-6 w-6 text-blue-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium">Google Gemini</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Gemini Pro 모델</p>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="gemini-key">API 키</Label>
-                      <Input
-                        id="gemini-key"
-                        type="password"
-                        placeholder="AIza..."
-                        value={apiKeys.gemini}
-                        onChange={(e) => setApiKeys({...apiKeys, gemini: e.target.value})}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg">
-                      <div className="w-12 h-12 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
-                        <User className="h-6 w-6 text-red-600" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="font-medium">Google AI</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Google AI Platform</p>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="googleai-key">API 키</Label>
-                      <Input
-                        id="googleai-key"
-                        type="password"
-                        placeholder="AIza..."
-                        value={apiKeys.googleai}
-                        onChange={(e) => setApiKeys({...apiKeys, googleai: e.target.value})}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex justify-end">
-                  <Button className="bg-hermes-orange hover:bg-hermes-orange/90">
-                    API 키 저장
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="activity" className="space-y-6">
-            {/* Recent Activity & Achievements */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Clock className="h-5 w-5" />
-                    <span>최근 활동</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4 max-h-64 overflow-y-auto">
-                    {activityData.map((activity, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                        <div>
-                          <p className="text-sm font-medium">{activity.activity}</p>
-                          <p className="text-xs text-gray-500">{activity.date}</p>
-                        </div>
-                        <div className={`text-sm font-semibold ${
-                          activity.aiCash > 0 ? 'text-green-600' : 'text-red-600'
-                        }`}>
-                          {activity.aiCash > 0 ? '+' : ''}{activity.aiCash} AI캐쉬
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center space-x-2">
-                    <Award className="h-5 w-5" />
-                    <span>업적</span>
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3 max-h-64 overflow-y-auto">
-                    {achievements.map((achievement, index) => (
-                      <div key={index} className={`flex items-center space-x-3 p-3 rounded-lg ${
-                        achievement.unlocked 
-                          ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700' 
-                          : 'bg-gray-50 dark:bg-gray-800 opacity-60'
-                      }`}>
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                          achievement.unlocked 
-                            ? 'bg-green-500 text-white' 
-                            : 'bg-gray-400 text-gray-200'
-                        }`}>
-                          <Award className="h-4 w-4" />
-                        </div>
-                        <div>
-                          <p className={`text-sm font-medium ${
-                            achievement.unlocked ? 'text-green-800 dark:text-green-200' : 'text-gray-500'
-                          }`}>
-                            {achievement.title}
-                          </p>
-                          <p className={`text-xs ${
-                            achievement.unlocked ? 'text-green-600 dark:text-green-400' : 'text-gray-400'
-                          }`}>
-                            {achievement.description}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
-        </Tabs>
       </div>
     </div>
   );
