@@ -24,14 +24,30 @@ export default function CommunityPage() {
   });
   const { toast } = useToast();
 
-  const boardCategories = [
+  // Always call useMemo - no conditional hooks
+  const filteredPosts = useMemo(() => {
+    if (!selectedBoard) return [];
+    const categoryMap: Record<string, string> = {
+      general: "일반",
+      question: "질문", 
+      tips: "팁",
+      review: "후기"
+    };
+    return arrayUtils.filterWithEarlyReturn(
+      posts, 
+      post => post.category === categoryMap[selectedBoard],
+      50 // Limit to 50 posts for performance
+    );
+  }, [posts, selectedBoard]);
+
+  const boardCategories = useMemo(() => [
     {
       id: "general",
       name: "일반 게시판",
       description: "자유로운 소통과 정보 공유",
       icon: Users,
       color: "from-blue-500 to-cyan-500",
-      posts: posts.filter(post => post.category === "일반").length,
+      posts: posts.filter(post => post.category === "일반"),
       latestPost: "2시간 전"
     },
     {
@@ -40,7 +56,7 @@ export default function CommunityPage() {
       description: "AI 활용 관련 질문과 답변",
       icon: HelpCircle,
       color: "from-green-500 to-emerald-500", 
-      posts: posts.filter(post => post.category === "질문").length,
+      posts: posts.filter(post => post.category === "질문"),
       latestPost: "1시간 전"
     },
     {
@@ -49,7 +65,7 @@ export default function CommunityPage() {
       description: "유용한 팁과 노하우 공유",
       icon: Lightbulb,
       color: "from-yellow-500 to-orange-500",
-      posts: posts.filter(post => post.category === "팁").length,
+      posts: posts.filter(post => post.category === "팁"),
       latestPost: "30분 전"
     },
     {
@@ -58,10 +74,10 @@ export default function CommunityPage() {
       description: "서비스 이용 후기와 경험담",
       icon: Star, 
       color: "from-purple-500 to-pink-500",
-      posts: posts.filter(post => post.category === "후기").length,
+      posts: posts.filter(post => post.category === "후기"),
       latestPost: "15분 전"
     }
-  ];
+  ], [posts]);
 
   const handleCreatePost = () => {
     const post = {
@@ -155,11 +171,37 @@ export default function CommunityPage() {
                     <p className="text-gray-600 dark:text-gray-400 mb-4">
                       {board.description}
                     </p>
-                    <div className="flex items-center justify-between text-sm">
+                    
+                    {/* Show 5 recent posts preview */}
+                    <div className="space-y-2 mb-4">
+                      {board.posts.slice(0, 5).map((post) => (
+                        <div key={post.id} className="flex items-center justify-between p-2 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-sm">
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-medium truncate">{post.title}</h4>
+                            <p className="text-xs text-gray-500">{post.author} • {post.createdAt}</p>
+                          </div>
+                          <div className="flex items-center space-x-2 text-xs text-gray-400">
+                            <span className="flex items-center space-x-1">
+                              <Heart className="h-3 w-3" />
+                              <span>{formatUtils.formatNumber(post.likes)}</span>
+                            </span>
+                            <span className="flex items-center space-x-1">
+                              <MessageCircle className="h-3 w-3" />
+                              <span>{formatUtils.formatNumber(post.comments)}</span>
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                      {board.posts.length === 0 && (
+                        <p className="text-center text-gray-500 text-sm py-4">등록된 게시글이 없습니다</p>
+                      )}
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-sm border-t pt-3">
                       <div className="flex items-center space-x-4">
                         <span className="flex items-center space-x-1">
                           <MessageCircle className="h-4 w-4" />
-                          <span>{board.posts}개 게시글</span>
+                          <span>{board.posts.length}개 게시글</span>
                         </span>
                       </div>
                       <span className="text-gray-500">
@@ -207,22 +249,6 @@ export default function CommunityPage() {
       </div>
     );
   }
-
-  // Memoize filtered posts for performance - moved outside conditional rendering
-  const filteredPosts = useMemo(() => {
-    if (!selectedBoard) return [];
-    const categoryMap: Record<string, string> = {
-      general: "일반",
-      question: "질문", 
-      tips: "팁",
-      review: "후기"
-    };
-    return arrayUtils.filterWithEarlyReturn(
-      posts, 
-      post => post.category === categoryMap[selectedBoard],
-      50 // Limit to 50 posts for performance
-    );
-  }, [posts, selectedBoard]);
 
   // Show specific board content
   const currentBoard = boardCategories.find(board => board.id === selectedBoard);
@@ -337,7 +363,7 @@ export default function CommunityPage() {
         </Card>
 
         <div className="grid gap-6">
-          {filteredPosts.map((post) => (
+          {currentBoard?.posts.map((post) => (
             <Card key={post.id} className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">
