@@ -79,7 +79,7 @@ function Router() {
         <Route path="/progress" component={() => <Layout><AdminDashboard /></Layout>} />
         <Route path="/youtube-auto" component={() => <Layout><ToolsPage /></Layout>} />
         <Route path="/outsource" component={() => <Layout><CommunityPage /></Layout>} />
-        <Route path="/admin" component={() => <Layout><AdminPage /></Layout>} />
+        <Route path="/admin" component={() => <Layout><AdminDashboard /></Layout>} />
         <Route path="/blog-auto" component={() => <Layout><BlogAutoPage /></Layout>} />
         <Route path="/settings" component={() => <Layout><SettingsPage /></Layout>} />
         <Route path="/templates" component={() => <Layout><TemplatesPage /></Layout>} />

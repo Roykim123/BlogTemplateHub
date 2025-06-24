@@ -41,11 +41,11 @@ export function Sidebar() {
       title: "자동화 기능", 
       items: [
         { id: "sns-auto", label: "딸깍AI 자동포스팅", icon: Zap, path: "/sns-auto" },
-        { id: "progress", label: "진행 현황 보기", icon: BarChart3, path: "/progress" },
+        { id: "progress", label: "진행 현황 관리", icon: BarChart3, path: "/progress" },
         { id: "blog-templates", label: "블로그 템플릿", icon: FileText, path: "/blog-templates" },
-        { id: "insta-threads", label: "인스타/스레드 템플릿", icon: Instagram, path: "/insta-threads" },
+        { id: "insta-threads", label: "인스타/쓰레드 템플릿", icon: Instagram, path: "/insta-threads" },
         { id: "youtube-auto", label: "유튜브 자동화", icon: Youtube, path: "/youtube-auto", badge: "예정" },
-        { id: "outsource", label: "외주게시판", icon: Briefcase, path: "/outsource" }
+        { id: "outsource", label: "외주 게시판", icon: Briefcase, path: "/outsource" }
       ]
     },
     {
@@ -92,7 +92,7 @@ export function Sidebar() {
   return (
     <nav 
       className={cn(
-        "fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col py-4 z-30 transition-all duration-300 group",
+        "fixed left-0 top-0 h-full bg-white dark:bg-gray-900 border-r border-gray-100 dark:border-gray-800 flex flex-col py-4 z-30 transition-all duration-700 ease-in-out group",
         isExpanded ? "w-56" : "w-16"
       )}
       onMouseEnter={() => setIsExpanded(true)}
@@ -117,7 +117,7 @@ export function Sidebar() {
                   key={item.id}
                   onClick={() => setLocation(item.path)}
                   className={cn(
-                    "w-full flex items-center rounded-lg transition-all duration-200",
+                    "w-full flex items-center rounded-lg transition-all duration-500 ease-in-out",
                     isExpanded ? "px-3 py-2" : "px-3 py-3 justify-center",
                     currentPage === item.id
                       ? "bg-hermes-orange text-white shadow-md"
