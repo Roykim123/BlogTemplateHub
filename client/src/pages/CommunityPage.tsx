@@ -150,6 +150,38 @@ export default function CommunityPage() {
             </p>
           </div>
 
+          {/* Recent Hot Posts - Moved to Top */}
+          <Card className="mb-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-t-lg">
+              <CardTitle className="flex items-center space-x-2">
+                <TrendingUp className="h-5 w-5" />
+                <span>🔥 실시간 인기 게시글</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <div className="space-y-3">
+                {posts.filter(post => post.hot || post.isHot).slice(0, 5).map((post) => (
+                  <div key={post.id} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+                    <Badge className="bg-red-500 text-white text-xs">HOT</Badge>
+                    <Badge variant="outline" className="text-xs">
+                      {post.category}
+                    </Badge>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-sm">{post.title}</h4>
+                      <p className="text-xs text-gray-500">{post.author} • {post.createdAt}</p>
+                    </div>
+                    <div className="flex items-center space-x-2 text-xs text-gray-500">
+                      <Heart className="h-3 w-3" />
+                      <span>{formatUtils.formatNumber(post.likes)}</span>
+                      <MessageCircle className="h-3 w-3" />
+                      <span>{formatUtils.formatNumber(post.comments)}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Board Categories Dashboard */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {boardCategories.map((board) => {
@@ -219,37 +251,7 @@ export default function CommunityPage() {
             })}
           </div>
 
-          {/* Recent Hot Posts */}
-          <Card className="mt-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-xl">
-            <CardHeader className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-t-lg">
-              <CardTitle className="flex items-center space-x-2">
-                <TrendingUp className="h-5 w-5" />
-                <span>🔥 실시간 인기 게시글</span>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="space-y-3">
-                {posts.filter(post => post.hot || post.isHot).slice(0, 5).map((post) => (
-                  <div key={post.id} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
-                    <Badge className="bg-red-500 text-white text-xs">HOT</Badge>
-                    <Badge variant="outline" className="text-xs">
-                      {post.category}
-                    </Badge>
-                    <div className="flex-1">
-                      <h4 className="font-medium text-sm">{post.title}</h4>
-                      <p className="text-xs text-gray-500">{post.author} • {post.createdAt}</p>
-                    </div>
-                    <div className="flex items-center space-x-2 text-xs text-gray-500">
-                      <Heart className="h-3 w-3" />
-                      <span>{formatUtils.formatNumber(post.likes)}</span>
-                      <MessageCircle className="h-3 w-3" />
-                      <span>{formatUtils.formatNumber(post.comments)}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+
         </div>
       </div>
     );
