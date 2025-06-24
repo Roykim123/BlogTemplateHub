@@ -102,7 +102,7 @@ export function Sidebar() {
             {/* Section Title - only show when expanded */}
             {isExpanded && (
               <div className="px-3 py-2">
-                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <h3 className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider transition-all duration-300">
                   {section.title}
                 </h3>
               </div>
@@ -115,22 +115,25 @@ export function Sidebar() {
                   key={item.id}
                   onClick={() => setLocation(item.path)}
                   className={cn(
-                    "w-full flex items-center rounded-lg transition-all duration-500 ease-in-out text-gray-700 dark:text-gray-300",
+                    "w-full flex items-center rounded-lg transition-all duration-300 ease-in-out group/item",
                     isExpanded ? "px-3 py-2" : "px-3 py-3 justify-center",
                     currentPage === item.id
                       ? "bg-hermes-orange text-white shadow-md"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
+                      : "text-gray-700 dark:text-gray-300 hover:bg-hermes-orange/10 hover:text-hermes-orange dark:hover:bg-hermes-orange/20 hover:shadow-sm hover:scale-105"
                   )}
                 >
-                  <item.icon className={cn("flex-shrink-0", isExpanded ? "h-5 w-5" : "h-6 w-6")} />
+                  <item.icon className={cn(
+                    "flex-shrink-0 transition-all duration-300 group-hover/item:scale-110", 
+                    isExpanded ? "h-5 w-5" : "h-6 w-6"
+                  )} />
                   
                   {isExpanded && (
                     <>
-                      <span className="ml-3 text-sm font-medium truncate text-gray-700 dark:text-gray-300">
+                      <span className="ml-3 text-sm font-medium truncate transition-all duration-300 group-hover/item:font-semibold">
                         {item.label}
                       </span>
                       {item.badge && (
-                        <span className="ml-auto text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full">
+                        <span className="ml-auto text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full transition-all duration-300 group-hover/item:bg-hermes-orange/20">
                           {item.badge}
                         </span>
                       )}

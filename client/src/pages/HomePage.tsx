@@ -128,7 +128,7 @@ export default function HomePage() {
             {/* Top Right - Tutorial Video */}
             <Card className="h-full">
               <CardHeader className="pb-2 sm:pb-4">
-                <CardTitle className="text-sm sm:text-lg font-semibold flex items-center space-x-1 sm:space-x-2 flex-wrap">
+                <CardTitle className="text-sm sm:text-lg font-semibold flex items-center space-x-1 sm:space-x-2 flex-wrap text-gray-900 dark:text-gray-100">
                   <Play className="h-4 w-4 sm:h-5 sm:w-5 text-hermes-orange" />
                   <span className="truncate">튜토리얼 영상</span>
                   {isAuthenticated && (
