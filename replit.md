@@ -142,6 +142,9 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Added rewards section at top of challenger page for motivation
   - Implemented SNS automation purchase flow: buy button (50 cash/month with counting) → publish button with login → write → register sequence
   - Added publish button functionality to blog template section
+  - Added image upload functionality to SNS automation page (max 5 images)
+  - Implemented volatile data handling - images and text are deleted after completion
+  - Enhanced user experience with preview, drag-and-drop, and validation features
 
 - June 24, 2025: Final customer-focused refinements and error fixes
   - Fixed TypeError in formatNumber utility with null/undefined safety checks
