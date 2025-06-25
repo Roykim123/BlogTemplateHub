@@ -119,7 +119,7 @@ export default function ChallengerPage() {
       <div className="max-w-6xl mx-auto">
         {/* Rewards Section - Moved to Top */}
         <div className="mb-8">
-          <div className="bg-gradient-to-r from-hermes-orange to-soft-pink text-white p-6 rounded-xl mb-6">
+          <div className="bg-gradient-to-r from-hermes-orange to-soft-pink text-gray-900 dark:text-white p-6 rounded-xl mb-6">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-2xl font-bold mb-2">🎁 오늘의 챌린지 리워드</h2>

@@ -119,7 +119,7 @@ export function Sidebar() {
                     isExpanded ? "px-3 py-2" : "px-3 py-3 justify-center",
                     currentPage === item.id
                       ? "bg-hermes-orange text-white shadow-md"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-hermes-orange/10 hover:text-hermes-orange dark:hover:bg-hermes-orange/20 hover:shadow-sm hover:scale-105"
+                      : "text-gray-800 dark:text-gray-300 hover:bg-hermes-orange/10 hover:text-hermes-orange dark:hover:bg-hermes-orange/20 hover:shadow-sm hover:scale-105"
                   )}
                 >
                   <item.icon className={cn(
