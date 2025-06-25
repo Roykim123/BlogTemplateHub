@@ -76,14 +76,14 @@ export default function TutorialPage() {
   });
 
   return (
-    <div className="h-full bg-white dark:bg-gray-900 p-4 sm:p-6 overflow-y-auto">
+    <div className="h-full bg-background text-foreground p-4 sm:p-6 overflow-y-auto">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-200 mb-2">
+          <h1 className="text-2xl sm:text-3xl font-bold mb-2">
             유료 강의존
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground">
             전문가들의 고급 강의로 실력을 한 단계 업그레이드하세요
           </p>
           <div className="mt-4 flex items-center space-x-4">

@@ -123,13 +123,13 @@ export default function MyPage() {
   };
 
   return (
-    <div className="h-full bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-6 overflow-y-auto">
+    <div className="h-full bg-background text-foreground p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
             👤 마이페이지
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
+          <p className="text-muted-foreground text-lg">
             프로필 정보와 계정 설정을 관리하세요
           </p>
         </div>

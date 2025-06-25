@@ -25,10 +25,10 @@ export default function ToolsPage() {
   };
 
   return (
-    <div className="h-full bg-white dark:bg-gray-900 p-6">
+    <div className="h-full bg-background text-foreground p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">AI 도구 모음</h1>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
+        <h1 className="text-3xl font-bold mb-4">AI 도구 모음</h1>
+        <p className="text-muted-foreground mb-6">
           다양한 AI 도구를 활용해 작업 효율을 높여보세요
         </p>
         
@@ -56,7 +56,7 @@ export default function ToolsPage() {
         {filteredTools.map((tool) => (
           <div
             key={tool.id}
-            className="bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl p-4 hover:shadow-lg hover:scale-102 transition-all cursor-pointer group"
+            className="bg-card border rounded-xl p-4 hover:shadow-lg hover:scale-102 transition-all cursor-pointer group"
           >
             <div className="flex items-start justify-between mb-3">
               <div className={cn(
@@ -78,14 +78,14 @@ export default function ToolsPage() {
                   className={cn(
                     "h-4 w-4 transition-all",
                     favorites.has(tool.id)
-                      ? "fill-hermes-orange text-hermes-orange"
-                      : "text-gray-400 hover:text-hermes-orange"
+                      ? "fill-yellow-500 text-yellow-500"
+                      : "text-muted-foreground hover:text-yellow-500"
                   )}
                 />
               </Button>
             </div>
-            <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200 mb-1">{tool.name}</h3>
-            <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed">{tool.description}</p>
+            <h3 className="text-sm font-medium text-card-foreground mb-1">{tool.name}</h3>
+            <p className="text-xs text-muted-foreground leading-relaxed">{tool.description}</p>
           </div>
         ))}
       </div>

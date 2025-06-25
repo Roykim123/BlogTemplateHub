@@ -139,19 +139,19 @@ export default function CommunityPage() {
   // Show dashboard if no board is selected
   if (!selectedBoard) {
     return (
-      <div className="h-full bg-gradient-to-br from-purple-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 p-6 overflow-y-auto">
+      <div className="h-full bg-background text-foreground p-6 overflow-y-auto">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
               🔥 커뮤니티
             </h1>
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-muted-foreground">
               다른 사용자들과 AI 활용 노하우를 공유하고 소통해보세요
             </p>
           </div>
 
           {/* Recent Hot Posts - Moved to Top */}
-          <Card className="mb-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-xl">
+          <Card className="mb-8 bg-card border">
             <CardHeader className="bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-t-lg">
               <CardTitle className="flex items-center space-x-2">
                 <TrendingUp className="h-5 w-5" />
@@ -161,13 +161,13 @@ export default function CommunityPage() {
             <CardContent className="p-6">
               <div className="space-y-3">
                 {posts.filter(post => post.hot || post.isHot).slice(0, 5).map((post) => (
-                  <div key={post.id} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer">
+                  <div key={post.id} className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted transition-colors cursor-pointer">
                     <Badge className="bg-red-500 text-white text-xs">HOT</Badge>
                     <Badge variant="outline" className="text-xs">
                       {post.category}
                     </Badge>
                     <div className="flex-1">
-                      <h4 className="font-medium text-sm">{post.title}</h4>
+                      <h4 className="font-medium text-sm text-foreground">{post.title}</h4>
                       <p className="text-xs text-gray-500">{post.author} • {post.createdAt}</p>
                     </div>
                     <div className="flex items-center space-x-2 text-xs text-gray-500">
