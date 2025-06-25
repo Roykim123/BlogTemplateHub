@@ -115,7 +115,7 @@ export default function ChallengerPage() {
   };
 
   return (
-    <div className="h-full bg-white dark:bg-gray-900 p-6 overflow-y-auto">
+    <div className="h-full bg-background text-foreground p-6 overflow-y-auto">
       <div className="max-w-6xl mx-auto">
         {/* Rewards Section - Moved to Top */}
         <div className="mb-8">
