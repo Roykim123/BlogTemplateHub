@@ -26,17 +26,8 @@ export function Sidebar() {
   const currentPage = location.replace("/", "") || "dashboard";
   const isAdmin = true;
 
-  // New menu structure based on requirements
+  // New menu structure - automation features prioritized
   const menuSections = [
-    {
-      title: "커뮤니티",
-      items: [
-        { id: "dashboard", label: "기본 대시보드", icon: Home, path: "/" },
-        { id: "community", label: "커뮤니티 게시판", icon: MessageCircle, path: "/community" },
-        { id: "challenger", label: "챌린저 프로젝트", icon: Trophy, path: "/challenger" },
-        { id: "premium-courses", label: "프리미엄 콘텐츠", icon: GraduationCap, path: "/tutorial" }
-      ]
-    },
     {
       title: "자동화 기능", 
       items: [
@@ -44,6 +35,15 @@ export function Sidebar() {
         { id: "blog-templates", label: "블로그 템플릿", icon: FileText, path: "/blog-templates" },
         { id: "insta-threads", label: "인스타/쓰레드 템플릿", icon: Instagram, path: "/insta-threads" },
         { id: "youtube-auto", label: "유튜브 자동화", icon: Youtube, path: "/youtube-auto", badge: "예정" }
+      ]
+    },
+    {
+      title: "커뮤니티",
+      items: [
+        { id: "dashboard", label: "기본 대시보드", icon: Home, path: "/" },
+        { id: "community", label: "커뮤니티 게시판", icon: MessageCircle, path: "/community" },
+        { id: "challenger", label: "챌린저 프로젝트", icon: Trophy, path: "/challenger" },
+        { id: "premium-courses", label: "프리미엄 콘텐츠", icon: GraduationCap, path: "/tutorial" }
       ]
     },
     {

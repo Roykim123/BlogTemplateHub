@@ -9,6 +9,7 @@ import {
   cashTransactions,
   automationProgress,
   challengerMissions,
+  subscriptions,
   type User, 
   type InsertUser,
   type Tool,
@@ -28,7 +29,9 @@ import {
   type AutomationProgress,
   type InsertAutomationProgress,
   type ChallengerMission,
-  type InsertChallengerMission
+  type InsertChallengerMission,
+  type Subscription,
+  type InsertSubscription
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -98,6 +101,12 @@ export interface IStorage {
   getUserMissions(userId: number, day?: number): Promise<ChallengerMission[]>;
   createMission(mission: InsertChallengerMission): Promise<ChallengerMission>;
   completeMission(userId: number, missionId: number, day: number): Promise<ChallengerMission | undefined>;
+  
+  // Subscription Management (NEW - Monthly system only)
+  getUserSubscription(userId: number): Promise<Subscription | undefined>;
+  createSubscription(subscription: InsertSubscription): Promise<Subscription>;
+  updateSubscription(id: number, subscription: Partial<InsertSubscription>): Promise<Subscription | undefined>;
+  cancelSubscription(userId: number): Promise<Subscription | undefined>;
   
   // Store Information
   getUserStoreInfos(userId: number): Promise<StoreInfo[]>;
@@ -431,6 +440,40 @@ export class DatabaseStorage implements IStorage {
       ))
       .returning();
     return mission || undefined;
+  }
+
+  // Subscription Management Methods
+  async getUserSubscription(userId: number): Promise<Subscription | undefined> {
+    const [subscription] = await db
+      .select()
+      .from(subscriptions)
+      .where(eq(subscriptions.userId, userId))
+      .orderBy(desc(subscriptions.createdAt))
+      .limit(1);
+    return subscription || undefined;
+  }
+
+  async createSubscription(subscriptionData: InsertSubscription): Promise<Subscription> {
+    const [subscription] = await db.insert(subscriptions).values(subscriptionData).returning();
+    return subscription;
+  }
+
+  async updateSubscription(id: number, subscriptionData: Partial<InsertSubscription>): Promise<Subscription | undefined> {
+    const [subscription] = await db
+      .update(subscriptions)
+      .set({ ...subscriptionData, updatedAt: new Date() })
+      .where(eq(subscriptions.id, id))
+      .returning();
+    return subscription || undefined;
+  }
+
+  async cancelSubscription(userId: number): Promise<Subscription | undefined> {
+    const [subscription] = await db
+      .update(subscriptions)
+      .set({ status: "cancelled", updatedAt: new Date() })
+      .where(eq(subscriptions.userId, userId))
+      .returning();
+    return subscription || undefined;
   }
 }
 

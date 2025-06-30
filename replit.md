@@ -233,6 +233,16 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Applied hermes-orange brand color to navigation sidebar for consistent UI theming
   - Enhanced achievement banner with soft multi-layer orange gradients for refined startup aesthetic
 
+- June 30, 2025: Major business model restructure and backend handoff preparation
+  - Restructured to monthly subscription system as primary business model (Free/Basic/Pro/Enterprise)
+  - Moved AI Cash to premium content purchases only, removed from tool usage
+  - Prioritized automation features in navigation (moved above community section)
+  - Added comprehensive subscription management database schema and API endpoints
+  - Created complete backend handoff documentation (BACKEND_HANDOFF.md)
+  - Implemented subscription tracking, plan management, and usage limitation systems
+  - Deployed database schema changes to production environment
+  - Established production-ready foundation focused on 딸깍AI automation as core revenue driver
+
 - June 24, 2025: Major UX improvements and backend API foundation
   - Enhanced HomePage with HOT badges and hover effects for better visual feedback
   - Added FloatingActionButton for mobile users with quick access to key features

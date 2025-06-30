@@ -852,6 +852,83 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Subscription Management Routes (NEW - Monthly system)
+  app.get("/api/subscriptions/user/:userId", ensureAuthenticated, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const subscription = await storage.getUserSubscription(userId);
+      res.json(subscription);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch subscription" });
+    }
+  });
+
+  app.post("/api/subscriptions", ensureAuthenticated, async (req, res) => {
+    try {
+      const subscriptionData = req.body;
+      const subscription = await storage.createSubscription(subscriptionData);
+      res.json(subscription);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to create subscription" });
+    }
+  });
+
+  app.put("/api/subscriptions/:id", ensureAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      const subscription = await storage.updateSubscription(id, updateData);
+      res.json(subscription);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to update subscription" });
+    }
+  });
+
+  app.post("/api/subscriptions/cancel/:userId", ensureAuthenticated, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const subscription = await storage.cancelSubscription(userId);
+      res.json(subscription);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to cancel subscription" });
+    }
+  });
+
+  // Monthly Subscription Plans Configuration
+  app.get("/api/subscription-plans", async (req, res) => {
+    const plans = [
+      {
+        id: "free",
+        name: "Free",
+        price: 0,
+        features: ["Basic automation tools", "5 posts per month", "Community access"],
+        limitations: { postsPerMonth: 5, automationTools: "basic" }
+      },
+      {
+        id: "basic",
+        name: "Basic",
+        price: 9900, // $99 per month in cents
+        features: ["All automation tools", "50 posts per month", "Priority support", "Premium templates"],
+        limitations: { postsPerMonth: 50, automationTools: "all" }
+      },
+      {
+        id: "pro",
+        name: "Pro",
+        price: 19900, // $199 per month in cents
+        features: ["Unlimited posts", "Advanced analytics", "Custom templates", "API access"],
+        limitations: { postsPerMonth: "unlimited", automationTools: "all" }
+      },
+      {
+        id: "enterprise",
+        name: "Enterprise",
+        price: 49900, // $499 per month in cents
+        features: ["Everything in Pro", "White label", "Dedicated support", "Custom integrations"],
+        limitations: { postsPerMonth: "unlimited", automationTools: "all" }
+      }
+    ];
+    res.json(plans);
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

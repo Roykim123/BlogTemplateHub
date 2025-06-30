@@ -22,7 +22,13 @@ export const users = pgTable("users", {
   firstName: text("first_name"),
   lastName: text("last_name"),
   profileImageUrl: text("profile_image_url"),
-  aiCash: integer("ai_cash").default(1000),
+  // Monthly subscription system
+  subscriptionTier: text("subscription_tier").default("Free"), // Free, Basic, Pro, Enterprise
+  subscriptionStatus: text("subscription_status").default("active"), // active, cancelled, expired
+  subscriptionStartDate: timestamp("subscription_start_date"),
+  subscriptionEndDate: timestamp("subscription_end_date"),
+  // AI Cash only for premium content purchases
+  aiCash: integer("ai_cash").default(100),
   role: text("role").default("user"), // user, admin
   level: text("level").default("Red"), // Red, Orange, Yellow, Green, Blue, Indigo, Violet
   referralCode: text("referral_code").unique(),
@@ -103,7 +109,7 @@ export const cashTransactions = pgTable("cash_transactions", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull(),
   amount: integer("amount").notNull(),
-  type: text("type").notNull(), // earn, spend, purchase, refund
+  type: text("type").notNull(), // "mission_reward", "referral_bonus", "premium_purchase" (NO tool_usage)
   description: text("description").notNull(),
   referenceId: text("reference_id"), // for payment tracking
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -131,6 +137,21 @@ export const challengerMissions = pgTable("challenger_missions", {
   completedAt: timestamp("completed_at"),
   reward: integer("reward").default(0),
   createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Subscription Management Table
+export const subscriptions = pgTable("subscriptions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  tier: text("tier").notNull(), // Free, Basic, Pro, Enterprise
+  status: text("status").notNull(), // active, cancelled, expired, pending
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  amount: integer("amount").notNull(), // monthly cost in cents
+  paymentMethod: text("payment_method"), // stripe_card, bank_transfer
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 // Insert schemas
@@ -190,6 +211,12 @@ export const insertChallengerMissionSchema = createInsertSchema(challengerMissio
   createdAt: true,
 });
 
+export const insertSubscriptionSchema = createInsertSchema(subscriptions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -211,3 +238,5 @@ export type AutomationProgress = typeof automationProgress.$inferSelect;
 export type InsertAutomationProgress = z.infer<typeof insertAutomationProgressSchema>;
 export type ChallengerMission = typeof challengerMissions.$inferSelect;
 export type InsertChallengerMission = z.infer<typeof insertChallengerMissionSchema>;
+export type Subscription = typeof subscriptions.$inferSelect;
+export type InsertSubscription = z.infer<typeof insertSubscriptionSchema>;
