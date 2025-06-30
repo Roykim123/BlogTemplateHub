@@ -852,6 +852,273 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ==================== BUSINESS OPERATION ADMIN ENDPOINTS ====================
+  
+  // Update user subscription plan (requested feature)
+  app.patch("/api/admin/users/:userId/plan", ensureAdmin, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const { subscriptionTier } = req.body;
+      
+      if (!['free', 'basic', 'pro', 'enterprise'].includes(subscriptionTier)) {
+        return res.status(400).json({ error: "Invalid subscription tier" });
+      }
+
+      const user = await storage.updateUser(userId, { 
+        subscriptionTier,
+        subscriptionStatus: 'active',
+        updatedAt: new Date()
+      });
+      
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      
+      res.json(user);
+    } catch (error) {
+      console.error("Error updating user plan:", error);
+      res.status(500).json({ error: "Failed to update user plan" });
+    }
+  });
+
+  // Update user active/inactive status (requested feature)
+  app.patch("/api/admin/users/:userId/status", ensureAdmin, async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const { isActive } = req.body;
+
+      const user = await storage.updateUser(userId, { 
+        isActive,
+        updatedAt: new Date()
+      });
+      
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      
+      res.json(user);
+    } catch (error) {
+      console.error("Error updating user status:", error);
+      res.status(500).json({ error: "Failed to update user status" });
+    }
+  });
+
+  // Feature access control settings (requested feature)
+  app.get("/api/admin/features", ensureAdmin, async (req, res) => {
+    try {
+      // Feature settings for access control
+      const features = [
+        { 
+          id: "blog-templates", 
+          name: "블로그 템플릿", 
+          description: "블로그 자동 생성 기능", 
+          freeAccess: true, 
+          isActive: true 
+        },
+        { 
+          id: "sns-automation", 
+          name: "SNS 자동화", 
+          description: "딸깍AI 자동포스팅", 
+          freeAccess: false, 
+          isActive: true 
+        },
+        { 
+          id: "ai-chat", 
+          name: "AI 채팅", 
+          description: "AI와의 대화 기능", 
+          freeAccess: true, 
+          isActive: true 
+        },
+        { 
+          id: "premium-templates", 
+          name: "프리미엄 템플릿", 
+          description: "고급 템플릿 모음", 
+          freeAccess: false, 
+          isActive: true 
+        },
+        { 
+          id: "challenger-missions", 
+          name: "챌린저 미션", 
+          description: "7일 챌린저 프로그램", 
+          freeAccess: true, 
+          isActive: true 
+        },
+        { 
+          id: "community-board", 
+          name: "커뮤니티 게시판", 
+          description: "사용자 커뮤니티", 
+          freeAccess: true, 
+          isActive: true 
+        }
+      ];
+
+      res.json(features);
+    } catch (error) {
+      console.error("Error fetching features:", error);
+      res.status(500).json({ error: "Failed to fetch features" });
+    }
+  });
+
+  // Update feature access settings (requested feature)
+  app.patch("/api/admin/features/:featureId", ensureAdmin, async (req, res) => {
+    try {
+      const { featureId } = req.params;
+      const { freeAccess, isActive } = req.body;
+
+      // This would update feature settings in database
+      // For now, returning updated feature object
+      const updatedFeature = {
+        id: featureId,
+        freeAccess,
+        isActive,
+        updatedAt: new Date()
+      };
+
+      res.json(updatedFeature);
+    } catch (error) {
+      console.error("Error updating feature:", error);
+      res.status(500).json({ error: "Failed to update feature settings" });
+    }
+  });
+
+  // Pricing plan management (requested feature)
+  app.get("/api/admin/pricing", ensureAdmin, async (req, res) => {
+    try {
+      const pricingPlans = [
+        {
+          id: "free",
+          name: "무료",
+          price: 0,
+          description: "기본 기능 이용 가능",
+          features: ["기본 블로그 템플릿", "커뮤니티 참여", "챌린저 미션"],
+          isActive: true
+        },
+        {
+          id: "basic",
+          name: "베이직",
+          price: 99000,
+          description: "핵심 AI 기능 이용",
+          features: ["모든 블로그 템플릿", "SNS 자동화", "AI 채팅", "프리미엄 지원"],
+          isActive: true
+        },
+        {
+          id: "pro",
+          name: "프로",
+          price: 199000,
+          description: "고급 비즈니스 기능",
+          features: ["무제한 자동화", "고급 템플릿", "우선 고객지원", "분석 리포트"],
+          isActive: true
+        },
+        {
+          id: "enterprise",
+          name: "엔터프라이즈",
+          price: 499000,
+          description: "기업용 맞춤 솔루션",
+          features: ["전담 매니저", "API 접근", "커스텀 기능", "24/7 지원"],
+          isActive: true
+        }
+      ];
+
+      res.json(pricingPlans);
+    } catch (error) {
+      console.error("Error fetching pricing plans:", error);
+      res.status(500).json({ error: "Failed to fetch pricing plans" });
+    }
+  });
+
+  // Update pricing plan (requested feature)
+  app.patch("/api/admin/pricing/:planId", ensureAdmin, async (req, res) => {
+    try {
+      const { planId } = req.params;
+      const { name, price, description, features, isActive } = req.body;
+
+      // This would update pricing in database and Stripe
+      const updatedPlan = {
+        id: planId,
+        name,
+        price: Number(price),
+        description,
+        features,
+        isActive,
+        updatedAt: new Date()
+      };
+
+      res.json(updatedPlan);
+    } catch (error) {
+      console.error("Error updating pricing plan:", error);
+      res.status(500).json({ error: "Failed to update pricing plan" });
+    }
+  });
+
+  // System feature toggle (requested feature)
+  app.patch("/api/admin/system/features", ensureAdmin, async (req, res) => {
+    try {
+      const { featureName, isEnabled } = req.body;
+
+      // System-wide feature toggles
+      const validFeatures = [
+        'maintenance_mode',
+        'new_registrations',
+        'payment_system',
+        'sns_automation',
+        'challenger_missions',
+        'community_board'
+      ];
+
+      if (!validFeatures.includes(featureName)) {
+        return res.status(400).json({ error: "Invalid feature name" });
+      }
+
+      // This would update system settings in database
+      const systemSetting = {
+        feature: featureName,
+        enabled: isEnabled,
+        updatedAt: new Date(),
+        updatedBy: req.user?.id
+      };
+
+      res.json(systemSetting);
+    } catch (error) {
+      console.error("Error updating system feature:", error);
+      res.status(500).json({ error: "Failed to update system feature" });
+    }
+  });
+
+  // Enhanced admin statistics with revenue breakdown
+  app.get("/api/admin/stats/detailed", ensureAdmin, async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      const tools = await storage.getAllTools();
+
+      // Calculate revenue by subscription tier
+      const revenueByTier = users.reduce((acc, user) => {
+        const tier = user.subscriptionTier || 'free';
+        const tierPrices = { free: 0, basic: 99000, pro: 199000, enterprise: 499000 };
+        
+        if (!acc[tier]) acc[tier] = { count: 0, revenue: 0 };
+        acc[tier].count += 1;
+        acc[tier].revenue += tierPrices[tier as keyof typeof tierPrices] || 0;
+        
+        return acc;
+      }, {} as Record<string, { count: number; revenue: number }>);
+
+      const detailedStats = {
+        totalUsers: users.length,
+        activeUsers: users.filter(u => u.isActive).length,
+        usersByTier: revenueByTier,
+        totalRevenue: Object.values(revenueByTier).reduce((sum, tier) => sum + tier.revenue, 0),
+        activeTools: tools.filter(t => t.isActive).length,
+        totalTools: tools.length,
+        lastUpdated: new Date()
+      };
+
+      res.json(detailedStats);
+    } catch (error) {
+      console.error("Error fetching detailed stats:", error);
+      res.status(500).json({ error: "Failed to fetch detailed statistics" });
+    }
+  });
+
   // Subscription Management Routes (NEW - Monthly system)
   app.get("/api/subscriptions/user/:userId", ensureAuthenticated, async (req, res) => {
     try {
