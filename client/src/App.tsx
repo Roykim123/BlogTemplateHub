@@ -39,10 +39,10 @@ function Layout({ children }: { children: React.ReactNode }) {
   const isMobile = useMobile();
   
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-y-scroll">
       <TopBar />
       <Sidebar />
-      <main className={`flex-1 mt-8 overflow-hidden transition-all duration-300 ${isMobile ? "mb-16" : "ml-16"}`}>
+      <main className={`flex-1 mt-8 overflow-y-auto transition-all duration-300 ${isMobile ? "mb-16" : "ml-16"}`}>
         {children}
       </main>
     </div>
