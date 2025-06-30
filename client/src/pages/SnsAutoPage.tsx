@@ -41,6 +41,7 @@ export default function SnsAutoPage() {
   });
   // 새로운 상태들
   const [isAdvancedMode, setIsAdvancedMode] = useState(false);
+  const [showContentCreation, setShowContentCreation] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle');
   const [retryCount, setRetryCount] = useState(0);
@@ -322,7 +323,10 @@ ${product.description}
                 </span>
                 <Switch
                   checked={isAdvancedMode}
-                  onCheckedChange={setIsAdvancedMode}
+                  onCheckedChange={(checked) => {
+                    setIsAdvancedMode(checked);
+                    setShowContentCreation(false); // 모드 변경 시 콘텐츠 창 숨기기
+                  }}
                   className="data-[state=checked]:bg-purple-600"
                 />
                 <span className={`font-medium ${isAdvancedMode ? 'text-purple-600 dark:text-purple-400' : 'text-gray-500'}`}>
@@ -350,123 +354,148 @@ ${product.description}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Product Selection */}
-              <div>
-                <label className="text-sm font-medium mb-3 block">상품정보 불러오기</label>
-                <div className="flex space-x-3">
-                  <Select value={selectedProduct} onValueChange={setSelectedProduct}>
-                    <SelectTrigger className="flex-1">
-                      <SelectValue placeholder="마이페이지 상품정보에서 선택..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {products.map((product) => (
-                        <SelectItem key={product.id} value={product.id}>
-                          {product.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+              {/* 초보 모드: 글쓰기 시작 버튼만 표시 */}
+              {!isAdvancedMode && !showContentCreation && (
+                <div className="text-center py-8">
+                  <div className="mb-4">
+                    <Zap className="h-12 w-12 text-blue-500 mx-auto mb-2" />
+                    <h3 className="text-lg font-semibold mb-2">실시간 급등 키워드 자동 글쓰기</h3>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      AI가 현재 트렌드를 분석하여 자동으로 매력적인 SNS 콘텐츠를 생성합니다
+                    </p>
+                  </div>
                   <Button 
-                    onClick={handleLoadProduct}
-                    variant="outline"
-                    className="flex items-center space-x-2"
-                  >
-                    <Download className="h-4 w-4" />
-                    <span>불러오기</span>
-                  </Button>
-                </div>
-              </div>
-
-              {/* Image Upload Section */}
-              <div>
-                <label className="text-sm font-medium mb-3 block">이미지 업로드 (최대 5장)</label>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
-                  {uploadedImages.map((file, index) => (
-                    <div key={index} className="relative group">
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={`업로드된 이미지 ${index + 1}`}
-                        className="w-full h-24 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
-                      />
-                      <button
-                        onClick={() => handleRemoveImage(index)}
-                        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  ))}
-                  
-                  {uploadedImages.length < 5 && (
-                    <button
-                      onClick={() => fileInputRef.current?.click()}
-                      className="w-full h-24 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex flex-col items-center justify-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
-                    >
-                      <Plus className="h-6 w-6 text-gray-400 mb-1" />
-                      <span className="text-xs text-gray-500">이미지 추가</span>
-                    </button>
-                  )}
-                </div>
-                
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                  className="hidden"
-                />
-                
-                <div className="flex items-center space-x-4">
-                  <Button
-                    onClick={() => fileInputRef.current?.click()}
-                    variant="outline"
-                    className="flex items-center space-x-2"
-                  >
-                    <Upload className="h-4 w-4" />
-                    <span>이미지 선택</span>
-                  </Button>
-                  <span className="text-sm text-gray-500">
-                    {uploadedImages.length}/5 이미지 업로드됨
-                  </span>
-                </div>
-              </div>
-
-              {/* Text Content Section */}
-              <div>
-                <label className="text-sm font-medium mb-3 block">포스트 텍스트</label>
-                <Textarea
-                  value={postText}
-                  onChange={(e) => setPostText(e.target.value)}
-                  placeholder="SNS에 올릴 텍스트를 입력하세요..."
-                  className="min-h-[120px] resize-none"
-                  maxLength={2200}
-                />
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-xs text-gray-500">
-                    {postText.length}/2200 글자
-                  </span>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setPostText("")}
-                    disabled={!postText.trim()}
-                  >
-                    텍스트 초기화
-                  </Button>
-                </div>
-              </div>
-
-              {/* Start Writing Button */}
-              {currentStep === 1 && (
-                <div className="text-center">
-                  <Button 
-                    onClick={handleStartWriting}
-                    disabled={uploadedImages.length === 0 || !postText.trim()}
+                    onClick={() => setShowContentCreation(true)}
                     className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 text-lg font-semibold rounded-xl"
                   >
+                    <Zap className="h-5 w-5 mr-2" />
                     글쓰기 시작
                   </Button>
+                </div>
+              )}
+
+              {/* 고급 모드이거나 글쓰기 시작 버튼을 클릭한 경우에만 전체 UI 표시 */}
+              {(isAdvancedMode || showContentCreation) && (
+                <div className="space-y-6">
+                  {/* Product Selection */}
+                  <div>
+                    <label className="text-sm font-medium mb-3 block">상품정보 불러오기</label>
+                    <div className="flex space-x-3">
+                      <Select value={selectedProduct} onValueChange={setSelectedProduct}>
+                        <SelectTrigger className="flex-1">
+                          <SelectValue placeholder="마이페이지 상품정보에서 선택..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {products.map((product) => (
+                            <SelectItem key={product.id} value={product.id}>
+                              {product.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Button 
+                        onClick={handleLoadProduct}
+                        variant="outline"
+                        className="flex items-center space-x-2"
+                      >
+                        <Download className="h-4 w-4" />
+                        <span>불러오기</span>
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Image Upload Section */}
+                  <div>
+                    <label className="text-sm font-medium mb-3 block">이미지 업로드 (최대 5장)</label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-4">
+                      {uploadedImages.map((file, index) => (
+                        <div key={index} className="relative group">
+                          <img
+                            src={URL.createObjectURL(file)}
+                            alt={`업로드된 이미지 ${index + 1}`}
+                            className="w-full h-24 object-cover rounded-lg border border-gray-200 dark:border-gray-700"
+                          />
+                          <button
+                            onClick={() => handleRemoveImage(index)}
+                            className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      ))}
+                      
+                      {uploadedImages.length < 5 && (
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          className="w-full h-24 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex flex-col items-center justify-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors"
+                        >
+                          <Plus className="h-6 w-6 text-gray-400 mb-1" />
+                          <span className="text-xs text-gray-500">이미지 추가</span>
+                        </button>
+                      )}
+                    </div>
+                    
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                    
+                    <div className="flex items-center space-x-4">
+                      <Button
+                        onClick={() => fileInputRef.current?.click()}
+                        variant="outline"
+                        className="flex items-center space-x-2"
+                      >
+                        <Upload className="h-4 w-4" />
+                        <span>이미지 선택</span>
+                      </Button>
+                      <span className="text-sm text-gray-500">
+                        {uploadedImages.length}/5 이미지 업로드됨
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Text Content Section */}
+                  <div>
+                    <label className="text-sm font-medium mb-3 block">포스트 텍스트</label>
+                    <Textarea
+                      value={postText}
+                      onChange={(e) => setPostText(e.target.value)}
+                      placeholder="SNS에 올릴 텍스트를 입력하세요..."
+                      className="min-h-[120px] resize-none"
+                      maxLength={2200}
+                    />
+                    <div className="flex justify-between items-center mt-2">
+                      <span className="text-xs text-gray-500">
+                        {postText.length}/2200 글자
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setPostText("")}
+                        disabled={!postText.trim()}
+                      >
+                        텍스트 초기화
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Start Writing Button */}
+                  {currentStep === 1 && (
+                    <div className="text-center">
+                      <Button 
+                        onClick={handleStartWriting}
+                        disabled={uploadedImages.length === 0 || !postText.trim()}
+                        className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 text-lg font-semibold rounded-xl"
+                      >
+                        글쓰기 시작
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
             </CardContent>

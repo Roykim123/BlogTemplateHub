@@ -54,7 +54,8 @@ function Router() {
       <Route path="/login" component={LoginPage} />
       
       {/* Public routes */}
-      <Route path="/" component={() => <Layout><HomePage /></Layout>} />
+      <Route path="/" component={() => <Layout><SnsAutoPage /></Layout>} />
+      <Route path="/home" component={() => <Layout><HomePage /></Layout>} />
       <Route path="/community" component={() => <Layout><CommunityPage /></Layout>} />
       
       {/* Protected routes */}
