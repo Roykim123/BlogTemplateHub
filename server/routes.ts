@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import passport from "passport";
-import { ensureAuthenticated, ensureAdmin } from "./auth";
+import { jwtMiddleware } from "./auth";
 import { 
   insertUserSchema, 
   insertToolSchema, 
@@ -18,6 +18,22 @@ import { storage } from "./storage";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Authentication middleware for regular users
+  const ensureAuthenticated = jwtMiddleware;
+  
+  // Middleware to check admin role with JWT
+  const ensureAdmin = async (req: any, res: any, next: any) => {
+    try {
+      const user = await storage.getUser(req.user?.id);
+      if (!user || user.role !== 'admin') {
+        return res.status(403).json({ error: "Admin access required" });
+      }
+      req.user = user; // Attach full user object
+      next();
+    } catch (error) {
+      res.status(500).json({ error: "Authentication error" });
+    }
+  };
   // User routes
   app.post("/api/users", async (req, res) => {
     try {
@@ -788,7 +804,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Admin routes
-  app.get("/api/admin/stats", ensureAdmin, async (req, res) => {
+
+  // Current user endpoint
+  app.get("/api/auth/user", jwtMiddleware, async (req, res) => {
+    try {
+      const user = await storage.getUser(req.user?.id);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      // Remove sensitive fields before sending to client
+      const { password, ...safeUser } = user;
+      res.json(safeUser);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch user" });
+    }
+  });
+
+  app.get("/api/admin/stats", jwtMiddleware, ensureAdmin, async (req, res) => {
     try {
       const users = await storage.getAllUsers();
       const tools = await storage.getAllTools();
@@ -806,7 +838,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/users", ensureAdmin, async (req, res) => {
+  app.get("/api/admin/users", jwtMiddleware, ensureAdmin, async (req, res) => {
     try {
       const users = await storage.getAllUsers();
       res.json(users);

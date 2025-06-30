@@ -3,11 +3,14 @@ import session from "express-session";
 import passport from "passport";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-import { setupPassport } from "./auth";
+import authRouter from "./auth";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Setup Kakao OAuth authentication first
+app.use(authRouter);
 
 app.use((req, res, next) => {
   const start = Date.now();
