@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { TopBar } from "@/components/layout/TopBar";
 import { Sidebar } from "@/components/layout/Sidebar";
+import { GlobalBanner } from "@/components/layout/GlobalBanner";
 
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useMobile } from "@/hooks/use-mobile";
@@ -39,12 +40,15 @@ function Layout({ children }: { children: React.ReactNode }) {
   const isMobile = useMobile();
   
   return (
-    <div className="flex h-screen overflow-y-scroll">
-      <TopBar />
-      <Sidebar />
-      <main className={`flex-1 mt-8 overflow-y-auto transition-all duration-300 ${isMobile ? "mb-16" : "ml-16"}`}>
-        {children}
-      </main>
+    <div className="flex flex-col h-screen overflow-y-scroll">
+      <GlobalBanner />
+      <div className="flex flex-1">
+        <TopBar />
+        <Sidebar />
+        <main className={`flex-1 mt-8 overflow-y-auto transition-all duration-300 ${isMobile ? "mb-16" : "ml-16"}`}>
+          {children}
+        </main>
+      </div>
     </div>
   );
 }
