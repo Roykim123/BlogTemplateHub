@@ -90,7 +90,8 @@ export function Sidebar() {
   return (
     <nav 
       className={cn(
-        "fixed left-0 top-8 bottom-0 bg-orange-500 dark:bg-orange-900 border-r border-orange-200 dark:border-orange-800 flex flex-col py-4 z-30 transition-all duration-700 ease-in-out group",
+        "fixed left-0 top-8 bottom-0 bg-orange-500 dark:bg-orange-900 border-r border-orange-200 dark:border-orange-800 flex flex-col py-4 z-30 overflow-hidden group",
+        "transition-all duration-300 ease-in-out",
         isExpanded ? "w-56" : "w-16"
       )}
       onMouseEnter={() => setIsExpanded(true)}
@@ -99,14 +100,15 @@ export function Sidebar() {
       <div className="flex flex-col space-y-6 flex-1 px-2">
         {menuSections.map((section) => (
           <div key={section.title} className="space-y-2">
-            {/* Section Title - only show when expanded */}
-            {isExpanded && (
-              <div className="px-3 py-2">
-                <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider transition-all duration-300">
-                  {section.title}
-                </h3>
-              </div>
-            )}
+            {/* Section Title - smooth fade in/out */}
+            <div className={cn(
+              "px-3 py-2 transition-all duration-300 ease-in-out overflow-hidden",
+              isExpanded ? "max-h-10 opacity-100" : "max-h-0 opacity-0"
+            )}>
+              <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider whitespace-nowrap">
+                {section.title}
+              </h3>
+            </div>
             
             {/* Section Items */}
             <div className="space-y-1">
@@ -127,18 +129,19 @@ export function Sidebar() {
                     isExpanded ? "h-5 w-5" : "h-6 w-6"
                   )} />
                   
-                  {isExpanded && (
-                    <>
-                      <span className="ml-3 text-sm font-medium truncate transition-all duration-300 group-hover/item:font-semibold">
-                        {item.label}
+                  <div className={cn(
+                    "flex items-center ml-3 transition-all duration-300 ease-in-out overflow-hidden",
+                    isExpanded ? "w-full opacity-100" : "w-0 opacity-0"
+                  )}>
+                    <span className="text-sm font-medium truncate transition-all duration-300 group-hover/item:font-semibold whitespace-nowrap">
+                      {item.label}
+                    </span>
+                    {item.badge && (
+                      <span className="ml-auto text-xs bg-white/20 text-white/90 px-2 py-0.5 rounded-full transition-all duration-300 group-hover/item:bg-white/30 whitespace-nowrap">
+                        {item.badge}
                       </span>
-                      {item.badge && (
-                        <span className="ml-auto text-xs bg-white/20 text-white/90 px-2 py-0.5 rounded-full transition-all duration-300 group-hover/item:bg-white/30">
-                          {item.badge}
-                        </span>
-                      )}
-                    </>
-                  )}
+                    )}
+                  </div>
                 </button>
               ))}
             </div>

@@ -90,47 +90,64 @@ function TutorialHomePage() {
   return (
     <div className="min-h-full bg-white dark:bg-gray-900 overflow-auto pb-16 md:pb-4">
       
-      {/* ✅ [학습 진도 섹션] - 튜토리얼 페이지만의 특별한 진도 표시 */}
-      <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 py-6">
-        <div className="max-w-6xl mx-auto px-4">
+      {/* Tutorial Header */}
+      <div className="bg-gradient-to-r from-blue-500 via-purple-600 to-indigo-600 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/30 via-purple-500/20 to-indigo-500/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-transparent"></div>
+        
+        <div className="relative max-w-6xl mx-auto px-4 py-8">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">학습 진도</h2>
-            
-            {/* 숫자 진도 표시 */}
-            <div className="flex items-center justify-center space-x-4 mb-4">
-              {[1, 2, 3, 4].map((num) => {
-                const isCompleted = completedVideos.includes(num);
-                return (
-                  <div
-                    key={num}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300 ${
-                      isCompleted
-                        ? 'bg-blue-600 text-white shadow-lg scale-110'
-                        : 'bg-gray-200 text-gray-600 border-2 border-gray-300'
-                    }`}
-                  >
-                    {num}
-                  </div>
-                );
-              })}
+            <div className="flex items-center justify-center space-x-3 mb-4">
+              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                <GraduationCap className="h-6 w-6 text-blue-600" />
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold">걱정마AI 튜토리얼</h1>
+              <div className="bg-white/20 px-3 py-1 rounded-full">
+                <span className="text-sm font-medium">📝 정보성 블로그 v2 Upgrade!</span>
+              </div>
             </div>
+            <p className="text-lg opacity-90 mb-6">AI 콘텐츠 생성의 모든 것을 배워보세요</p>
             
+            {/* ✅ [학습 진도 표시] - 1,2,3,4 숫자로 진도를 표시합니다 */}
             <div className="max-w-md mx-auto">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-gray-600 dark:text-gray-400">진행률</span>
-                <span className="text-sm font-semibold text-gray-800 dark:text-gray-200">{completedVideos.length}/4 완료</span>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-sm">학습 진도</span>
+                <span className="text-sm font-semibold">{completedVideos.length}/4 완료</span>
               </div>
               
-              {/* 진도바 */}
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
+              {/* 숫자 진도 표시 */}
+              <div className="flex items-center justify-center space-x-4 mb-4">
+                {[1, 2, 3, 4].map((num) => {
+                  const isCompleted = completedVideos.includes(num);
+                  return (
+                    <div
+                      key={num}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                        isCompleted
+                          ? 'bg-white text-blue-600 shadow-lg scale-110'
+                          : 'bg-white/30 text-white border-2 border-white/50'
+                      }`}
+                    >
+                      {num}
+                    </div>
+                  );
+                })}
+              </div>
+              
+              {/* 기존 진도바도 유지 */}
+              <div className="w-full bg-white/20 rounded-full h-3">
                 <div 
-                  className="bg-blue-600 h-3 rounded-full transition-all duration-500 ease-out"
+                  className="bg-white h-3 rounded-full transition-all duration-500 ease-out"
                   style={{ width: `${progressPercentage}%` }}
                 ></div>
               </div>
             </div>
           </div>
         </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
       </div>
 
       <div className="max-w-6xl mx-auto p-4 sm:p-6">
