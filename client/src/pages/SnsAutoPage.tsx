@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Progress } from "@/components/ui/progress";
 import { 
   Upload, 
   X, 
@@ -18,7 +20,9 @@ import {
   Chrome,
   ExternalLink,
   Clock,
-  CreditCard
+  CreditCard,
+  RotateCcw,
+  AlertCircle
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -35,6 +39,11 @@ export default function SnsAutoPage() {
     instagram: false,
     threads: false
   });
+  // 새로운 상태들
+  const [isAdvancedMode, setIsAdvancedMode] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'success' | 'error'>('idle');
+  const [retryCount, setRetryCount] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -169,16 +178,51 @@ ${product.description}
     
     setCurrentStep(3);
     setIsProcessing(true);
+    setUploadStatus('uploading');
+    setUploadProgress(0);
     
-    // 업로드 시뮬레이션
-    setTimeout(() => {
-      setCurrentStep(4);
-      setIsProcessing(false);
-      toast({
-        title: "업로드 완료",
-        description: "모든 SNS 플랫폼에 포스트가 업로드되었습니다.",
+    // 진행 상황 시뮬레이션
+    const progressInterval = setInterval(() => {
+      setUploadProgress(prev => {
+        if (prev >= 90) {
+          clearInterval(progressInterval);
+          return prev;
+        }
+        return prev + Math.random() * 15;
       });
+    }, 200);
+    
+    // 업로드 결과 시뮬레이션 (90% 성공률)
+    setTimeout(() => {
+      clearInterval(progressInterval);
+      const isSuccess = Math.random() > 0.1; // 90% 성공률
+      
+      if (isSuccess) {
+        setUploadProgress(100);
+        setUploadStatus('success');
+        setCurrentStep(4);
+        setIsProcessing(false);
+        toast({
+          title: "업로드 완료",
+          description: "모든 SNS 플랫폼에 포스트가 업로드되었습니다.",
+        });
+      } else {
+        setUploadStatus('error');
+        setIsProcessing(false);
+        toast({
+          title: "업로드 실패",
+          description: "업로드 중 오류가 발생했습니다. 재시도해주세요.",
+          variant: "destructive",
+        });
+      }
     }, 3000);
+  };
+
+  const handleRetryUpload = () => {
+    setRetryCount(prev => prev + 1);
+    setUploadStatus('idle');
+    setUploadProgress(0);
+    handleStartUpload();
   };
 
   const getDashboardColor = () => {
@@ -267,6 +311,34 @@ ${product.description}
             </CardContent>
           </Card>
         )}
+
+        {/* 초보/고급 토글 */}
+        <Card className="mb-6">
+          <CardContent className="pt-6">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center space-x-4">
+                <span className={`font-medium ${!isAdvancedMode ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500'}`}>
+                  초보
+                </span>
+                <Switch
+                  checked={isAdvancedMode}
+                  onCheckedChange={setIsAdvancedMode}
+                  className="data-[state=checked]:bg-purple-600"
+                />
+                <span className={`font-medium ${isAdvancedMode ? 'text-purple-600 dark:text-purple-400' : 'text-gray-500'}`}>
+                  고급
+                </span>
+              </div>
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
+              {!isAdvancedMode ? (
+                <span>실시간 급등 키워드에 맞춰 자동 글쓰기</span>
+              ) : (
+                <span>내 상품과 키워드를 조합하여 인플루언서처럼 글쓰기</span>
+              )}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Content Creation Section */}
         {isPurchased && currentStep >= 1 && (
@@ -465,16 +537,56 @@ ${product.description}
         )}
 
         {/* Upload Progress */}
-        {currentStep === 3 && isProcessing && (
+        {currentStep === 3 && (
           <Card className="bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
-            <CardContent className="p-6 text-center">
-              <div className="animate-spin w-8 h-8 border-4 border-yellow-500 border-t-transparent rounded-full mx-auto mb-4"></div>
-              <h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
-                업로드 진행중...
-              </h3>
-              <p className="text-yellow-600 dark:text-yellow-400">
-                SNS 플랫폼에 포스트를 업로드하고 있습니다.
-              </p>
+            <CardContent className="p-6">
+              <div className="text-center mb-6">
+                {uploadStatus === 'uploading' && (
+                  <div className="animate-spin w-8 h-8 border-4 border-yellow-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                )}
+                {uploadStatus === 'success' && (
+                  <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-4" />
+                )}
+                {uploadStatus === 'error' && (
+                  <AlertCircle className="w-8 h-8 text-red-500 mx-auto mb-4" />
+                )}
+                
+                <h3 className="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+                  {uploadStatus === 'uploading' && '업로드 진행중...'}
+                  {uploadStatus === 'success' && '업로드 완료!'}
+                  {uploadStatus === 'error' && '업로드 실패'}
+                </h3>
+                
+                <p className="text-yellow-600 dark:text-yellow-400 mb-4">
+                  {uploadStatus === 'uploading' && 'SNS 플랫폼에 포스트를 업로드하고 있습니다.'}
+                  {uploadStatus === 'success' && '모든 플랫폼에 성공적으로 업로드되었습니다.'}
+                  {uploadStatus === 'error' && `업로드 중 오류가 발생했습니다. (시도: ${retryCount + 1}회)`}
+                </p>
+              </div>
+
+              {/* Progress Bar */}
+              {uploadStatus === 'uploading' && (
+                <div className="mb-4">
+                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+                    <span>진행률</span>
+                    <span>{Math.round(uploadProgress)}%</span>
+                  </div>
+                  <Progress value={uploadProgress} className="h-2" />
+                </div>
+              )}
+
+              {/* Retry Button */}
+              {uploadStatus === 'error' && (
+                <div className="text-center">
+                  <Button 
+                    onClick={handleRetryUpload}
+                    className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2"
+                  >
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    재시도
+                  </Button>
+                </div>
+              )}
             </CardContent>
           </Card>
         )}
@@ -497,6 +609,9 @@ ${product.description}
                   setPostText("");
                   setSelectedProduct("");
                   setLoginStatus({ naver: false, instagram: false, threads: false });
+                  setUploadStatus('idle');
+                  setUploadProgress(0);
+                  setRetryCount(0);
                 }}
                 variant="outline"
               >

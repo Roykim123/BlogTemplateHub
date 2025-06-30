@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { User, Settings, Award, Coins, TrendingUp, Calendar, Crown, Plus, Edit, Trash2, Store } from "lucide-react";
+import { User, Settings, Award, Coins, TrendingUp, Calendar, Crown, Plus, Edit, Trash2, Store, CheckCircle, XCircle, Chrome } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { formatUtils } from "@/utils/optimizations";
@@ -20,6 +20,12 @@ export default function MyPage() {
   const progress = 65;
   const aiCash = 12450;
   const { toast } = useToast();
+
+  // 인증 상태 관리
+  const [authStatus, setAuthStatus] = useState({
+    kakao: true, // 카카오 로그인 상태 (true면 인증됨)
+    chrome: false // 크롬 확장 인증 상태
+  });
 
   const [storeInfos, setStoreInfos] = useState([
     {
@@ -161,6 +167,30 @@ export default function MyPage() {
                     <div className="flex items-center space-x-2">
                       <Coins className="h-4 w-4 text-yellow-600" />
                       <span className="font-medium">{formatUtils.formatCurrency(aiCash)}</span>
+                    </div>
+                  </div>
+                  
+                  {/* 인증 상태 표시 */}
+                  <div className="flex items-center space-x-4 mt-3">
+                    <div className="flex items-center space-x-2">
+                      {authStatus.kakao ? (
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <XCircle className="h-4 w-4 text-red-500" />
+                      )}
+                      <span className={`text-sm ${authStatus.kakao ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                        카카오 인증
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      {authStatus.chrome ? (
+                        <CheckCircle className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <XCircle className="h-4 w-4 text-red-500" />
+                      )}
+                      <span className={`text-sm ${authStatus.chrome ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                        크롬 확장 인증
+                      </span>
                     </div>
                   </div>
                 </div>
