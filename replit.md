@@ -230,6 +230,7 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Fixed all TypeScript errors and established proper database relationships
   - Enhanced admin interface with interactive statistics, search functionality, and bulk operations
   - Removed duplicate upgrade modal to improve UX - now single source of truth in HomePage premium content section
+  - Applied hermes-orange brand color to navigation sidebar for consistent UI theming
 
 - June 24, 2025: Major UX improvements and backend API foundation
   - Enhanced HomePage with HOT badges and hover effects for better visual feedback
