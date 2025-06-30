@@ -32,8 +32,9 @@ export default function HomePage() {
   return (
     <div className="min-h-full bg-white dark:bg-gray-900 overflow-auto pb-16 md:pb-4">
       {/* Achievement Banner */}
-      <div className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-500 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 via-transparent to-red-500/20"></div>
+      <div className="bg-gradient-to-r from-orange-300 via-orange-400 to-orange-500 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-200/30 via-orange-300/20 to-orange-400/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/5 to-transparent"></div>
         <div className="relative max-w-6xl mx-auto px-4 py-3 sm:py-4">
           <div className="flex items-center justify-center space-x-3 sm:space-x-6">
             <div className="flex items-center space-x-2 sm:space-x-3">
