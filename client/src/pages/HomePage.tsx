@@ -32,22 +32,24 @@ export default function HomePage() {
   return (
     <div className="min-h-full bg-white dark:bg-gray-900 overflow-auto pb-16 md:pb-4">
       {/* Achievement Banner */}
-      <div className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="relative max-w-6xl mx-auto px-4 py-2 sm:py-3">
-          <div className="flex items-center justify-center space-x-2 sm:space-x-4">
-            <div className="flex items-center space-x-1 sm:space-x-2">
-              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-yellow-400 rounded-full flex items-center justify-center">
-                <span className="text-blue-900 text-xs sm:text-sm font-bold">🏆</span>
+      <div className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-500 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 via-transparent to-red-500/20"></div>
+        <div className="relative max-w-6xl mx-auto px-4 py-3 sm:py-4">
+          <div className="flex items-center justify-center space-x-3 sm:space-x-6">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-orange-600 text-sm sm:text-base font-bold">🏆</span>
               </div>
-              <span className="text-xs sm:text-base font-bold">2025년 서울AI허브 기업 선정</span>
+              <span className="text-sm sm:text-lg font-bold tracking-wide">2025년 서울AI허브 기업 선정</span>
             </div>
-            <div className="hidden sm:block w-px h-6 bg-white/30"></div>
-            <span className="text-xs sm:text-sm opacity-90">🎉 경축! AI 혁신 기업으로 선정되었습니다</span>
+            <div className="hidden sm:block w-px h-8 bg-white/40"></div>
+            <span className="text-sm sm:text-base opacity-95 font-medium">🎉 경축! AI 혁신 기업으로 선정되었습니다</span>
           </div>
         </div>
-        <div className="absolute top-0 right-0 w-20 h-20 sm:w-32 sm:h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
-        <div className="absolute bottom-0 left-0 w-16 h-16 sm:w-24 sm:h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+        <div className="absolute top-0 right-0 w-24 h-24 sm:w-40 sm:h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 animate-pulse"></div>
+        <div className="absolute bottom-0 left-0 w-20 h-20 sm:w-32 sm:h-32 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+        <div className="absolute top-1/2 left-1/4 w-2 h-2 sm:w-3 sm:h-3 bg-white/30 rounded-full animate-bounce"></div>
+        <div className="absolute top-1/3 right-1/3 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white/40 rounded-full animate-pulse"></div>
       </div>
 
       <div className="max-w-6xl mx-auto p-2 sm:p-4">
