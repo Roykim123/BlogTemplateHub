@@ -14,6 +14,7 @@ import { useMobile } from "@/hooks/use-mobile";
 
 // Pages
 import HomePage from "@/pages/HomePage";
+import TutorialHomePage from "@/pages/TutorialHomePage";
 import ChatPage from "@/pages/ChatPage";
 import ToolsPage from "@/pages/ToolsPage";
 import RewardsPage from "@/pages/RewardsPage";
@@ -55,7 +56,7 @@ function Router() {
       
       {/* Public routes */}
       <Route path="/" component={() => <Layout><SnsAutoPage /></Layout>} />
-      <Route path="/home" component={() => <Layout><HomePage /></Layout>} />
+      <Route path="/home" component={() => <Layout><TutorialHomePage /></Layout>} />
       <Route path="/community" component={() => <Layout><CommunityPage /></Layout>} />
       
       {/* Protected routes */}
