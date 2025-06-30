@@ -261,6 +261,14 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Confirmed PostgreSQL (Neon) database system is optimal and no migration to PlanetScale needed
   - Admin panel fully operational at /admin route with 4-tab interface for complete business management
 
+- June 30, 2025: Tutorial page creation and SNS automation UI improvements
+  - Converted "기본 대시보드" menu to "튜토리얼" with comprehensive YouTube video integration
+  - Created TutorialHomePage with 4 YouTube videos, progress tracking (1,2,3,4 display), and autoplay for first video
+  - Added extensive documentation comments for easy YouTube video replacement by non-developers
+  - Enhanced SNS automation page with beginner/advanced mode toggle and conditional content display
+  - Implemented proper mode switching behavior that resets content creation interface
+  - Added detailed inline comments throughout tutorial page for easy content management
+
 - June 24, 2025: Major UX improvements and backend API foundation
   - Enhanced HomePage with HOT badges and hover effects for better visual feedback
   - Added FloatingActionButton for mobile users with quick access to key features
