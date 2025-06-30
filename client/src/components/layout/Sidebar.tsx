@@ -66,7 +66,7 @@ export function Sidebar() {
 
   if (isMobile) {
     return (
-      <nav className="fixed bottom-0 left-0 right-0 h-16 bg-hermes-orange dark:bg-orange-900 border-t border-orange-200 dark:border-orange-800 flex items-center justify-around px-4 z-40">
+      <nav className="fixed bottom-0 left-0 right-0 h-16 bg-orange-500 dark:bg-orange-900 border-t border-orange-200 dark:border-orange-800 flex items-center justify-around px-4 z-40">
         {mobileNavItems.map((item) => (
           <button
             key={item.id}
@@ -90,7 +90,7 @@ export function Sidebar() {
   return (
     <nav 
       className={cn(
-        "fixed left-0 top-8 bottom-0 bg-hermes-orange dark:bg-orange-900 border-r border-orange-200 dark:border-orange-800 flex flex-col py-4 z-30 transition-all duration-700 ease-in-out group",
+        "fixed left-0 top-8 bottom-0 bg-orange-500 dark:bg-orange-900 border-r border-orange-200 dark:border-orange-800 flex flex-col py-4 z-30 transition-all duration-700 ease-in-out group",
         isExpanded ? "w-56" : "w-16"
       )}
       onMouseEnter={() => setIsExpanded(true)}
