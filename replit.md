@@ -268,6 +268,10 @@ This is a modern AI-powered content creation platform called "걱정마AI" (Worr
   - Enhanced SNS automation page with beginner/advanced mode toggle and conditional content display
   - Implemented proper mode switching behavior that resets content creation interface
   - Added detailed inline comments throughout tutorial page for easy content management
+  - Restored original banners to HomePage and TutorialHomePage with detailed customization comments
+  - Enhanced sidebar animations with smooth 600ms transitions for expand/collapse effects
+  - Added fade in/out animations for section titles and menu labels with proper overflow handling
+  - Removed unused GlobalBanner component and cleaned up imports for better performance
 
 - June 24, 2025: Major UX improvements and backend API foundation
   - Enhanced HomePage with HOT badges and hover effects for better visual feedback

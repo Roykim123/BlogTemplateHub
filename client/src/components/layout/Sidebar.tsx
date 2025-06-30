@@ -91,7 +91,7 @@ export function Sidebar() {
     <nav 
       className={cn(
         "fixed left-0 top-8 bottom-0 bg-orange-500 dark:bg-orange-900 border-r border-orange-200 dark:border-orange-800 flex flex-col py-4 z-30 overflow-hidden group",
-        "transition-all duration-300 ease-in-out",
+        "transition-all duration-600 ease-in-out",
         isExpanded ? "w-56" : "w-16"
       )}
       onMouseEnter={() => setIsExpanded(true)}
@@ -102,7 +102,7 @@ export function Sidebar() {
           <div key={section.title} className="space-y-2">
             {/* Section Title - smooth fade in/out */}
             <div className={cn(
-              "px-3 py-2 transition-all duration-300 ease-in-out overflow-hidden",
+              "px-3 py-2 transition-all duration-600 ease-in-out overflow-hidden",
               isExpanded ? "max-h-10 opacity-100" : "max-h-0 opacity-0"
             )}>
               <h3 className="text-xs font-semibold text-white/70 uppercase tracking-wider whitespace-nowrap">
@@ -117,7 +117,7 @@ export function Sidebar() {
                   key={item.id}
                   onClick={() => setLocation(item.path)}
                   className={cn(
-                    "w-full flex items-center rounded-lg transition-all duration-300 ease-in-out group/item",
+                    "w-full flex items-center rounded-lg transition-all duration-600 ease-in-out group/item",
                     isExpanded ? "px-3 py-2" : "px-3 py-3 justify-center",
                     currentPage === item.id
                       ? "bg-white/20 text-white shadow-md"
@@ -125,19 +125,19 @@ export function Sidebar() {
                   )}
                 >
                   <item.icon className={cn(
-                    "flex-shrink-0 transition-all duration-300 group-hover/item:scale-110", 
+                    "flex-shrink-0 transition-all duration-600 group-hover/item:scale-110", 
                     isExpanded ? "h-5 w-5" : "h-6 w-6"
                   )} />
                   
                   <div className={cn(
-                    "flex items-center ml-3 transition-all duration-300 ease-in-out overflow-hidden",
+                    "flex items-center ml-3 transition-all duration-600 ease-in-out overflow-hidden",
                     isExpanded ? "w-full opacity-100" : "w-0 opacity-0"
                   )}>
-                    <span className="text-sm font-medium truncate transition-all duration-300 group-hover/item:font-semibold whitespace-nowrap">
+                    <span className="text-sm font-medium truncate transition-all duration-600 group-hover/item:font-semibold whitespace-nowrap">
                       {item.label}
                     </span>
                     {item.badge && (
-                      <span className="ml-auto text-xs bg-white/20 text-white/90 px-2 py-0.5 rounded-full transition-all duration-300 group-hover/item:bg-white/30 whitespace-nowrap">
+                      <span className="ml-auto text-xs bg-white/20 text-white/90 px-2 py-0.5 rounded-full transition-all duration-600 group-hover/item:bg-white/30 whitespace-nowrap">
                         {item.badge}
                       </span>
                     )}
