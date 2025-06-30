@@ -4,6 +4,11 @@ import {
   favorites, 
   templates, 
   chatMessages,
+  storeInfos,
+  posts,
+  cashTransactions,
+  automationProgress,
+  challengerMissions,
   type User, 
   type InsertUser,
   type Tool,
@@ -13,8 +18,20 @@ import {
   type Template,
   type InsertTemplate,
   type ChatMessage,
-  type InsertChatMessage
+  type InsertChatMessage,
+  type StoreInfo,
+  type InsertStoreInfo,
+  type Post,
+  type InsertPost,
+  type CashTransaction,
+  type InsertCashTransaction,
+  type AutomationProgress,
+  type InsertAutomationProgress,
+  type ChallengerMission,
+  type InsertChallengerMission
 } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc, and } from "drizzle-orm";
 
 export interface IStorage {
   // Users
@@ -23,14 +40,18 @@ export interface IStorage {
   getUserByEmail(email: string): Promise<User | undefined>;
   getUserByKakaoId(kakaoId: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUser(id: number, user: Partial<InsertUser>): Promise<User | undefined>;
   updateUserAiCash(id: number, amount: number): Promise<User | undefined>;
+  getAllUsers(): Promise<User[]>;
   
   // Tools
   getAllTools(): Promise<Tool[]>;
   getToolsByCategory(category: string): Promise<Tool[]>;
   getTool(id: number): Promise<Tool | undefined>;
   createTool(tool: InsertTool): Promise<Tool>;
+  updateTool(id: number, tool: Partial<InsertTool>): Promise<Tool | undefined>;
   updateToolUsage(id: number): Promise<void>;
+  deleteTool(id: number): Promise<void>;
   
   // Favorites
   getUserFavorites(userId: number): Promise<Favorite[]>;
@@ -42,7 +63,9 @@ export interface IStorage {
   getTemplatesByCategory(category: string): Promise<Template[]>;
   getTemplate(id: number): Promise<Template | undefined>;
   createTemplate(template: InsertTemplate): Promise<Template>;
+  updateTemplate(id: number, template: Partial<InsertTemplate>): Promise<Template | undefined>;
   updateTemplateUsage(id: number): Promise<void>;
+  deleteTemplate(id: number): Promise<void>;
   
   // Chat Messages
   getChatHistory(userId: number): Promise<ChatMessage[]>;
@@ -75,6 +98,340 @@ export interface IStorage {
   getUserMissions(userId: number, day?: number): Promise<ChallengerMission[]>;
   createMission(mission: InsertChallengerMission): Promise<ChallengerMission>;
   completeMission(userId: number, missionId: number, day: number): Promise<ChallengerMission | undefined>;
+  
+  // Store Information
+  getUserStoreInfos(userId: number): Promise<StoreInfo[]>;
+  createStoreInfo(storeInfo: InsertStoreInfo): Promise<StoreInfo>;
+  updateStoreInfo(id: number, storeInfo: Partial<InsertStoreInfo>): Promise<StoreInfo | undefined>;
+  deleteStoreInfo(id: number): Promise<void>;
+  
+  // Posts/Community
+  getPosts(options?: { category?: string; limit?: number; offset?: number }): Promise<Post[]>;
+  getPost(id: number): Promise<Post | undefined>;
+  createPost(post: InsertPost): Promise<Post>;
+  updatePost(id: number, post: Partial<InsertPost>): Promise<Post | undefined>;
+  deletePost(id: number): Promise<void>;
+  incrementPostViews(id: number): Promise<void>;
+  
+  // AI Cash Transactions
+  getUserCashTransactions(userId: number): Promise<CashTransaction[]>;
+  createCashTransaction(transaction: InsertCashTransaction): Promise<CashTransaction>;
+  
+  // Automation Progress
+  getAutomationProgress(toolId: number, userId: number): Promise<AutomationProgress | undefined>;
+  createAutomationProgress(progress: InsertAutomationProgress): Promise<AutomationProgress>;
+  updateAutomationProgress(toolId: number, userId: number, stage: number, completed: boolean): Promise<AutomationProgress | undefined>;
+  
+  // Challenger Missions
+  getUserMissions(userId: number, day?: number): Promise<ChallengerMission[]>;
+  createMission(mission: InsertChallengerMission): Promise<ChallengerMission>;
+  completeMission(userId: number, missionId: number, day: number): Promise<ChallengerMission | undefined>;
+}
+
+export class DatabaseStorage implements IStorage {
+  // Users
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || undefined;
+  }
+
+  async getUserByKakaoId(kakaoId: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.kakaoId, kakaoId));
+    return user || undefined;
+  }
+
+  async createUser(userData: InsertUser): Promise<User> {
+    const [user] = await db.insert(users).values(userData).returning();
+    return user;
+  }
+
+  async updateUser(id: number, userData: Partial<InsertUser>): Promise<User | undefined> {
+    const [user] = await db
+      .update(users)
+      .set({ ...userData, updatedAt: new Date() })
+      .where(eq(users.id, id))
+      .returning();
+    return user || undefined;
+  }
+
+  async updateUserAiCash(id: number, amount: number): Promise<User | undefined> {
+    const [user] = await db
+      .update(users)
+      .set({ aiCash: amount, updatedAt: new Date() })
+      .where(eq(users.id, id))
+      .returning();
+    return user || undefined;
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return await db.select().from(users).orderBy(desc(users.createdAt));
+  }
+
+  // Tools
+  async getAllTools(): Promise<Tool[]> {
+    return await db.select().from(tools).where(eq(tools.isActive, true));
+  }
+
+  async getToolsByCategory(category: string): Promise<Tool[]> {
+    return await db.select().from(tools)
+      .where(and(eq(tools.category, category), eq(tools.isActive, true)));
+  }
+
+  async getTool(id: number): Promise<Tool | undefined> {
+    const [tool] = await db.select().from(tools).where(eq(tools.id, id));
+    return tool || undefined;
+  }
+
+  async createTool(toolData: InsertTool): Promise<Tool> {
+    const [tool] = await db.insert(tools).values(toolData).returning();
+    return tool;
+  }
+
+  async updateTool(id: number, toolData: Partial<InsertTool>): Promise<Tool | undefined> {
+    const [tool] = await db
+      .update(tools)
+      .set(toolData)
+      .where(eq(tools.id, id))
+      .returning();
+    return tool || undefined;
+  }
+
+  async updateToolUsage(id: number): Promise<void> {
+    const [tool] = await db.select().from(tools).where(eq(tools.id, id));
+    if (tool) {
+      await db
+        .update(tools)
+        .set({ usageCount: tool.usageCount + 1 })
+        .where(eq(tools.id, id));
+    }
+  }
+
+  async deleteTool(id: number): Promise<void> {
+    await db.update(tools).set({ isActive: false }).where(eq(tools.id, id));
+  }
+
+  // Favorites
+  async getUserFavorites(userId: number): Promise<Favorite[]> {
+    return await db.select().from(favorites).where(eq(favorites.userId, userId));
+  }
+
+  async addFavorite(favoriteData: InsertFavorite): Promise<Favorite> {
+    const [favorite] = await db.insert(favorites).values(favoriteData).returning();
+    return favorite;
+  }
+
+  async removeFavorite(userId: number, toolId: number): Promise<void> {
+    await db.delete(favorites)
+      .where(and(eq(favorites.userId, userId), eq(favorites.toolId, toolId)));
+  }
+
+  // Templates
+  async getAllTemplates(): Promise<Template[]> {
+    return await db.select().from(templates).where(eq(templates.isActive, true));
+  }
+
+  async getTemplatesByCategory(category: string): Promise<Template[]> {
+    return await db.select().from(templates)
+      .where(and(eq(templates.category, category), eq(templates.isActive, true)));
+  }
+
+  async getTemplate(id: number): Promise<Template | undefined> {
+    const [template] = await db.select().from(templates).where(eq(templates.id, id));
+    return template || undefined;
+  }
+
+  async createTemplate(templateData: InsertTemplate): Promise<Template> {
+    const [template] = await db.insert(templates).values(templateData).returning();
+    return template;
+  }
+
+  async updateTemplate(id: number, templateData: Partial<InsertTemplate>): Promise<Template | undefined> {
+    const [template] = await db
+      .update(templates)
+      .set(templateData)
+      .where(eq(templates.id, id))
+      .returning();
+    return template || undefined;
+  }
+
+  async updateTemplateUsage(id: number): Promise<void> {
+    const [template] = await db.select().from(templates).where(eq(templates.id, id));
+    if (template) {
+      await db
+        .update(templates)
+        .set({ usageCount: template.usageCount + 1 })
+        .where(eq(templates.id, id));
+    }
+  }
+
+  async deleteTemplate(id: number): Promise<void> {
+    await db.update(templates).set({ isActive: false }).where(eq(templates.id, id));
+  }
+
+  // Chat Messages
+  async getChatHistory(userId: number): Promise<ChatMessage[]> {
+    return await db.select().from(chatMessages)
+      .where(eq(chatMessages.userId, userId))
+      .orderBy(desc(chatMessages.createdAt));
+  }
+
+  async createChatMessage(messageData: InsertChatMessage): Promise<ChatMessage> {
+    const [message] = await db.insert(chatMessages).values(messageData).returning();
+    return message;
+  }
+
+  // Store Information
+  async getUserStoreInfos(userId: number): Promise<StoreInfo[]> {
+    return await db.select().from(storeInfos)
+      .where(eq(storeInfos.userId, userId))
+      .orderBy(desc(storeInfos.createdAt));
+  }
+
+  async createStoreInfo(storeInfoData: InsertStoreInfo): Promise<StoreInfo> {
+    const [storeInfo] = await db.insert(storeInfos).values(storeInfoData).returning();
+    return storeInfo;
+  }
+
+  async updateStoreInfo(id: number, storeInfoData: Partial<InsertStoreInfo>): Promise<StoreInfo | undefined> {
+    const [storeInfo] = await db
+      .update(storeInfos)
+      .set({ ...storeInfoData, updatedAt: new Date() })
+      .where(eq(storeInfos.id, id))
+      .returning();
+    return storeInfo || undefined;
+  }
+
+  async deleteStoreInfo(id: number): Promise<void> {
+    await db.delete(storeInfos).where(eq(storeInfos.id, id));
+  }
+
+  // Posts/Community
+  async getPosts(options?: { category?: string; limit?: number; offset?: number }): Promise<Post[]> {
+    let queryBuilder = db.select().from(posts);
+    
+    if (options?.category) {
+      queryBuilder = queryBuilder.where(eq(posts.category, options.category));
+    }
+    
+    queryBuilder = queryBuilder.orderBy(desc(posts.isPinned), desc(posts.createdAt));
+    
+    if (options?.limit) {
+      queryBuilder = queryBuilder.limit(options.limit);
+    }
+    
+    if (options?.offset) {
+      queryBuilder = queryBuilder.offset(options.offset);
+    }
+    
+    return await queryBuilder;
+  }
+
+  async getPost(id: number): Promise<Post | undefined> {
+    const [post] = await db.select().from(posts).where(eq(posts.id, id));
+    return post || undefined;
+  }
+
+  async createPost(postData: InsertPost): Promise<Post> {
+    const [post] = await db.insert(posts).values(postData).returning();
+    return post;
+  }
+
+  async updatePost(id: number, postData: Partial<InsertPost>): Promise<Post | undefined> {
+    const [post] = await db
+      .update(posts)
+      .set({ ...postData, updatedAt: new Date() })
+      .where(eq(posts.id, id))
+      .returning();
+    return post || undefined;
+  }
+
+  async deletePost(id: number): Promise<void> {
+    await db.delete(posts).where(eq(posts.id, id));
+  }
+
+  async incrementPostViews(id: number): Promise<void> {
+    const [post] = await db.select().from(posts).where(eq(posts.id, id));
+    if (post) {
+      await db
+        .update(posts)
+        .set({ views: (post.views || 0) + 1 })
+        .where(eq(posts.id, id));
+    }
+  }
+
+  // AI Cash Transactions
+  async getUserCashTransactions(userId: number): Promise<CashTransaction[]> {
+    return await db.select().from(cashTransactions)
+      .where(eq(cashTransactions.userId, userId))
+      .orderBy(desc(cashTransactions.createdAt));
+  }
+
+  async createCashTransaction(transactionData: InsertCashTransaction): Promise<CashTransaction> {
+    const [transaction] = await db.insert(cashTransactions).values(transactionData).returning();
+    return transaction;
+  }
+
+  // Automation Progress
+  async getAutomationProgress(toolId: number, userId: number): Promise<AutomationProgress | undefined> {
+    const [progress] = await db.select().from(automationProgress)
+      .where(and(eq(automationProgress.toolId, toolId), eq(automationProgress.userId, userId)));
+    return progress || undefined;
+  }
+
+  async createAutomationProgress(progressData: InsertAutomationProgress): Promise<AutomationProgress> {
+    const [progress] = await db.insert(automationProgress).values(progressData).returning();
+    return progress;
+  }
+
+  async updateAutomationProgress(toolId: number, userId: number, stage: number, completed: boolean): Promise<AutomationProgress | undefined> {
+    const [progress] = await db
+      .update(automationProgress)
+      .set({ stage, completed, updatedAt: new Date() })
+      .where(and(eq(automationProgress.toolId, toolId), eq(automationProgress.userId, userId)))
+      .returning();
+    return progress || undefined;
+  }
+
+  // Challenger Missions
+  async getUserMissions(userId: number, day?: number): Promise<ChallengerMission[]> {
+    let queryBuilder = db.select().from(challengerMissions);
+    
+    if (day) {
+      queryBuilder = queryBuilder.where(and(eq(challengerMissions.userId, userId), eq(challengerMissions.day, day)));
+    } else {
+      queryBuilder = queryBuilder.where(eq(challengerMissions.userId, userId));
+    }
+    
+    return await queryBuilder.orderBy(challengerMissions.day, challengerMissions.missionId);
+  }
+
+  async createMission(missionData: InsertChallengerMission): Promise<ChallengerMission> {
+    const [mission] = await db.insert(challengerMissions).values(missionData).returning();
+    return mission;
+  }
+
+  async completeMission(userId: number, missionId: number, day: number): Promise<ChallengerMission | undefined> {
+    const [mission] = await db
+      .update(challengerMissions)
+      .set({ completed: true, completedAt: new Date() })
+      .where(and(
+        eq(challengerMissions.userId, userId),
+        eq(challengerMissions.missionId, missionId),
+        eq(challengerMissions.day, day)
+      ))
+      .returning();
+    return mission || undefined;
+  }
 }
 
 export class MemStorage implements IStorage {
@@ -292,4 +649,4 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

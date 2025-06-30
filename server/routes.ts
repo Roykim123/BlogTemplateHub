@@ -2,7 +2,18 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import passport from "passport";
 import { ensureAuthenticated, ensureAdmin } from "./auth";
-import { insertUserSchema, insertToolSchema, insertTemplateSchema, insertChatMessageSchema } from "@shared/schema";
+import { 
+  insertUserSchema, 
+  insertToolSchema, 
+  insertTemplateSchema, 
+  insertChatMessageSchema,
+  insertFavoriteSchema,
+  insertStoreInfoSchema,
+  insertPostSchema,
+  insertCashTransactionSchema,
+  insertAutomationProgressSchema,
+  insertChallengerMissionSchema
+} from "@shared/schema";
 import { storage } from "./storage";
 import { z } from "zod";
 
@@ -546,6 +557,298 @@ export async function registerRoutes(app: Express): Promise<Server> {
       });
     } catch (error) {
       res.status(400).json({ error: "Failed to complete mission" });
+    }
+  });
+
+  // Store Information routes
+  app.get("/api/store-info", ensureAuthenticated, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const storeInfos = await storage.getUserStoreInfos(userId);
+      res.json(storeInfos);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch store information" });
+    }
+  });
+
+  app.post("/api/store-info", ensureAuthenticated, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const storeInfoData = insertStoreInfoSchema.parse({ ...req.body, userId });
+      const storeInfo = await storage.createStoreInfo(storeInfoData);
+      res.json(storeInfo);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid store information data" });
+    }
+  });
+
+  app.patch("/api/store-info/:id", ensureAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      const storeInfo = await storage.updateStoreInfo(id, updateData);
+      if (!storeInfo) {
+        return res.status(404).json({ error: "Store information not found" });
+      }
+      res.json(storeInfo);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to update store information" });
+    }
+  });
+
+  app.delete("/api/store-info/:id", ensureAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deleteStoreInfo(id);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete store information" });
+    }
+  });
+
+  // Community Posts routes
+  app.get("/api/posts", async (req, res) => {
+    try {
+      const category = req.query.category as string;
+      const limit = req.query.limit ? parseInt(req.query.limit as string) : undefined;
+      const offset = req.query.offset ? parseInt(req.query.offset as string) : undefined;
+      
+      const posts = await storage.getPosts({ category, limit, offset });
+      res.json(posts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch posts" });
+    }
+  });
+
+  app.get("/api/posts/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const post = await storage.getPost(id);
+      if (!post) {
+        return res.status(404).json({ error: "Post not found" });
+      }
+      await storage.incrementPostViews(id);
+      res.json(post);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch post" });
+    }
+  });
+
+  app.post("/api/posts", ensureAuthenticated, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const postData = insertPostSchema.parse({ ...req.body, userId });
+      const post = await storage.createPost(postData);
+      res.json(post);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid post data" });
+    }
+  });
+
+  app.patch("/api/posts/:id", ensureAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      const post = await storage.updatePost(id, updateData);
+      if (!post) {
+        return res.status(404).json({ error: "Post not found" });
+      }
+      res.json(post);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to update post" });
+    }
+  });
+
+  app.delete("/api/posts/:id", ensureAuthenticated, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      await storage.deletePost(id);
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete post" });
+    }
+  });
+
+  // AI Cash Transaction routes
+  app.get("/api/cash-transactions", ensureAuthenticated, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const transactions = await storage.getUserCashTransactions(userId);
+      res.json(transactions);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch transactions" });
+    }
+  });
+
+  app.post("/api/cash-transactions", ensureAuthenticated, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const transactionData = insertCashTransactionSchema.parse({ ...req.body, userId });
+      const transaction = await storage.createCashTransaction(transactionData);
+      
+      // Update user's AI cash balance
+      const user = await storage.getUser(userId);
+      if (user) {
+        const newBalance = user.aiCash + transactionData.amount;
+        await storage.updateUserAiCash(userId, newBalance);
+      }
+      
+      res.json(transaction);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid transaction data" });
+    }
+  });
+
+  // Automation Progress routes
+  app.get("/api/automation-progress/:toolId", ensureAuthenticated, async (req, res) => {
+    try {
+      const toolId = parseInt(req.params.toolId);
+      const userId = (req.user as any)?.id;
+      const progress = await storage.getAutomationProgress(toolId, userId);
+      res.json(progress);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch automation progress" });
+    }
+  });
+
+  app.post("/api/automation-progress", ensureAuthenticated, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const progressData = insertAutomationProgressSchema.parse({ ...req.body, userId });
+      const progress = await storage.createAutomationProgress(progressData);
+      res.json(progress);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid progress data" });
+    }
+  });
+
+  app.patch("/api/automation-progress/:toolId", ensureAuthenticated, async (req, res) => {
+    try {
+      const toolId = parseInt(req.params.toolId);
+      const userId = (req.user as any)?.id;
+      const { stage, completed } = req.body;
+      const progress = await storage.updateAutomationProgress(toolId, userId, stage, completed);
+      res.json(progress);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to update progress" });
+    }
+  });
+
+  // Challenger Missions routes
+  app.get("/api/missions", ensureAuthenticated, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const day = req.query.day ? parseInt(req.query.day as string) : undefined;
+      const missions = await storage.getUserMissions(userId, day);
+      res.json(missions);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch missions" });
+    }
+  });
+
+  app.post("/api/missions", ensureAuthenticated, async (req, res) => {
+    try {
+      const userId = (req.user as any)?.id;
+      const missionData = insertChallengerMissionSchema.parse({ ...req.body, userId });
+      const mission = await storage.createMission(missionData);
+      res.json(mission);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid mission data" });
+    }
+  });
+
+  app.patch("/api/missions/:missionId/complete", ensureAuthenticated, async (req, res) => {
+    try {
+      const missionId = parseInt(req.params.missionId);
+      const userId = (req.user as any)?.id;
+      const { day } = req.body;
+      const mission = await storage.completeMission(userId, missionId, day);
+      
+      // Reward AI cash for completed mission
+      if (mission) {
+        const user = await storage.getUser(userId);
+        if (user) {
+          const newBalance = user.aiCash + (mission.reward || 1000);
+          await storage.updateUserAiCash(userId, newBalance);
+          
+          // Create transaction record
+          await storage.createCashTransaction({
+            userId,
+            amount: mission.reward || 1000,
+            type: "earn",
+            description: `미션 완료 보상: ${mission.missionId}`,
+          });
+        }
+      }
+      
+      res.json(mission);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to complete mission" });
+    }
+  });
+
+  // Admin routes
+  app.get("/api/admin/stats", ensureAdmin, async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      const tools = await storage.getAllTools();
+      
+      const stats = {
+        totalUsers: users.length,
+        activeUsers: users.filter(u => u.isActive).length,
+        totalTools: tools.length,
+        totalCashTransactions: 0, // TODO: Add transaction count
+      };
+      
+      res.json(stats);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch admin stats" });
+    }
+  });
+
+  app.get("/api/admin/users", ensureAdmin, async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch users" });
+    }
+  });
+
+  app.get("/api/admin/tools", ensureAdmin, async (req, res) => {
+    try {
+      const tools = await storage.getAllTools();
+      res.json(tools);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch tools" });
+    }
+  });
+
+  app.patch("/api/admin/users/:id/cash", ensureAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { amount } = req.body;
+      const user = await storage.updateUserAiCash(id, amount);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      res.json(user);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to update user cash" });
+    }
+  });
+
+  app.patch("/api/admin/tools/:id", ensureAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      const tool = await storage.updateTool(id, updateData);
+      if (!tool) {
+        return res.status(404).json({ error: "Tool not found" });
+      }
+      res.json(tool);
+    } catch (error) {
+      res.status(400).json({ error: "Failed to update tool" });
     }
   });
 
