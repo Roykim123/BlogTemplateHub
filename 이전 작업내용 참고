@@ -1,0 +1,193 @@
+1차. 언어 및 프레임워크 결정
+### **1. 로그인 방식**
+
+- 문제상황
+    - 네이버 로그인 api 미제공, selenium으로 자동 로그인 시도 불가(로봇 방지용 이미지/문자 입력에서 걸림)
+- 해결방법1
+    - 세션 쿠키 저장 & 재사용(자동 로그인 없이 바로 접근 가능)
+    ([https://dev-yujin.tistory.com/entry/Selenium-쿠키-핸들링-cookie-사용하여-로그인-자동화-java](https://dev-yujin.tistory.com/entry/Selenium-%EC%BF%A0%ED%82%A4-%ED%95%B8%EB%93%A4%EB%A7%81-cookie-%EC%82%AC%EC%9A%A9%ED%95%98%EC%97%AC-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EC%9E%90%EB%8F%99%ED%99%94-java))
+- 해결방법2
+    - 자동 로그인 시 브라우저 프로파일 재사용
+    - 로그인 정보를 저장한 프로필 경로를 알아내어 해당 경로를 재사용하는 방식, 이후로는 자동으로 로그인된 상태가 유지됨
+
+### **2. 언어 및 프레임워크 결정: java vs python**
+
+1. api 연동 난이도: python < java
+2. 레퍼런스 양: python > java
+3. crew ai : python 기반
+    1. https://github.com/crewAIInc
+- 결론
+    - python 사용으로 빠르게 mvp 개발 후 추후 필요시 조정
+
+*java로 구현 하게 되면 .jar -> .exe 변경 시 Launch4j사용*
+
+### **3. 사용 예정 툴 및 라이브러리**
+
+1. GPT-4 Vision API : image to text(base64)
+2. selenium: 네이버 로그인 후 글쓰기 자동화
+3. tkinter, filedialog: GUI
+
+### 4. 응용 프로그램 사용자 워크플로우:
+
+1. 서비스 유료 결제 시 exe 파일 다운로드
+2. 사용자 정보 입력(회사명, 네이버 로그인) - **백엔드 연동** 
+3. 사용자 마케팅 이미지 선택 - **백엔드 연동** 
+4. 이미지 기반 gpt 프롬프트 생성(gpt 연동)
+5. 네이버 로그인(selenium)후 블로그 글쓰기 페이지 이동
+6. 이미지 업로드, 텍스트 붙여넣기
+7. 자동 업로드 완료(필요 시 n회 주기적 반복)
+*1-3: 사용자 수동, 4-7: 자동화*
+
+
+2차. gpt 텍스트 생성, 로그인 페이지 이동 구현 
+### 코드 구현
+
+1. gpt 모델로 이미지 기반 마케팅 글 생성
+2. 로그인 후 네이버 아이디 기반 글쓰기 화면으로 이동
+3. dom 감지 후 자동 글 생성 → 미해결 
+4. 작성 완료 글 포스팅(submit) → 미해결 
+
+```python
+from openai import OpenAI
+import base64
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+import os
+from dotenv import load_dotenv
+# ===== 설정 =====
+load_dotenv() 
+client = OpenAI(
+    # This is the default and can be omitted
+    # api_key=os.environ.get("OPENAI_API_KEY"),
+
+)
+
+NAVER_ID = ""
+NAVER_PW = ""
+IMAGE_PATH = "hello.jpg"
+TITLE = "오늘의 이미지 블로그 글"
+
+# ===== 1. GPT Vision으로 블로그 내용 생성 =====
+def encode_image(image_path):
+    with open(image_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode('utf-8')
+
+def generate_blog_content(image_path):
+    base64_img = encode_image(image_path)
+    response = client.responses.create(
+    model="gpt-4o-mini",
+    input=[
+        {
+            "role": "user",
+            "content": [
+                {"type": "input_text", "text":  "당신은 마케터입니다. 이미지를 보고 블로그 글을 한국어로 써주세요. 소제목도 포함해주세요."},
+                {"type": "input_image", "image_url": f"data:image/png;base64,{base64_img}"},
+            ],
+        }
+    ],
+)
+    return response.output[0].content[0].text
+    
+
+# ===== 2. Selenium으로 블로그 글쓰기 =====
+def post_to_naver_blog(nid, npw, title, content, image_path):
+    options = webdriver.ChromeOptions()
+    options.add_argument("--start-maximized")
+    driver = webdriver.Chrome(options=options)
+
+    # 로그인
+    driver.get("https://nid.naver.com/nidlogin.login")
+    time.sleep(2)
+    driver.execute_script("document.getElementsByName('id')[0].value = arguments[0]", nid)
+    driver.execute_script("document.getElementsByName('pw')[0].value = arguments[0]", npw)
+    driver.find_element(By.CLASS_NAME, 'btn_login').click()
+    time.sleep(3)
+
+    # 글쓰기 페이지
+    driver.get("https://blog.naver.com/블로그아이디?Redirect=Write&")
+    time.sleep(5)
+    driver.switch_to.frame("mainFrame")
+    time.sleep(2)
+
+    # 제목
+    driver.find_element(By.ID, "subject").send_keys(title)
+
+    # ===== 이미지 업로드 버튼 클릭 후 파일 업로드 =====
+    driver.find_element(By.CLASS_NAME, "se2_photo").click()  # 사진 아이콘 클릭
+    time.sleep(2)
+    
+    # 파일 업로드 input 찾기
+    upload_input = driver.find_element(By.XPATH, '//input[@type="file" and @accept="image/*"]')
+    upload_input.send_keys(os.path.abspath(image_path))
+    time.sleep(5)  # 이미지 업로드 대기
+
+    # 이미지 업로드 후 텍스트 입력
+    content_area = driver.find_element(By.CLASS_NAME, "se2_inputarea")
+    content_area.click()
+    content_area.send_keys("\n\n" + content)
+    time.sleep(2)
+
+    # 발행
+    try:
+        driver.find_element(By.CLASS_NAME, "btn_ly").click()
+        print("업로드 완료!")
+    except:
+        print("발행 버튼을 찾을 수 없습니다.")
+    time.sleep(3)
+    driver.quit()
+
+# ===== 실행 =====
+if __name__ == "__main__":
+    blog_content = generate_blog_content(IMAGE_PATH)
+    print(blog_content)
+    post_to_naver_blog(NAVER_ID, NAVER_PW, TITLE, blog_content, IMAGE_PATH)
+
+```
+
+### 개선 사항, 고민할 부분
+
+- 제목 자동 주입 방법
+    - 본문 글은 콘솔창에 명령 코드 주입하여 구현 가능
+    - python에서 물리키보드 누르는게 가능한지(화살표 키보드로 제목, 본문 이동..?)
+    - 마우스 좌표이동은 어려움
+- 사진넣는방법
+    - exe에서 서버로 접속해서 서버에서 사진 받아오기
+    - 사진 이동: 카카오톡 -> 서비스 -> exe로 이동하면 depth 낮아짐
+    - 서버에서 폴더 받아와서 (쿼리 받아오거나) 사진 가져다 쓴다고 생각하기
+
+
+
+3차. 네이버 블로그 제목, 본문 붙여넣기 시도
+**[개발자 도구 콘솔창 테스트 결과]** 
+
+- **문제상황**
+    - 본문은 `const editable = document.querySelector('[contenteditable="true"]');` 로 paste 가능하지만 제목은 접근 불가능한 상황
+- **해결방안**
+    1. keyboard event로 화살표 제어
+        - 물리키보드 이동을 통한 제어 불가능**(실패)**
+    2. 고정 id(`.se-section-documentTitle`)로 iframe (도메인은 동일하지만 상대경로 다름) 내의 dom 접근하여 텍스트 삽입
+        
+        2.1 innertext에 직접 값 주입
+        
+        - 사용자 입력으로 인식 안함**(실패)**
+        - 겉으로는 입력되어도 글 게시될 때 ‘제목없음’으로 등록됨
+        
+        2.2 pasteEvent 사용
+        
+        - iframe내에서는 pasteEvent 막힘**(실패)**
+        
+        2.3 DOM 조작 API 사용(insertNode)
+        
+        - 사용자 입력으로 인식 안함**(실패)**
+        
+        2.4 브라우저 명령 API 사용(execCommand)
+        
+        - 사용자 입력으로 인식 안함**(실패)**
+
+**[대안1] chrome extension 내에서 clipboard API 사용해 paste 기능으로 텍스트 및 이미지 붙여넣기 시도해보기 (가능 여부 불확실 - 구현 예정)**
+
+- 메소드 예시 : `navigater.clipboard.readText()`
+- clipboardRead 권한 부여되면 개발자 도구 콘솔창에서 제어하지 못하는 부분 제어 가능
+
+**[대안2] exe 실행파일로 selenium의 send_key()로 사용자 입력 시뮬레이션하기 (구현 완료)**
