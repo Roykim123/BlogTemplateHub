@@ -191,3 +191,57 @@ if __name__ == "__main__":
 - clipboardRead 권한 부여되면 개발자 도구 콘솔창에서 제어하지 못하는 부분 제어 가능
 
 **[대안2] exe 실행파일로 selenium의 send_key()로 사용자 입력 시뮬레이션하기 (구현 완료)**
+
+
+1. React 컴포넌트 한 개에 기능만 담아서 넣기
+
+[테스트용 블로그]
+
+https://blog.naver.com/mariemary85
+
+[익스텐션, 리액트 깃허브]
+
+ https://github.com/mariewldms/naver-blog-chrome-extension
+
+https://github.com/mariewldms/naver-blog-react
+
+![image.png](attachment:0f245a46-fdbb-4a29-bbf0-262df8caeb6c:image.png)
+
+### [진행상황]
+
+- 크롬 확장프로그램을 매개로 message 전달하는 로직 구현중
+- [x]  react 내 gpt ai api 연결해 글 생성
+- [x]  react → chrome extension 본문, 제목 전달
+- [x]  네이버 블로그 리다이렉트 및 dom 접근해 text 주입
+- [x]  리다이렉트 시 message 보냈을 때에만 트리거되어 text 주입
+- [x]  제출 버튼
+- [ ]  앱스토어 등록
+
+### [문제상황] 프론트(React) 서비스(한 개 컴포넌트)만으로는 완전한 자동화 서비스 구현 불가능
+
+- 코드 구현 방식:
+    1. 리액트에서 ButtonEvent로 네이버 블로그로 리다이렉트
+    2. 네이버 블로그 url에서 javascript로 dom 제어
+- 결과:
+    - Same Origin Policy(SOP)로 타 도메인으로부터 접근한 창에서 dom 제어가 불가능 ({프론트 도메인} → {네이버 도메인} 이동하면 다른 origin)
+    - API 통신도 사실상 네이버 CORS 차단해놔서 불가능
+
+### [대안 제안]
+
+### **대안1: 크롬 확장프로그램 설치+React 서비스**
+
+1. 리액트에서 아이디 받아서 url 리다이렉트&생성된 gpt 블로그 제목, 본문, 사진 확장 프로그램으로 전송
+2. 설치된 확장 프로그램에서 해당 블로그 주소 이동 감지 후 자동 네이버 dom 제어해서 자동 글쓰기 후 제출 버튼 누르기
+- 장점: 서버 리소스 절약, 구현 과정 비교적 간단
+- 단점: 모든 사용자 요금 결제 후 확장 프로그램 설치 필수, 주기적 스케줄링 불가능(폴링 방식으로 백에서 스케줄 해서 확장 프로그램 제어하면 가능할지도)
+
+→ 단기 mvp 서비스 구현 시 적합
+
+### **대안2: selenium 자동화 (백에서 처리-java or python server)**
+
+1. 프론트에서 아이디 받아서 post api로 백으로 데이터 전송
+2. java(spring) selenium으로 자동화 시뮬레이션 
+- 장점: 확장 프로그램 설치 불필요
+- 단점: 서버 리소스, 불안정
+
+→ 서비스 장기화, 유저 사용자 증가 시 적합
